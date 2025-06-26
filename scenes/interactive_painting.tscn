@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bndfl0mjnqp6h"]
+
+[ext_resource type="Script" uid="uid://dvuxdx7bvrnp5" path="res://scenes/interactive_painting.gd" id="1_insjm"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_s4orp"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_insjm"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_insjm")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="painting" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.97224, 0, 2.59842e-07, 0, 2.97223, 0, -2.59841e-07, 0, -2.97224, 0, 0, 0)
+mesh = SubResource("QuadMesh_s4orp")
+skeleton = NodePath("../_niby_player")
+
+[node name="RayCast3D" type="RayCast3D" parent="painting"]
+transform = Transform3D(1, 0, 4.23516e-22, 0, -4.37114e-08, -1, 7.10543e-15, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, -2.25686, 0)
+mesh = SubResource("PlaneMesh_insjm")
+skeleton = NodePath("../painting")
+
+[node name="RayCast3D" type="RayCast3D" parent="floor"]

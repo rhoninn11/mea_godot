@@ -1,0 +1,57 @@
+[gd_scene load_steps=11 format=3 uid="uid://dfoqyvbtpnhis"]
+
+[ext_resource type="Script" uid="uid://cqg88bo2rhn1h" path="res://scripts/intraction_spot.gd" id="1_82nir"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v4rds"]
+
+[sub_resource type="Curve" id="Curve_v4rds"]
+_data = [Vector2(0.0441176, 0.123596), 0.0, 0.0, 0, 0, Vector2(0.348039, 0.842697), 0.0, 0.0, 0, 0, Vector2(0.563725, 0.292135), 0.0, 0.0, 0, 0, Vector2(0.754902, 0.550562), 0.0, 0.0, 0, 0, Vector2(0.97549, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_fucje"]
+curve = SubResource("Curve_v4rds")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2rawk"]
+gravity = Vector3(0, 9.8, 0)
+scale_curve = SubResource("CurveTexture_fucje")
+
+[sub_resource type="BoxMesh" id="BoxMesh_l2r3q"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_fucje"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82nir"]
+albedo_color = Color(0.725478, 0.240382, 0.640547, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_mgbwf"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_2rawk"]
+transform_format = 1
+use_custom_data = true
+instance_count = 2
+mesh = SubResource("TorusMesh_mgbwf")
+buffer = PackedFloat32Array(0, 0, 0, 0, 0, 2.35099e-38, 0, 0, -3.39481e-34, 1.02575e-42, 0, 0, 0, 0, 0, 0, 0, 1.70141e+38, 0, 0, 0, 0, 0, 0, 0, 9.18355e-41, -4.15529e-30, 1.02575e-42, -0.00043273, -0.000406027, 0, 0)
+
+[node name="Area3D" type="Area3D"]
+script = ExtResource("1_82nir")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_v4rds")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_2rawk")
+draw_pass_1 = SubResource("BoxMesh_l2r3q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.618843, 0, 0, 0, 0.618843, 0, 0, 0, 0.618843, 0, -0.333231, 0)
+mesh = SubResource("TorusMesh_fucje")
+surface_material_override/0 = SubResource("StandardMaterial3D_82nir")
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(0.618843, 0, 0, 0, 0.618843, 0, 0, 0, 0.618843, 0, -0.333231, 0)
+multimesh = SubResource("MultiMesh_2rawk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvl2al7j8h05w"]
+
+[ext_resource type="Script" uid="uid://kmiakq6x2qhc" path="res://scenes/grande/display_content_2D.gd" id="1_mpwfu"]
+[ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="2_dq7bv"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_herbk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pg0bg"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dq7bv"]
+size = Vector2(455.047, 479.889)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_mpwfu")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "jeszcze nie wiadom
+do końca"
+
+[node name="controlable" type="Sprite2D" parent="."]
+z_index = 8
+material = SubResource("CanvasItemMaterial_herbk")
+position = Vector2(370, 236.5)
+scale = Vector2(2.8125, 2.59375)
+texture = ExtResource("2_dq7bv")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="controlable"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="controlable/CharacterBody2D"]
+shape = SubResource("RectangleShape2D_pg0bg")
+
+[node name="img" type="Sprite2D" parent="."]
+position = Vector2(560, 315)
+scale = Vector2(0.5, 0.5)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(337.375, 299.75)
+shape = SubResource("RectangleShape2D_dq7bv")
+
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

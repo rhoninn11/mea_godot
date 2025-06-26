@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6s5l3padnv08"]
+
+[ext_resource type="Script" uid="uid://ks46otehvuap" path="res://UI/exit_overlay.gd" id="1_rjoue"]
+
+[node name="ExitOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rjoue")
+after = 0.2
+
+[node name="exit_indicator" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_bottom = 50.0
+grow_horizontal = 0
+pivot_offset = Vector2(50, 0)
+color = Color(0.642966, 0.320031, 0.168986, 1)

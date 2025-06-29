@@ -1,11 +1,11 @@
 [gd_scene load_steps=22 format=3 uid="uid://b3ahbfvwtdsif"]
 
 [ext_resource type="Script" uid="uid://ctt2ry1s18lu0" path="res://scenes/grande/main_scene.gd" id="1_1vu5h"]
-[ext_resource type="Script" uid="uid://dwsq4suelenlo" path="res://scripts/third_person_camera.gd" id="2_sjxqc"]
+[ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
 [ext_resource type="Script" uid="uid://brhlj07b3hccp" path="res://scenes/grande/display.gd" id="3_o8m8r"]
 [ext_resource type="PackedScene" uid="uid://bndfl0mjnqp6h" path="res://scenes/interactive_painting.tscn" id="4_f31tm"]
 [ext_resource type="PackedScene" uid="uid://dgyeryrq5nclc" path="res://scenes/flat_levels/dark_forest.tscn" id="5_h7lfu"]
-[ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/Simple3DPlayer.tscn" id="6_1prhs"]
+[ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="6_1prhs"]
 [ext_resource type="PackedScene" uid="uid://cd78fv57qp37e" path="res://scenes/flat_levels/dark_forest_1.tscn" id="6_sjxqc"]
 [ext_resource type="PackedScene" uid="uid://dfoqyvbtpnhis" path="res://scenes/interactive_spot.tscn" id="7_kgubf"]
 [ext_resource type="PackedScene" uid="uid://b6s5l3padnv08" path="res://UI/exit_overlay.tscn" id="8_ydscf"]
@@ -39,10 +39,10 @@ albedo_color = Color(0.582922, 0.209187, 0.199727, 1)
 
 [sub_resource type="Curve3D" id="Curve3D_sjxqc"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -3.78911, 1.68632, 6.46566, 0, 0, 0, 0, 0, 0, 0.171056, 1.71905, 0.475784, 0, 0, 0, 0, 0, 0, -0.988632, 1.5078, -1.34028, 0, 0, 0, 0, 0, 0, -1.78504, 0.996902, -2.78908, 0, 0, 0, 0, 0, 0, -0.775029, 1.47701, -3.59626, 0, 0, 0, 0, 0, 0, 0.106837, 1.98284, -4.14266, 0, 0, 0, 0, 0, 0, 0.816838, 2.12356, -3.96758, 0, 0, 0, 0, 0, 0, -3.15191, 1.41922, -5.76278, 0, 0, 0, 0, 0, 0, 2.25949, 3.04527, -0.768959),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -3.78911, 2.83464, 6.46566, 0, 0, 0, 0, 0, 0, -3.42999, 2.99022, 2.54541, 0, 0, 0, 0, 0, 0, -5.55743, 5.25667, 0.00241041, 0, 0, 0, 0, 0, 0, -5.0002, 4.71797, -2.15484, 0, 0, 0, 0, 0, 0, -4.56649, 3.8089, -4.85341, 0, 0, 0, 0, 0, 0, -3.68462, 3.35228, -5.39981, 0, 0, 0, 0, 0, 0, -3.41335, 3.40467, -6.74147),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
 }
-point_count = 9
+point_count = 7
 
 [node name="root" type="Node3D"]
 script = ExtResource("1_1vu5h")
@@ -51,9 +51,8 @@ script = ExtResource("1_1vu5h")
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="_kamerka" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.385, 2, -3)
-script = ExtResource("2_sjxqc")
+[node name="_kamerka" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_sjxqc")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.385, 2, -3)
 target = NodePath("../_niby_player")
 
 [node name="_bg" type="WorldEnvironment" parent="."]
@@ -66,7 +65,7 @@ skeleton = NodePath("../_niby_player")
 script = ExtResource("3_o8m8r")
 
 [node name="display2" parent="." instance=ExtResource("4_f31tm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.63082, 1.49261, 5.92794)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
 scene = ExtResource("5_h7lfu")
 
 [node name="display3" parent="." instance=ExtResource("4_f31tm")]
@@ -74,7 +73,6 @@ transform = Transform3D(-0.994963, 0, -0.10024, 0, 1, 0, 0.10024, 0, -0.994963, 
 scene = ExtResource("6_sjxqc")
 
 [node name="_niby_player" parent="." instance=ExtResource("6_1prhs")]
-transform = Transform3D(-0.99794, 0, 0.0641491, 0, 1, 0, -0.0641491, 0, -0.99794, 1.385, 0, 0)
 
 [node name="Area3D" parent="." instance=ExtResource("7_kgubf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47475, 0, 1.37243)
@@ -117,7 +115,7 @@ size = Vector3(22.3916, 5.49402, 12.6096)
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
 polygon = PackedVector2Array(0.124497, 0.260424, 0.0191591, 0.599982, 0.565906, 0.659139, 0.44185, 0.251678)
 mode = 2
-path_node = NodePath("../Path3D")
+path_node = NodePath("Path3D")
 path_interval_type = 0
 path_interval = 1.0
 path_simplify_angle = 0.0
@@ -128,7 +126,7 @@ path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 
-[node name="Path3D" type="Path3D" parent="CSGCombiner3D"]
+[node name="Path3D" type="Path3D" parent="CSGCombiner3D/CSGPolygon3D"]
 curve = SubResource("Curve3D_sjxqc")
 
 [connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]

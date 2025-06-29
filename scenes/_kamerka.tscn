@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ss6nkq2apysy"]
+
+[ext_resource type="Script" uid="uid://dwsq4suelenlo" path="res://scripts/third_person_camera.gd" id="1_dhp4c"]
+[ext_resource type="PackedScene" uid="uid://1wocatlc51mh" path="res://scenes/rotation_component.tscn" id="2_xjl10"]
+
+[node name="_kamerka" type="Camera3D"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("1_dhp4c")
+
+[node name="rotation_component" parent="." instance=ExtResource("2_xjl10")]

@@ -1,11 +1,15 @@
 extends Node3D
-class_name Simple3DPlayer
+class_name ThirdPerson
 
 @export var speed: float = 4.5
 var var_speed: float = speed
 
 @onready var speed_t: Timer = $speed_timer
 @onready var fonk_music: AudioStreamPlayer = $fonk_music
+@onready var rot: RotationComponent = $pawn/RotationComponent
+
+@onready var hand := $pawn/hand
+@onready var vert_pos: VerticalComponent = $pawn/VerticalComponent
 
 var speed_up: bool = false
 var speed_up_last: bool = false
@@ -30,18 +34,23 @@ func _process(delta: float) -> void:
 	update_speed()
 	update_pos(delta)
 	update_playback(delta)
+	update_hand()
 
 
 func update_pos(delta: float) -> void:
 	if not has_control:
 		return
 	
-	var move = Input.get_vector("up", "down", "left", "right")
-	var move_3d = Vector3(move.y, 0, move.x)
+	var xform := Transform3D.IDENTITY.rotated(Vector3.UP, rot.fn_turn() + PI) 
+	var move := Input.get_vector("up", "down", "left", "right")
+	var move_3d := Vector3(move.y, 0, move.x)
 	
 	if move_3d != Vector3.ZERO:
 		move_3d = move_3d*delta*var_speed
-		self.translate(move_3d)
+		var move_delta :=  xform * move_3d
+		self.transform.origin += move_delta
+	
+	self.transform.basis = xform.basis
 	
 func update_speed() -> void:
 	speed_up_last = speed_up
@@ -56,7 +65,6 @@ func update_speed() -> void:
 
 func _on__interaction_area_entered(area: Area3D) -> void:
 	speed_t.start()
-	print("i co aasdasdktywuj")
 
 func update_playback(delta: float) -> void:
 	if just_speed_up:
@@ -94,3 +102,7 @@ func pass_control() -> void:
 	
 func take_control() -> void:
 	has_control = false
+
+const default_pos: float = 0.75
+func update_hand() -> void:
+	hand.transform.origin.y = default_pos + vert_pos.fn_val()

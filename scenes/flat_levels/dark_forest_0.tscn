@@ -1,41 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://cigsii13tao5a"]
+[gd_scene load_steps=4 format=3 uid="uid://cigsii13tao5a"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_1q346"]
 [ext_resource type="Texture2D" uid="uid://bhi5q1ywhlya4" path="res://textures/a.png" id="2_7mk2q"]
-[ext_resource type="PackedScene" uid="uid://bjjy8kh4vdflb" path="res://scenes/flat_elements/bloc.tscn" id="3_6wyvu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x8b5x"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fx8hn"]
-size = Vector2(484, 20)
+[ext_resource type="PackedScene" uid="uid://dvl2al7j8h05w" path="res://scenes/grande/display_content_2D.tscn" id="3_1q346"]
 
 [node name="DarkForest" type="Node2D" node_paths=PackedStringArray("area_node")]
 script = ExtResource("1_1q346")
-area_node = NodePath("stay_in")
+area_node = NodePath("")
 metadata/_custom_type_script = "uid://tgl4u318vatv"
 
 [node name="Jerry" type="Sprite2D" parent="."]
 position = Vector2(530, 525)
 texture = ExtResource("2_7mk2q")
 
-[node name="Bloc" parent="." instance=ExtResource("3_6wyvu")]
-position = Vector2(148, 102)
-
-[node name="Bloc2" parent="." instance=ExtResource("3_6wyvu")]
-position = Vector2(339, 163)
-
-[node name="Bloc3" parent="." instance=ExtResource("3_6wyvu")]
-position = Vector2(170, 213)
-
-[node name="stay_in" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_x8b5x")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(256, 495)
-shape = SubResource("RectangleShape2D_fx8hn")
+[node name="Node2D" parent="." instance=ExtResource("3_1q346")]

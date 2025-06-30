@@ -24,6 +24,7 @@ buses/default_bus_layout="res://audio/default_bus_layout.tres"
 [autoload]
 
 Libgeo="*res://geo/libgeo.gd"
+Uimanager="*res://scripts/UiManager.gd"
 
 [display]
 

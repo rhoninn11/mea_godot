@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
 [ext_resource type="Script" uid="uid://brhlj07b3hccp" path="res://scenes/grande/display.gd" id="3_o8m8r"]
 [ext_resource type="PackedScene" uid="uid://bndfl0mjnqp6h" path="res://scenes/interactive_painting.tscn" id="4_f31tm"]
-[ext_resource type="PackedScene" uid="uid://dgyeryrq5nclc" path="res://scenes/flat_levels/dark_forest.tscn" id="5_h7lfu"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="6_1prhs"]
-[ext_resource type="PackedScene" uid="uid://cigsii13tao5a" path="res://scenes/flat_levels/dark_forest_0.tscn" id="6_o8m8r"]
-[ext_resource type="PackedScene" uid="uid://cd78fv57qp37e" path="res://scenes/flat_levels/dark_forest_1.tscn" id="6_sjxqc"]
+[ext_resource type="PackedScene" uid="uid://cigsii13tao5a" path="res://scenes/flat_levels/dark_forest.tscn" id="6_f31tm"]
+[ext_resource type="PackedScene" uid="uid://dgyeryrq5nclc" path="res://scenes/flat_levels/mountain_sunset.tscn" id="6_o8m8r"]
+[ext_resource type="PackedScene" uid="uid://cd78fv57qp37e" path="res://scenes/flat_levels/colorful_lands.tscn" id="6_sjxqc"]
 [ext_resource type="PackedScene" uid="uid://dfoqyvbtpnhis" path="res://scenes/interactive_spot.tscn" id="7_kgubf"]
 [ext_resource type="PackedScene" uid="uid://dvl2al7j8h05w" path="res://scenes/grande/display_content_2D.tscn" id="9_rg16k"]
 [ext_resource type="Script" uid="uid://dqfaak70aj8ny" path="res://scenes/grande/2d_activator.gd" id="10_v1cyt"]
@@ -52,21 +52,21 @@ target = NodePath("../_niby_player")
 environment = SubResource("Environment_vdmdy")
 
 [node name="display" type="MeshInstance3D" parent="."]
-transform = Transform3D(-2.97224, 0, -2.59842e-07, 0, 2.97223, 0, 2.59841e-07, 0, -2.97224, 8.26466, 0.818496, 5.62376)
+transform = Transform3D(-2.97224, 0, -2.59842e-07, 0, 2.97223, 0, 2.59841e-07, 0, -2.97224, 8.26466, 1.59571, 5.62376)
 mesh = SubResource("QuadMesh_s4orp")
 skeleton = NodePath("../_niby_player")
 script = ExtResource("3_o8m8r")
 
 [node name="display2" parent="." instance=ExtResource("4_f31tm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
-scene = ExtResource("5_h7lfu")
-
-[node name="display4" parent="." instance=ExtResource("4_f31tm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45779, 1.49261, 5.92794)
 scene = ExtResource("6_o8m8r")
 
+[node name="display4" parent="." instance=ExtResource("4_f31tm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45779, 1.43016, 5.91542)
+scene = ExtResource("6_f31tm")
+
 [node name="display3" parent="." instance=ExtResource("4_f31tm")]
-transform = Transform3D(-0.994963, 0, -0.10024, 0, 1, 0, 0.10024, 0, -0.994963, -2.20729, 1.49261, -5.80373)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.61571, 1.49261, 0.664444)
 scene = ExtResource("6_sjxqc")
 
 [node name="_niby_player" parent="." instance=ExtResource("6_1prhs")]
@@ -81,7 +81,7 @@ render_target_update_mode = 4
 position = Vector2(11, 17)
 
 [node name="Area3D2" type="Area3D" parent="." node_paths=PackedStringArray("node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.17071, -0.419968, 3.41856)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.17071, -0.419968, 3.50721)
 script = ExtResource("10_v1cyt")
 node = NodePath("../_context_2d/scene_2d")
 
@@ -97,14 +97,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_qtjao")
 material_override = SubResource("StandardMaterial3D_1vu5h")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(7.64912, 0, 0, 0, 3.26687, 0, 0, 0, 3.26687, 3.64839, 1.02829, -1.48313)
+transform = Transform3D(7.64912, 0, 0, 0, 3.26687, 0, 0, 0, 3.26687, 2.92218, 1.02829, -0.598807)
 material_override = SubResource("StandardMaterial3D_1vu5h")
-size = Vector3(2.06946, 1.6221, 5.60956)
+size = Vector3(2.25934, 1.6221, 4.97506)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(0.997554, 0, 0, 0, 0.997554, 0, 0, 0, 0.997554, 3.20804, 2.3017, -0.239868)
+transform = Transform3D(0.997554, 0, 0, 0, 0.997554, 0, 0, 0, 0.997554, 4.754, 1.6, -1.63758)
 material_override = SubResource("StandardMaterial3D_1vu5h")
 operation = 2
-size = Vector3(22.3916, 5.49402, 12.6096)
+size = Vector3(19.292, 4.2, 15.412)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.42783, 1.83405, -4.47066)
+operation = 2
+size = Vector3(1.73828, 4.66809, 6.13214)
 
 [connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]

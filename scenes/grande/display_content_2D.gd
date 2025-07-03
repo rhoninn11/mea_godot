@@ -56,7 +56,6 @@ func initials():
 
 	for i in range(0, len(dyn_sprites)):
 		var i_safe = i%tex_num
-		print("??? is i safe: ", i_safe)
 		dyn_sprites[i].texture = images[i_safe]
 		dyn_sprites[i].scale = Vector2(0.1, 0.1)
 		dyn_sprites[i].z_index = i

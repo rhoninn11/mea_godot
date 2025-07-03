@@ -1,18 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://bjjy8kh4vdflb"]
 
-[ext_resource type="Script" uid="uid://c6me7la0b3y6o" path="res://scenes/flat_elements/bloc.gd" id="1_641id"]
 [ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="1_okxh4"]
+[ext_resource type="Script" uid="uid://dgu1lglxuap3p" path="res://scenes/flat_elements/bloc.gd" id="1_sbv0m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_okxh4"]
 radius = 16.0
 
-[node name="Bloc" type="Node2D"]
-script = ExtResource("1_641id")
+[node name="RigidBody2D" type="RigidBody2D" groups=["holdable"]]
+script = ExtResource("1_sbv0m")
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_okxh4")
 
-[node name="InteractionRing" type="Sprite2D" parent="RigidBody2D"]
+[node name="InteractionRing" type="Sprite2D" parent="."]
 texture = ExtResource("1_okxh4")

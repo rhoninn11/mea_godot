@@ -1,8 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bndfl0mjnqp6h"]
+[gd_scene load_steps=7 format=3 uid="uid://bndfl0mjnqp6h"]
 
 [ext_resource type="Script" uid="uid://dvuxdx7bvrnp5" path="res://scenes/interactive_painting.gd" id="1_insjm"]
+[ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="2_ccbem"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_insjm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmb00"]
+transparency = 1
+albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
+albedo_texture = ExtResource("2_ccbem")
+texture_filter = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_s4orp"]
 
@@ -15,9 +22,10 @@ script = ExtResource("1_insjm")
 [node name="SubViewport" type="SubViewport" parent="."]
 
 [node name="floor" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, -2.25686, 0)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, -1.94328, -1.81859)
 mesh = SubResource("PlaneMesh_insjm")
 skeleton = NodePath("../calc_origin/painting")
+surface_material_override/0 = SubResource("StandardMaterial3D_hmb00")
 
 [node name="raycast" type="RayCast3D" parent="floor"]
 

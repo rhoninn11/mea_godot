@@ -7,15 +7,40 @@ class_name GlueLayer
 @export var width: int = 512
 @export var height: int = 512
 @export var area_node: Area2D
+@export var main: bool = false
+
+var s_pointer = preload("res://scenes/flat_elements/flat_pointer.tscn")
+var pointer_ref: FlatPointer
+
+signal pass_data(v: Vector2, b: bool)
 
 func _ready() -> void:
-	if area_node:
-		area_node.body_exited.connect(self._okej)
-		print("idono")
-	pass
+	spawn_area()
+	assert(area_node)
+	area_node.body_exited.connect(self._okej)
 	
-func custom() -> void:
-	print("Custom glue")
+	pointer_ref = s_pointer.instantiate() as FlatPointer
+	assert(pointer_ref)
+	add_child(pointer_ref)
+	pointer_ref.name = "pointer"
+	pointer_ref.owner = self
+	
+	pass_data.connect(pointer_ref._recive_pointer)
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+		
+	if main:
+		print("is main ", self.name)
+		pointer_ref._recive_pointer(
+			get_global_mouse_position(),
+			Input.is_action_pressed("pointer")
+		)
+	
+
+func _exit_tree() -> void:
+	print("tree exited")
 
 func spawn() -> void:
 	if area_node != null:
@@ -43,8 +68,3 @@ func spawn_area() -> void:
 		
 func _okej(area: Node2D) -> void:
 	print("okej")
-
-
-func _on_stay_in_body_exited(body: Node2D) -> void:
-	print("signal signaling")
-	pass # Replace with function body.

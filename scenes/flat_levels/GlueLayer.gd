@@ -32,7 +32,6 @@ func _process(delta: float) -> void:
 		return
 		
 	if main:
-		print("is main ", self.name)
 		pointer_ref._recive_pointer(
 			get_global_mouse_position(),
 			Input.is_action_pressed("pointer")

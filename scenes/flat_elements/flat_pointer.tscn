@@ -1,15 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://jj2k8phb5jdt"]
+[gd_scene load_steps=6 format=3 uid="uid://jj2k8phb5jdt"]
 
 [ext_resource type="Script" uid="uid://b0fwjvqlvi0th" path="res://scenes/flat_elements/flat_pointer.gd" id="1_4b3m2"]
 [ext_resource type="Texture2D" uid="uid://5d8f1i8rf6el" path="res://textures/pointer.png" id="2_3a544"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_44tfe"]
 
+[sub_resource type="Animation" id="Animation_iacmn"]
+resource_name = "new_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o5p0q"]
+_data = {
+&"new_animation": SubResource("Animation_iacmn")
+}
+
 [node name="pointer_root" type="Node2D"]
 script = ExtResource("1_4b3m2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
+position = Vector2(-2, 0)
+scale = Vector2(0.9375, 1)
 texture = ExtResource("2_3a544")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -17,6 +26,11 @@ texture = ExtResource("2_3a544")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_44tfe")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_o5p0q")
+}
 
 [connection signal="body_entered" from="Area2D" to="." method="_body_in"]
 [connection signal="body_exited" from="Area2D" to="." method="_body_out"]

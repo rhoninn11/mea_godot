@@ -45,3 +45,7 @@ func save_modified_scene() -> void:
 	var dyn_scene_state = PackedScene.new()
 	dyn_scene_state.pack(get_tree().current_scene)
 	ResourceSaver.save(dyn_scene_state, "res://runtime_tmp/dynamic.tscn")
+
+
+func _on_display_3_visibility_changed() -> void:
+	print("stało się")

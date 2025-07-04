@@ -42,14 +42,13 @@ func _process(delta: float) -> void:
 		print(text)
 
 	pass_interaction()
-
+	hold = Input.is_action_pressed("pointer")
 	flat_scene.pass_data.emit(pos, hold)
 
 func pass_interaction() -> void:
 	if observing == null:
 		return
 	
-	hold = observing.is_tracing
 	if not observing.is_tracing:
 		return
 	
@@ -59,8 +58,11 @@ func pass_interaction() -> void:
 	var y_axis := calc_origin.global_transform.basis[1]
 	var s := painting.scale
 	var coords := Vector2(contact.dot(x_axis/s.x), contact.dot(y_axis/s.y))
-	
-	#print("coords on painting: ", coords)
+	coords += Vector2(0.5,0.5)
+	coords = Vector2(1,1) - coords
+	coords *= Vector2(flat_scene.width, flat_scene.height)
+	print("coords on painting: ", coords)
+	pos = coords
 	
 
 

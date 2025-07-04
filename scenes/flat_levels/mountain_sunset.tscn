@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgyeryrq5nclc"]
+[gd_scene load_steps=14 format=3 uid="uid://dgyeryrq5nclc"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_e3c1j"]
 [ext_resource type="Texture2D" uid="uid://dw1pklqf1qe3i" path="res://textures/b.png" id="2_x8b5x"]
@@ -12,9 +12,27 @@ size = Vector2(384, 384)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fx8hn"]
 size = Vector2(484, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44tfe"]
+size = Vector2(384, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cunw3"]
+size = Vector2(384, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h7v84"]
+size = Vector2(384, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ku7eh"]
+size = Vector2(384, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4v34"]
+size = Vector2(384, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlpuy"]
+size = Vector2(384, 384)
+
 [node name="DarkForest" type="Node2D" node_paths=PackedStringArray("area_node")]
 script = ExtResource("1_e3c1j")
-area_node = NodePath("stay_in")
+area_node = NodePath("stay_in7")
 main = true
 metadata/_custom_type_script = "uid://tgl4u318vatv"
 
@@ -48,5 +66,55 @@ shape = SubResource("RectangleShape2D_fx8hn")
 
 [node name="pointer" parent="." instance=ExtResource("4_44tfe")]
 
-[node name="pointer2" type="Node2D" parent="." instance=ExtResource("4_44tfe")]
+[node name="pointer2" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in2" type="Area2D" parent="."]
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in2"]
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_44tfe")
+
+[node name="pointer3" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in3" type="Area2D" parent="."]
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in3"]
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_cunw3")
+
+[node name="pointer4" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in4" type="Area2D" parent="."]
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in4"]
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_h7v84")
+
+[node name="pointer5" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in5" type="Area2D" parent="."]
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in5"]
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_ku7eh")
+
+[node name="pointer6" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in6" type="Area2D" parent="."]
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in6"]
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_f4v34")
+
+[node name="pointer7" parent="." instance=ExtResource("4_44tfe")]
+
+[node name="stay_in7" type="Area2D" parent="."]
+visible = false
+
+[node name="zone_shape" type="CollisionShape2D" parent="stay_in7"]
+visible = false
+position = Vector2(256, 256)
+shape = SubResource("RectangleShape2D_jlpuy")
+
+[node name="pointer8" type="Node2D" parent="." instance=ExtResource("4_44tfe")]
 script = ExtResource("4_oaecq")

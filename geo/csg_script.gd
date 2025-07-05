@@ -6,6 +6,8 @@ extends CSGCombiner3D
 @export var fill: float = 0.5
 @export_tool_button("regenerate") var regenerate_btn = regenerate
 
+@export var scale_curve: Curve
+
 # this functions will go to other lib script
 func circle(points: int, closed: bool, fill_c: float) -> PackedVector2Array:
 	var scratchpad: PackedVector2Array
@@ -75,23 +77,13 @@ func regenerate():
 		remove_child(child)
 		child.free()
 		
-	var geometry = csg_geometry()
+	csg_geometry()
 	print("geometry spawned")
 
-func path_mode(p: CSGPolygon3D, resolution: int) -> void:
-	var path_node = path_3d()
 
-	p.path_node = path_node.get_path()
-	p.mode = CSGPolygon3D.MODE_PATH
-	p.path_interval_type = CSGPolygon3D.PathIntervalType.PATH_INTERVAL_SUBDIVIDE
-	
-func xform_mode(p: CSGPolygon3D, resolution: int) -> void:
-	var ts = Libgeo.Helpers.circle4D(32, 0.5, true)
-	var efs = Libgeo.Helpers.Ts2Fs(ts)
-	pass
-
-func csg_geometry() -> CSGAlongTransform:
+func csg_geometry():
 	var resolution = 8
+	const bigger: float = 7
 	var _profile = bump(resolution)
 	
 	var tranform_polygon = CSGAlongTransform.new()
@@ -100,44 +92,42 @@ func csg_geometry() -> CSGAlongTransform:
 	
 	tranform_polygon.name = "tranformed_profile"
 	tranform_polygon.polygon = _profile
-	var ts = Libgeo.Helpers.circle4D(32, 0.5, true)
-	var scale = Transform3D.IDENTITY.scaled(Vector3(3,3,3))
-	ts = Libgeo.Helpers.TsoXT(ts, scale)
-	tranform_polygon.transform_data = Libgeo.Helpers.Ts2Fs(ts)
-	
-	return tranform_polygon
+	var ts = Libgeo.Shapes.circle_4d(64, 0.75, false)
+	var scale = Transform3D.IDENTITY.scaled(Vector3(bigger, bigger, bigger))
+	ts = Libgeo.Math.ts_xform_orgin(ts, scale)
+	ts = Libgeo.Math.ts_scale_along(ts, scale_curve)
+	tranform_polygon.transform_data = Libgeo.Interop.Ts2Fs(ts)
 
-func path_3d() -> Path3D:
+func test_geometry() -> void:
+	var csg_polygon = CSGPolygon3D.new()
+	add_child(csg_polygon)
+	csg_polygon.owner = get_tree().edited_scene_root
+	csg_polygon.name = "shape_test"
+
+	# var t_data = Libgeo.Shapes.circle4D(48, 0.75, false)
+	var t_data = Libgeo.Shapes.circle_4d(48, 0.75, false)
+	print("len of t data was: ", len(t_data))
+	var scale_t = Transform3D.IDENTITY.scaled(Vector3(3,3,3))
+	t_data = Libgeo.Math.ts_xform_orgin(t_data, scale_t)
+	var path = as_path(t_data)
+	csg_polygon.mode = CSGPolygon3D.MODE_PATH
+	csg_polygon.path_node = path.get_path()
+
+
+func as_path(ts: Array[Transform3D]) -> Path3D:
+	var num = len(ts)
 	var path_3d_node = Path3D.new()
 	self.add_child(path_3d_node)
 	path_3d_node.owner = get_tree().edited_scene_root
 	
-	var path = Curve3D.new()
-	var circle_points = circle(32, true, 0.5)
-	circle_points = scale_2d(circle_points, Vector2(2,2))
 
-	var _len = len(circle_points)
-	for i in range(len(circle_points)):
+	var curve_3d = Curve3D.new()
+	for i in range(num):
 		var _in: Vector3 = Vector3.ZERO
 		var _out: Vector3 = Vector3.ZERO
-		#if i == 0:
-			#_out = Vector3.FORWARD
-		var p2 = circle_points[i]
-		path.add_point(Vector3(p2.x, 0, p2.y), _in, _out)
+		curve_3d.add_point(ts[i].origin, _in, _out)
 	
 	
 	path_3d_node.name = "half_circle"
-	path_3d_node.curve = path
+	path_3d_node.curve = curve_3d
 	return path_3d_node
-
-
-func t2farr(t: Transform3D) -> PackedFloat32Array:
-	var buffer: PackedFloat32Array
-	buffer.resize(12)
-	var i: int = 0
-	var varr: Array[Vector3] = [t.basis[0], t.basis[1], t.basis[2], t.origin]
-	for vec in varr:
-		for val in [vec.x, vec.y, vec.z]:
-			buffer[i] = val
-			i += 1
-	return buffer

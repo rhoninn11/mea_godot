@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://widqmxmgjvr5"]
+
+[ext_resource type="Texture2D" uid="uid://n20i0yjdt2vb" path="res://textures/garnek.png" id="1_4vfwn"]
+[ext_resource type="Texture2D" uid="uid://c2ooc1xfgb0yt" path="res://textures/dymek.png" id="2_asnde"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_s8623"]
+particles_animation = true
+particles_anim_h_frames = 17
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_4u7ss"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1.98449), 0.0, 0.0, 0, 0, Vector2(0.0720721, 0.991647), 0.0, 0.0, 0, 0, Vector2(0.513513, 0.898568), 0.0, 0.0, 0, 0, Vector2(0.843844, 1.59666), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_4pjtx"]
+curve = SubResource("Curve_4u7ss")
+
+[sub_resource type="Curve" id="Curve_lbmbv"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.690691, 1.31742), 0.0, 0.0, 0, 0, Vector2(1, 1.92243), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_52bx4"]
+curve = SubResource("Curve_lbmbv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r18h4"]
+particle_flag_disable_z = true
+angle_min = -159.2
+angle_max = 126.1
+inherit_velocity_ratio = 10.0
+direction = Vector3(0, -1, 0)
+spread = 30.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, -98, 0)
+scale_curve = SubResource("CurveTexture_52bx4")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_speed_curve = SubResource("CurveTexture_4pjtx")
+turbulence_enabled = true
+turbulence_noise_scale = 4.67
+
+[node name="Garnek" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4vfwn")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_s8623")
+position = Vector2(-11, -4)
+amount = 16
+texture = ExtResource("2_asnde")
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_r18h4")

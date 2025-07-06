@@ -15,6 +15,9 @@ var pointer_ref: FlatPointer
 signal pass_data(v: Vector2, b: bool)
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	
 	spawn_area()
 	assert(area_node)
 	area_node.body_exited.connect(self._okej)

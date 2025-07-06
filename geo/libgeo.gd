@@ -1,30 +1,45 @@
 extends Node
 
 class Interop:
-	static func T2Fs(t: Transform3D) -> PackedFloat32Array:
+	const T_SIZE: int = 12
+	static func t_flat(t: Transform3D) -> PackedFloat32Array:
 		var buffer: PackedFloat32Array
 		buffer.resize(12)
-		var i: int = 0
-		var varr: Array[Vector3] = [t.basis[0], t.basis[1], t.basis[2], t.origin]
-		for vec in varr:
-			for val in [vec.x, vec.y, vec.z]:
-				buffer[i] = val
-				i += 1
+
+		buffer[0] = t.basis.x[0]
+		buffer[1] = t.basis.x[1]
+		buffer[2] = t.basis.x[2]
+		buffer[3] = t.origin.x
+
+		buffer[4] = t.basis.y[0]
+		buffer[5] = t.basis.y[1]
+		buffer[6] = t.basis.y[2]
+		buffer[7] = t.origin.y
+		
+		buffer[8] = t.basis.z[0]
+		buffer[9] = t.basis.z[1]
+		buffer[10] = t.basis.z[2]
+		buffer[11] = t.origin.z
+
 		return buffer
 
 	static func Ts2Fs(ts: Array[Transform3D]) -> PackedFloat32Array:
 		var buffer: PackedFloat32Array
-		buffer.resize(12 * len(ts))
+		buffer.resize(len(ts)*T_SIZE)
 		var i = 0
 		for t in ts:
-			var chunk = T2Fs(t)
-			for val in chunk:
+			for val in t_flat(t):
 				buffer[i] = val
 				i += 1
 
 		return buffer
 
+
+
 class Math:
+	static func scale_m(scale: float) -> Transform3D:
+		return Transform3D.IDENTITY.scaled(Vector3(scale,scale,scale))
+
 	static func ts_xform_orgin(ts: Array[Transform3D], t: Transform3D) -> Array[Transform3D]:
 		var result: Array[Transform3D]
 		result.resize(len(ts))

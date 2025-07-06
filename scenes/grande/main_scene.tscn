@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b3ahbfvwtdsif"]
+[gd_scene load_steps=21 format=3 uid="uid://b3ahbfvwtdsif"]
 
 [ext_resource type="Script" uid="uid://ctt2ry1s18lu0" path="res://scenes/grande/main_scene.gd" id="1_1vu5h"]
 [ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
@@ -6,14 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://bndfl0mjnqp6h" path="res://scenes/interactive_painting.tscn" id="4_f31tm"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="6_1prhs"]
 [ext_resource type="PackedScene" uid="uid://cigsii13tao5a" path="res://scenes/flat_levels/dark_forest.tscn" id="6_f31tm"]
-[ext_resource type="Script" uid="uid://dq6amqfbrfjvs" path="res://scenes/grande/area_3d.gd" id="6_h7lfu"]
 [ext_resource type="PackedScene" uid="uid://dgyeryrq5nclc" path="res://scenes/flat_levels/mountain_sunset.tscn" id="6_o8m8r"]
-[ext_resource type="PackedScene" uid="uid://cd78fv57qp37e" path="res://scenes/flat_levels/colorful_lands.tscn" id="6_sjxqc"]
+[ext_resource type="PackedScene" uid="uid://d4d3xraflmjjy" path="res://scenes/flat_levels/matka_i_obiad/matka_i_obiad.tscn" id="7_f31tm"]
 [ext_resource type="PackedScene" uid="uid://dfoqyvbtpnhis" path="res://scenes/interactive_spot.tscn" id="7_kgubf"]
 [ext_resource type="PackedScene" uid="uid://dvl2al7j8h05w" path="res://scenes/grande/display_content_2D.tscn" id="9_rg16k"]
 [ext_resource type="Script" uid="uid://dqfaak70aj8ny" path="res://scenes/grande/2d_activator.gd" id="10_v1cyt"]
 [ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="11_smnin"]
-[ext_resource type="Script" uid="uid://sa0wwa6p2ypd" path="res://scenes/grande/matka.gd" id="14_f31tm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_b7am0"]
 
@@ -69,7 +67,7 @@ scene = ExtResource("6_f31tm")
 
 [node name="display3" parent="." instance=ExtResource("4_f31tm")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.75178, 1.493, 0.664)
-scene = ExtResource("6_sjxqc")
+scene = ExtResource("7_f31tm")
 
 [node name="_niby_player" parent="." instance=ExtResource("6_1prhs")]
 
@@ -114,16 +112,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.42783, 1.83405, -4.47066)
 operation = 2
 size = Vector3(1.73828, 4.66809, 6.13214)
 
-[node name="Area3D3" type="Area3D" parent="." groups=["czlonek_rodziny"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
-script = ExtResource("6_h7lfu")
-
-[node name="matka" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
-script = ExtResource("14_f31tm")
-
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
-
 [connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]
-[connection signal="czlonek_rodziny_blisko_domu" from="Area3D3" to="matka" method="_o_juz_jest_blikso_to_wstawiam_obiad"]

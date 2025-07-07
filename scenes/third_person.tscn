@@ -26,6 +26,7 @@ metadata/_custom_type_script = "uid://dhpnacfjofxaj"
 
 [node name="RotationComponent" type="Node" parent="pawn"]
 script = ExtResource("2_f743c")
+inverse = true
 metadata/_custom_type_script = "uid://n8blyodjwbxs"
 
 [node name="_flashlight" type="SpotLight3D" parent="pawn"]

@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://dgyeryrq5nclc"]
+[gd_scene load_steps=13 format=3 uid="uid://dgyeryrq5nclc"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_e3c1j"]
 [ext_resource type="Texture2D" uid="uid://dw1pklqf1qe3i" path="res://textures/b.png" id="2_x8b5x"]
 [ext_resource type="PackedScene" uid="uid://bjjy8kh4vdflb" path="res://scenes/flat_elements/bloc.tscn" id="3_x8b5x"]
 [ext_resource type="PackedScene" uid="uid://jj2k8phb5jdt" path="res://scenes/flat_elements/flat_pointer.tscn" id="4_44tfe"]
-[ext_resource type="Script" uid="uid://b0fwjvqlvi0th" path="res://scenes/flat_elements/flat_pointer.gd" id="4_oaecq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x8b5x"]
 size = Vector2(384, 384)
@@ -33,7 +32,6 @@ size = Vector2(384, 384)
 [node name="DarkForest" type="Node2D" node_paths=PackedStringArray("area_node")]
 script = ExtResource("1_e3c1j")
 area_node = NodePath("stay_in7")
-main = true
 metadata/_custom_type_script = "uid://tgl4u318vatv"
 
 [node name="Jerry" type="Sprite2D" parent="."]
@@ -116,5 +114,4 @@ visible = false
 position = Vector2(256, 256)
 shape = SubResource("RectangleShape2D_jlpuy")
 
-[node name="pointer8" type="Node2D" parent="." instance=ExtResource("4_44tfe")]
-script = ExtResource("4_oaecq")
+[node name="pointer8" parent="." instance=ExtResource("4_44tfe")]

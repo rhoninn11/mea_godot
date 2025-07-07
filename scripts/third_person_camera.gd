@@ -42,7 +42,9 @@ func track_target() -> void:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
-		pass
-	else:
-		track_target()
-		adjust_position(self.tpos)
+		return
+		
+		
+
+	track_target()
+	adjust_position(self.tpos)

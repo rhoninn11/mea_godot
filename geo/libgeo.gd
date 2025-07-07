@@ -6,19 +6,19 @@ class Interop:
 		var buffer: PackedFloat32Array
 		buffer.resize(12)
 
-		buffer[0] = t.basis.x[0]
-		buffer[1] = t.basis.x[1]
-		buffer[2] = t.basis.x[2]
+		buffer[0] = t.basis.x.x
+		buffer[1] = t.basis.y.x
+		buffer[2] = t.basis.z.x
 		buffer[3] = t.origin.x
 
-		buffer[4] = t.basis.y[0]
-		buffer[5] = t.basis.y[1]
-		buffer[6] = t.basis.y[2]
+		buffer[4] = t.basis.x.y
+		buffer[5] = t.basis.y.y
+		buffer[6] = t.basis.z.y
 		buffer[7] = t.origin.y
 		
-		buffer[8] = t.basis.z[0]
-		buffer[9] = t.basis.z[1]
-		buffer[10] = t.basis.z[2]
+		buffer[8] = t.basis.x.z
+		buffer[9] = t.basis.y.z
+		buffer[10] = t.basis.z.z
 		buffer[11] = t.origin.z
 
 		return buffer

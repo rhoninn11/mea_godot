@@ -103,6 +103,7 @@ func pass_control() -> void:
 func take_control() -> void:
 	has_control = false
 
-const default_pos: float = 0.75
+const default_pos:= Vector2(0,1)
 func update_hand() -> void:
-	hand.transform.origin.y = default_pos + vert_pos.fn_val()
+	var tmp = default_pos + vert_pos.fn_val()
+	hand.transform.origin = Vector3(-tmp.x, tmp.y, -2)

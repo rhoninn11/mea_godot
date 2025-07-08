@@ -23,7 +23,7 @@ const tex_num = len(tekstury)
 @export var has_control:bool = false
 
 func _ready():
-	ControlMng.register(self)
+	ControlContext.register(self)
 	var arrs = [phases, dyn_sprites]
 	for arr in arrs:
 		arr.resize(sprite_num)
@@ -95,5 +95,5 @@ func take_control() -> void:
 
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	ControlMng.deactivate_alt()
+	ControlContext.deactivate_alt()
 	print("player exited area")

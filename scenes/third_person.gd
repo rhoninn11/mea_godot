@@ -26,8 +26,8 @@ var has_control:bool = false
 
 func _ready() -> void:
 	fonk_music.finished.connect(_on_track_finished)
-	ControlMng.register(self)
-	ControlMng.set_main(self)
+	ControlContext.register(self)
+	ControlContext.set_main(self)
 	var t = create_tween()
 
 func _process(delta: float) -> void:
@@ -35,6 +35,11 @@ func _process(delta: float) -> void:
 	update_pos(delta)
 	update_playback(delta)
 	update_hand()
+	
+	if Input.is_action_pressed("mouse_capture"):
+		ControlContext.control_state = Enums.ControlState.POINTING
+	else:
+		ControlContext.control_state = Enums.ControlState.TRAVEL
 
 
 func update_pos(delta: float) -> void:

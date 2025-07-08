@@ -1,11 +1,13 @@
 extends Node
-class_name ControlMng
+class_name ControlContext
 
 static var _registered_nodes:Array[Node] = []
 static var main_node:Node
 static var alt_node:Node
 static var main_active:bool
 static var methods:Array[String] = ["pass_control", "take_control"]
+
+static var control_state := Enums.ControlState.TRAVEL 
 
 static func register(n:Node) -> void:
 	var method_num: int = len(methods)
@@ -47,3 +49,6 @@ static func deactivate_alt() -> void:
 	if alt_node in _registered_nodes:
 		alt_node.take_control()
 		main_node.pass_control()
+
+func _process(delta: float) -> void:
+	print("say what?")

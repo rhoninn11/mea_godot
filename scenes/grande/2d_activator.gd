@@ -8,5 +8,5 @@ func _on_area_entered(area: Area3D) -> void:
 		return
 	
 	print("i co aktywuje?")
-	ControlMng.activate_alt(node)
+	ControlContext.activate_alt(node)
 	

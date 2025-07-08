@@ -22,11 +22,13 @@ mesh = SubResource("CapsuleMesh_pg6is")
 
 [node name="VerticalComponent" type="Node" parent="pawn"]
 script = ExtResource("2_hyabu")
+active_on = 2
+lim = 2.0
 metadata/_custom_type_script = "uid://dhpnacfjofxaj"
 
 [node name="RotationComponent" type="Node" parent="pawn"]
 script = ExtResource("2_f743c")
-inverse = true
+active_on = 1
 metadata/_custom_type_script = "uid://n8blyodjwbxs"
 
 [node name="_flashlight" type="SpotLight3D" parent="pawn"]

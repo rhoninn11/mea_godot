@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqqucr8mgk8h3"]
+
+[ext_resource type="Script" uid="uid://cqwnot5en0k3v" path="res://scenes/xr_person.gd" id="1_onpw0"]
+
+[node name="xr_person" type="XROrigin3D"]
+script = ExtResource("1_onpw0")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+
+[node name="left" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119674, 0, 0)
+tracker = &"left_hand"
+
+[node name="hight" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13429, 0, 0)
+tracker = &"right_hand"

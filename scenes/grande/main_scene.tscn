@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b3ahbfvwtdsif"]
+[gd_scene load_steps=22 format=3 uid="uid://b3ahbfvwtdsif"]
 
 [ext_resource type="Script" uid="uid://ctt2ry1s18lu0" path="res://scenes/grande/main_scene.gd" id="1_1vu5h"]
 [ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dvl2al7j8h05w" path="res://scenes/grande/display_content_2D.tscn" id="9_rg16k"]
 [ext_resource type="Script" uid="uid://dqfaak70aj8ny" path="res://scenes/grande/2d_activator.gd" id="10_v1cyt"]
 [ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="11_smnin"]
+[ext_resource type="PackedScene" uid="uid://cqqucr8mgk8h3" path="res://scenes/xr_person.tscn" id="13_o8m8r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_b7am0"]
 
@@ -79,6 +80,8 @@ render_target_update_mode = 4
 
 [node name="scene_2d" parent="_context_2d" instance=ExtResource("9_rg16k")]
 position = Vector2(11, 17)
+speed = null
+has_control = null
 
 [node name="Area3D2" type="Area3D" parent="." node_paths=PackedStringArray("node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.17071, -0.419968, 3.50721)
@@ -111,5 +114,8 @@ size = Vector3(19.292, 4.2, 15.412)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.42783, 1.83405, -4.47066)
 operation = 2
 size = Vector3(1.73828, 4.66809, 6.13214)
+
+[node name="xr_person" parent="." instance=ExtResource("13_o8m8r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.37368, 0, 0)
 
 [connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]

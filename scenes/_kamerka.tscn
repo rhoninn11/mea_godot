@@ -8,4 +8,4 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
 script = ExtResource("1_dhp4c")
 
 [node name="rotation_component" parent="." instance=ExtResource("2_xjl10")]
-inverse = true
+active_on = 1

@@ -6,12 +6,13 @@ var mouse_capture_ack: bool = false
 
 var axis_delta: Vector2 = Vector2.ZERO
 var position: Vector2 = Vector2.ZERO
-
+@export var active_on: Enums.ControlState = Enums.ControlState.NONE
+@export var lim: float = 1
 func one_minus_one(val: Vector2) -> Vector2:
-	return Vector2(clamp(val.x, -1,1), clamp(val.y, -1, 1))
+	return Vector2(clamp(val.x, -lim, lim), clamp(val.y, -lim, lim))
 
 func _process(delta: float) -> void:
-	var mouse_capture := Input.is_action_pressed("mouse_capture")
+	var mouse_capture := ControlContext.control_state == self.active_on
 	if mouse_capture:
 		var mouse_pos := get_viewport().get_mouse_position()
 		if not mouse_capture_ack:

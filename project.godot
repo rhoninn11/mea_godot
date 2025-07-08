@@ -25,6 +25,7 @@ buses/default_bus_layout="res://audio/default_bus_layout.tres"
 
 Libgeo="*res://geo/libgeo.gd"
 Uimanager="*res://scripts/UiManager.gd"
+Enums="*res://scripts/Enums.gd"
 
 [display]
 
@@ -90,5 +91,9 @@ pointer={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
+
+[xr]
+
+openxr/enabled=true
+shaders/enabled=true

@@ -96,4 +96,6 @@ renderer/rendering_method="mobile"
 [xr]
 
 openxr/enabled=true
+openxr/environment_blend_mode=1
 shaders/enabled=true
+openxr/extensions/meta/passthrough=true

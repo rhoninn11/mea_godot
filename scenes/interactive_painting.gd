@@ -29,6 +29,7 @@ func _ready() -> void:
 func redirect_footage() -> void:
 	var display_mat = StandardMaterial3D.new()
 	display_mat.albedo_texture = flat_scene.get_viewport().get_texture()
+	display_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	painting.set_surface_override_material(0, display_mat)
 		
 func _process(delta: float) -> void:
@@ -42,6 +43,7 @@ func _process(delta: float) -> void:
 		print(text)
 
 	pass_interaction()
+	print("interacting")
 	hold = Input.is_action_pressed("pointer")
 	flat_scene.pass_data.emit(pos, hold)
 

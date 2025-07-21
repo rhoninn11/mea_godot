@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqqucr8mgk8h3"]
+[gd_scene load_steps=7 format=3 uid="uid://cqqucr8mgk8h3"]
 
 [ext_resource type="Script" uid="uid://cqwnot5en0k3v" path="res://scenes/xr_person.gd" id="1_onpw0"]
+[ext_resource type="PackedScene" uid="uid://s2nn78ktn2tw" path="res://scenes/hand_tracker.tscn" id="2_86n1x"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_onpw0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86n1x"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_onpw0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onpw0"]
+albedo_color = Color(2.31028e-06, 0.524792, 0.659571, 1)
 
 [node name="xr_person" type="XROrigin3D"]
 script = ExtResource("1_onpw0")
@@ -11,6 +21,35 @@ script = ExtResource("1_onpw0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119674, 0, 0)
 tracker = &"left_hand"
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="left"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+mesh = SubResource("SphereMesh_onpw0")
+
+[node name="Label3D" type="Label3D" parent="left/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795216, 0)
+text = "empty"
+
+[node name="hand_tracker" parent="left" instance=ExtResource("2_86n1x")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -0.490922)
+
 [node name="hight" type="XRController3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13429, 0, 0)
 tracker = &"right_hand"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="hight"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+mesh = SubResource("SphereMesh_onpw0")
+surface_material_override/0 = SubResource("StandardMaterial3D_86n1x")
+
+[node name="hand_tracker" parent="hight" instance=ExtResource("2_86n1x")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -0.490922)
+
+[node name="root_point" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("TorusMesh_onpw0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("SphereMesh_onpw0")
+skeleton = NodePath("../hight/MeshInstance3D")
+surface_material_override/0 = SubResource("StandardMaterial3D_onpw0")

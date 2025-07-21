@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b3ahbfvwtdsif"]
+[gd_scene load_steps=24 format=3 uid="uid://b3ahbfvwtdsif"]
 
 [ext_resource type="Script" uid="uid://ctt2ry1s18lu0" path="res://scenes/grande/main_scene.gd" id="1_1vu5h"]
 [ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
@@ -38,6 +38,10 @@ texture_filter = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vu5h"]
 albedo_color = Color(0.582922, 0.209187, 0.199727, 1)
 
+[sub_resource type="TorusMesh" id="TorusMesh_o8m8r"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_f31tm"]
+
 [node name="root" type="Node3D"]
 script = ExtResource("1_1vu5h")
 
@@ -71,6 +75,7 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.751
 scene = ExtResource("7_f31tm")
 
 [node name="_niby_player" parent="." instance=ExtResource("6_1prhs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9028, 0, 0)
 
 [node name="Area3D" parent="." instance=ExtResource("7_kgubf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47475, 0, 1.37243)
@@ -117,5 +122,24 @@ size = Vector3(1.73828, 4.66809, 6.13214)
 
 [node name="xr_person" parent="." instance=ExtResource("13_o8m8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.37368, 0, 0)
+
+[node name="metric" type="Node3D" parent="."]
+
+[node name="pol" type="MeshInstance3D" parent="metric"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.5, 0)
+mesh = SubResource("TorusMesh_o8m8r")
+
+[node name="metr" type="MeshInstance3D" parent="metric"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1, 0)
+mesh = SubResource("TorusMesh_o8m8r")
+
+[node name="poltora" type="MeshInstance3D" parent="metric"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.5, 0)
+mesh = SubResource("TorusMesh_o8m8r")
+
+[node name="zero" type="MeshInstance3D" parent="metric"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("TorusMesh_f31tm")
+skeleton = NodePath("../pol")
 
 [connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]

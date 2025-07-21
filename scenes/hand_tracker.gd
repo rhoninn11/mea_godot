@@ -3,7 +3,7 @@ class_name HandTracker
 
 @onready var raycast: RayCast3D = $canvas_pointer
 @onready var indicator: MeshInstance3D = $indicator
-
+"monitorable"
 @export var in_contact: bool = false
 @export var is_tracing: bool = false
 @export var tracing_pos: Vector3 = Vector3.ZERO

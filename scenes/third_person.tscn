@@ -1,16 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=9 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
-[ext_resource type="Script" uid="uid://dxw0mfqbfftmx" path="res://scenes/hand_tracker.gd" id="4_w0x8w"]
+[ext_resource type="PackedScene" uid="uid://s2nn78ktn2tw" path="res://scenes/hand_tracker.tscn" id="4_h6acs"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pg6is"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_pg6is"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_hyabu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w0x8w"]
 
@@ -37,27 +35,11 @@ metadata/_custom_type_script = "uid://n8blyodjwbxs"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -1.2)
 
 [node name="mesh" type="MeshInstance3D" parent="pawn/hand"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 
-[node name="hand_tracker" type="Area3D" parent="pawn/hand" groups=["canvas"]]
-script = ExtResource("4_w0x8w")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="pawn/hand/hand_tracker"]
-visible = false
-shape = SubResource("SphereShape3D_hyabu")
-
-[node name="canvas_pointer" type="RayCast3D" parent="pawn/hand/hand_tracker"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7)
-target_position = Vector3(0, 0, -5)
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="indicator" type="MeshInstance3D" parent="pawn/hand/hand_tracker"]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0.625648)
-mesh = SubResource("SphereMesh_pg6is")
-skeleton = NodePath("../..")
+[node name="hand_tracker" parent="pawn/hand" instance=ExtResource("4_h6acs")]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 

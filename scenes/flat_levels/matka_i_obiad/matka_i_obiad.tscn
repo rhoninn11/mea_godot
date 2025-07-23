@@ -1,8 +1,51 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4d3xraflmjjy"]
+[gd_scene load_steps=10 format=3 uid="uid://d4d3xraflmjjy"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_74byd"]
 [ext_resource type="PackedScene" uid="uid://jj2k8phb5jdt" path="res://scenes/flat_elements/flat_pointer.tscn" id="2_dq0tk"]
 [ext_resource type="PackedScene" uid="uid://05dpwd0rbxa4" path="res://scenes/flat_levels/matka_i_obiad/budynek.tscn" id="3_kfpaw"]
+[ext_resource type="Texture2D" uid="uid://cyvw2ubxgr2go" path="res://textures/matka.png" id="4_74byd"]
+[ext_resource type="Script" uid="uid://bxg6yiua34skc" path="res://scenes/flat_levels/matka_i_obiad/ludek.gd" id="5_dq0tk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4da6c"]
+size = Vector2(51, 116)
+
+[sub_resource type="Animation" id="Animation_dq0tk"]
+resource_name = "matka_drepta"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D/Matka2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -10), Vector2(0, 0), Vector2(0, -10)]
+}
+
+[sub_resource type="Animation" id="Animation_4da6c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D/Matka2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qulrj"]
+_data = {
+&"RESET": SubResource("Animation_4da6c"),
+&"matka_drepta": SubResource("Animation_dq0tk")
+}
 
 [node name="MatkaCzekaZObiadem" type="Node2D"]
 script = ExtResource("1_74byd")
@@ -11,4 +54,32 @@ metadata/_custom_type_script = "uid://tgl4u318vatv"
 [node name="pointer" parent="." instance=ExtResource("2_dq0tk")]
 
 [node name="budynek" parent="." instance=ExtResource("3_kfpaw")]
-position = Vector2(199, 385)
+position = Vector2(83, 326)
+
+[node name="Matka" type="Sprite2D" parent="."]
+position = Vector2(176, 151)
+texture = ExtResource("4_74byd")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(450, 350)
+
+[node name="Matka2" type="Sprite2D" parent="Node2D"]
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("4_74byd")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/Matka2" groups=["holdable"]]
+script = ExtResource("5_dq0tk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Matka2/StaticBody2D"]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_4da6c")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
+deterministic = true
+reset_on_save = false
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_qulrj")
+}
+playback_auto_capture = false

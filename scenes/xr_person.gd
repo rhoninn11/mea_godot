@@ -12,8 +12,8 @@ var offset: float = 0
 @export var neglect: bool = false
 
 func _ready() -> void:
-	if neglect: 
-		return
+	#if neglect: 
+		#return
 		
 	xr_interface = XRServer.find_interface("OpenXR")
 	if xr_interface and not xr_interface.is_initialized():
@@ -37,8 +37,8 @@ var moved: bool = false
 var rotated: bool = false
 var total_rotation: float = 0
 func _process(delta: float) -> void:
-	if neglect:
-		return
+	#if neglect:
+		#return
 		
 	var hmm = head.transform.origin
 	label.text = "head height: " + str(hmm.y).pad_decimals(2)

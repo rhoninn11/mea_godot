@@ -43,7 +43,6 @@ func _process(delta: float) -> void:
 		print(text)
 
 	pass_interaction()
-	print("interacting")
 	hold = Input.is_action_pressed("pointer")
 	flat_scene.pass_data.emit(pos, hold)
 
@@ -54,7 +53,6 @@ func pass_interaction() -> void:
 	if not observing.is_tracing:
 		return
 	
-	
 	var contact := observing.tracing_pos - calc_origin.global_transform.origin
 	var x_axis := calc_origin.global_transform.basis[0]
 	var y_axis := calc_origin.global_transform.basis[1]
@@ -63,10 +61,8 @@ func pass_interaction() -> void:
 	coords += Vector2(0.5,0.5)
 	coords = Vector2(1,1) - coords
 	coords *= Vector2(flat_scene.width, flat_scene.height)
-	print("coords on painting: ", coords)
+	# print("coords on painting: ", coords)
 	pos = coords
-	
-
 
 var observing: HandTracker = null
 func _on_area_3d_area_entered(area: Area3D) -> void:

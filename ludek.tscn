@@ -1,14 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://we7jmwfne3iw"]
+[gd_scene load_steps=9 format=3 uid="uid://we7jmwfne3iw"]
 
-[ext_resource type="Texture2D" uid="uid://cotd0do5kmn17" path="res://textures/ojciec.png" id="1_yffh8"]
-[ext_resource type="Script" uid="uid://bxg6yiua34skc" path="res://scenes/flat_levels/matka_i_obiad/ludek.gd" id="2_jmx04"]
+[ext_resource type="Texture2D" uid="uid://cyvw2ubxgr2go" path="res://textures/matka.png" id="2_hgd5i"]
+[ext_resource type="Script" uid="uid://b20rh5b83dxh8" path="res://scenes/flat_levels/matka_i_obiad/ludek.gd" id="2_jmx04"]
+[ext_resource type="Script" uid="uid://bxg6yiua34skc" path="res://scenes/flat_levels/matka_i_obiad/ludek_holder.gd" id="3_jmx04"]
 
 [sub_resource type="Animation" id="Animation_4da6c"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ludek/sprite_ludka:position")
+tracks/0/path = NodePath("sprite_ludka:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -16,18 +17,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ludek/sprite_ludka:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.14159]
 }
 
 [sub_resource type="Animation" id="Animation_dq0tk"]
@@ -37,7 +26,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ludek/sprite_ludka:position")
+tracks/0/path = NodePath("sprite_ludka:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -45,23 +34,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(0, -10), Vector2(0, 0), Vector2(0, -10)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ludek/sprite_ludka/riggid")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1, 1.03333),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"say_ho"
-}, {
-"args": [],
-"method": &"say_hay"
-}]
 }
 
 [sub_resource type="Animation" id="Animation_jmx04"]
@@ -71,11 +43,11 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ludek/sprite_ludka:rotation")
+tracks/0/path = NodePath("sprite_ludka:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0333333, 0.5, 1.02, 1.48, 1.98),
+"times": PackedFloat32Array(0, 0.466667, 0.986667, 1.44667, 1.94667),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [3.14159, 2.87979, 3.14159, 3.40339, 3.14159]
@@ -92,22 +64,21 @@ _data = {
 size = Vector2(51, 116)
 
 [node name="ludek" type="Node2D"]
+script = ExtResource("2_jmx04")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-reset_on_save = false
-root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_qulrj")
 }
 playback_auto_capture = false
 
 [node name="sprite_ludka" type="Sprite2D" parent="."]
-rotation = 2.99175
+rotation = 3.14159
 scale = Vector2(1, -1)
-texture = ExtResource("1_yffh8")
+texture = ExtResource("2_hgd5i")
 
 [node name="riggid" type="CharacterBody2D" parent="sprite_ludka" groups=["family_member", "holdable"]]
-script = ExtResource("2_jmx04")
+script = ExtResource("3_jmx04")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sprite_ludka/riggid"]
 position = Vector2(-0.5, 5)

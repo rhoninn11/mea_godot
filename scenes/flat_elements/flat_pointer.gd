@@ -13,10 +13,14 @@ func _recive_pointer(pos: Vector2, hold_action: bool) -> void:
 
 func _body_in(body: Node2D) -> void:
 	if body.is_in_group("holdable"):
+		body.hover = true;
 		if not holded_node_ref:
 			holded_node_ref = body
 		
 func _body_out(body: Node2D) -> void:
+	if body.is_in_group("holdable"):
+		body.hover = false;
+	
 	if holded_node_ref == body and not is_holding:
 		holded_node_ref = null
 

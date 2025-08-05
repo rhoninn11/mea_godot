@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d4d3xraflmjjy"]
+[gd_scene load_steps=14 format=3 uid="uid://d4d3xraflmjjy"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_74byd"]
 [ext_resource type="PackedScene" uid="uid://jj2k8phb5jdt" path="res://scenes/flat_elements/flat_pointer.tscn" id="2_dq0tk"]
@@ -8,13 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://we7jmwfne3iw" path="res://ludek.tscn" id="6_4da6c"]
 [ext_resource type="Script" uid="uid://c4l7omgip0q37" path="res://scenes/flat_levels/matka_i_obiad/matka.gd" id="6_bqjr1"]
 [ext_resource type="Texture2D" uid="uid://dbq4ovjbcb8xl" path="res://textures/view_beam.png" id="7_qulrj"]
+[ext_resource type="Script" uid="uid://b13f7a5o0qjpq" path="res://scenes/flat_levels/matka_i_obiad/ludek_spawner.gd" id="9_5j6qb"]
+[ext_resource type="Script" uid="uid://dcml4bv070oni" path="res://scenes/flat_levels/matka_i_obiad/templates/ludekData.gd" id="10_htsrt"]
+[ext_resource type="Resource" uid="uid://cmkjokqrbuymy" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_ojciec.tres" id="11_c20ef"]
+[ext_resource type="Resource" uid="uid://j8qvu0ntcw0j" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_dziecko.tres" id="12_oidy7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bqjr1"]
 radius = 38.0
 height = 130.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_bqjr1"]
-radius = 77.0779
 
 [node name="MatkaCzekaZObiadem" type="Node2D"]
 script = ExtResource("1_74byd")
@@ -36,7 +37,7 @@ texture = ExtResource("4_74byd")
 script = ExtResource("6_bqjr1")
 
 [node name="ludek" parent="." instance=ExtResource("6_4da6c")]
-position = Vector2(450, 350)
+position = Vector2(451, 232)
 
 [node name="ViewBeam" type="Sprite2D" parent="."]
 modulate = Color(0.528, 0.66, 0.528, 0.239216)
@@ -51,10 +52,11 @@ position = Vector2(323, 373)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_bqjr1")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(285, 82)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("CircleShape2D_bqjr1")
+[node name="ludek_spawner" type="Node2D" parent="."]
+script = ExtResource("9_5j6qb")
+ludki = Array[ExtResource("10_htsrt")]([ExtResource("11_c20ef"), ExtResource("12_oidy7")])
+ludekScene = ExtResource("6_4da6c")
+spawn_point = Vector2(550, 350)
+wait_point = Vector2(450, 350)
 
 [connection signal="body_entered" from="Area2D" to="Matka" method="_on_area_2d_body_entered"]

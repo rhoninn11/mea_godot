@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://d4d3xraflmjjy"]
+[gd_scene load_steps=24 format=3 uid="uid://d4d3xraflmjjy"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_74byd"]
 [ext_resource type="PackedScene" uid="uid://jj2k8phb5jdt" path="res://scenes/flat_elements/flat_pointer.tscn" id="2_dq0tk"]
@@ -12,10 +12,24 @@
 [ext_resource type="Script" uid="uid://dcml4bv070oni" path="res://scenes/flat_levels/matka_i_obiad/templates/ludekData.gd" id="10_htsrt"]
 [ext_resource type="Resource" uid="uid://cmkjokqrbuymy" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_ojciec.tres" id="11_c20ef"]
 [ext_resource type="Resource" uid="uid://j8qvu0ntcw0j" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_dziecko.tres" id="12_oidy7"]
+[ext_resource type="Script" uid="uid://bsi6e0yewy0y" path="res://scenes/flat_levels/matka_i_obiad/beam.gd" id="13_oidy7"]
+[ext_resource type="Texture2D" uid="uid://ds68gxh38if0w" path="res://textures/aureolka/aureolka_0.png" id="14_1ieb1"]
+[ext_resource type="Texture2D" uid="uid://clmylle6y1q36" path="res://textures/aureolka/aureolka_1.png" id="15_v2xr1"]
+[ext_resource type="Texture2D" uid="uid://c48wtgojgeb53" path="res://textures/aureolka/aureolka_2.png" id="16_2kf57"]
+[ext_resource type="Texture2D" uid="uid://dtuoqnavmlwu5" path="res://textures/aureolka/aureolka_3.png" id="17_66htq"]
+[ext_resource type="Texture2D" uid="uid://bdkxqap13gw8b" path="res://textures/aureolka/aureolka_4.png" id="18_xfqlt"]
+[ext_resource type="Texture2D" uid="uid://pbevflw11pv1" path="res://textures/aureolka/aureolka_5.png" id="19_xq6xg"]
+[ext_resource type="Texture2D" uid="uid://cv3ynp5paa65r" path="res://textures/aureolka/aureolka_6.png" id="20_npm73"]
+[ext_resource type="Texture2D" uid="uid://de2e1u3741jmu" path="res://textures/aureolka/aureolka_7.png" id="21_j5q7r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bqjr1"]
 radius = 38.0
 height = 130.0
+
+[sub_resource type="Curve" id="Curve_1ieb1"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0.00755667, 1), 0.0, 0.0, 0, 0, Vector2(0.989924, 2), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="MatkaCzekaZObiadem" type="Node2D"]
 script = ExtResource("1_74byd")
@@ -48,7 +62,7 @@ texture = ExtResource("7_qulrj")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(323, 373)
+position = Vector2(325, 375)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_bqjr1")
 
@@ -58,5 +72,12 @@ ludki = Array[ExtResource("10_htsrt")]([ExtResource("11_c20ef"), ExtResource("12
 ludekScene = ExtResource("6_4da6c")
 spawn_point = Vector2(550, 350)
 wait_point = Vector2(450, 350)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(177, 119)
+script = ExtResource("13_oidy7")
+steps = Array[Texture2D]([ExtResource("14_1ieb1"), ExtResource("15_v2xr1"), ExtResource("16_2kf57"), ExtResource("17_66htq"), ExtResource("18_xfqlt"), ExtResource("19_xq6xg"), ExtResource("20_npm73"), ExtResource("21_j5q7r")])
+look_at = Vector2(325, 375)
+curve = SubResource("Curve_1ieb1")
 
 [connection signal="body_entered" from="Area2D" to="Matka" method="_on_area_2d_body_entered"]

@@ -6,3 +6,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	var to_act = body.is_in_group("family_member")
 	if to_act:
 		print("okej już idzie pora, wstawiam ziemniaki")
+
+
+func _on_okno_node_spoted() -> void:
+	print("hmmm")

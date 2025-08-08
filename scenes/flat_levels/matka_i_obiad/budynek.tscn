@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://05dpwd0rbxa4"]
+[gd_scene load_steps=2 format=3 uid="uid://05dpwd0rbxa4"]
 
 [ext_resource type="Texture2D" uid="uid://dj2ehh6ux2f4i" path="res://textures/tile.png" id="2_dq8af"]
-[ext_resource type="Texture2D" uid="uid://b0h8msrvpupg1" path="res://textures/okno.png" id="2_y32fx"]
 
 [node name="budynek" type="Node2D"]
 
@@ -23,17 +22,4 @@ self_modulate = Color(0.243137, 0.443137, 0.576471, 1)
 z_index = -2
 position = Vector2(0, -160)
 scale = Vector2(37, 40)
-texture = ExtResource("2_dq8af")
-
-[node name="Okno" type="Sprite2D" parent="."]
-z_index = 10
-position = Vector2(104, -210)
-texture = ExtResource("2_y32fx")
-
-[node name="kuchenka2" type="Sprite2D" parent="Okno"]
-modulate = Color(1, 1, 1, 0.607843)
-self_modulate = Color(0.254841, 0.5695, 0.817408, 1)
-z_index = -1
-position = Vector2(1.49999, -1.00002)
-scale = Vector2(6, 6)
 texture = ExtResource("2_dq8af")

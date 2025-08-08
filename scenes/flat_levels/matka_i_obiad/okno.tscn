@@ -1,0 +1,48 @@
+[gd_scene load_steps=14 format=3 uid="uid://ba5rctj1d43ux"]
+
+[ext_resource type="Texture2D" uid="uid://b0h8msrvpupg1" path="res://textures/okno.png" id="1_pr1qh"]
+[ext_resource type="Script" uid="uid://bsi6e0yewy0y" path="res://scenes/flat_levels/matka_i_obiad/beam.gd" id="1_qlx7b"]
+[ext_resource type="Texture2D" uid="uid://ds68gxh38if0w" path="res://textures/aureolka/aureolka_0.png" id="2_lxy0i"]
+[ext_resource type="Texture2D" uid="uid://dj2ehh6ux2f4i" path="res://textures/tile.png" id="2_oavbo"]
+[ext_resource type="Texture2D" uid="uid://clmylle6y1q36" path="res://textures/aureolka/aureolka_1.png" id="3_32d5w"]
+[ext_resource type="Texture2D" uid="uid://c48wtgojgeb53" path="res://textures/aureolka/aureolka_2.png" id="4_bm5xq"]
+[ext_resource type="Texture2D" uid="uid://dtuoqnavmlwu5" path="res://textures/aureolka/aureolka_3.png" id="5_ucdvw"]
+[ext_resource type="Texture2D" uid="uid://bdkxqap13gw8b" path="res://textures/aureolka/aureolka_4.png" id="6_nc0n0"]
+[ext_resource type="Texture2D" uid="uid://pbevflw11pv1" path="res://textures/aureolka/aureolka_5.png" id="7_t655i"]
+[ext_resource type="Texture2D" uid="uid://cv3ynp5paa65r" path="res://textures/aureolka/aureolka_6.png" id="8_5lpqa"]
+[ext_resource type="Texture2D" uid="uid://de2e1u3741jmu" path="res://textures/aureolka/aureolka_7.png" id="9_p8yab"]
+
+[sub_resource type="Curve" id="Curve_oavbo"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0.00755667, 1), 0.0, 0.0, 0, 0, Vector2(0.989924, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lxy0i"]
+radius = 38.0
+height = 130.0
+
+[node name="root" type="Node2D" node_paths=PackedStringArray("contact")]
+script = ExtResource("1_qlx7b")
+steps = Array[Texture2D]([ExtResource("2_lxy0i"), ExtResource("3_32d5w"), ExtResource("4_bm5xq"), ExtResource("5_ucdvw"), ExtResource("6_nc0n0"), ExtResource("7_t655i"), ExtResource("8_5lpqa"), ExtResource("9_p8yab")])
+target_pos = Vector2(100, 100)
+curve = SubResource("Curve_oavbo")
+contact = NodePath("Area2D")
+
+[node name="pozycja" type="Sprite2D" parent="."]
+z_index = 10
+texture = ExtResource("1_pr1qh")
+
+[node name="szyba" type="Sprite2D" parent="pozycja"]
+modulate = Color(1, 1, 1, 0.607843)
+self_modulate = Color(0.254841, 0.5695, 0.817408, 1)
+z_index = -1
+position = Vector2(1.49999, -1.00002)
+scale = Vector2(6, 6)
+texture = ExtResource("2_oavbo")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(100, 100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_lxy0i")

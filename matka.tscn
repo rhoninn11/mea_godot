@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://ghy70wb4dcek"]
+
+[ext_resource type="Texture2D" uid="uid://cyvw2ubxgr2go" path="res://textures/matka.png" id="1_2pup6"]
+[ext_resource type="Script" uid="uid://c4l7omgip0q37" path="res://scenes/flat_levels/matka_i_obiad/matka.gd" id="2_e77fv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2pup6"]
+size = Vector2(14, 6)
+
+[node name="root" type="Node2D"]
+script = ExtResource("2_e77fv")
+
+[node name="Matka" type="Sprite2D" parent="."]
+texture = ExtResource("1_2pup6")
+
+[node name="oczy" type="Area2D" parent="Matka" groups=["vision"]]
+position = Vector2(0, -39)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Matka/oczy"]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_2pup6")

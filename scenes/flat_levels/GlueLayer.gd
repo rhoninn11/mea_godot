@@ -20,13 +20,14 @@ func _ready() -> void:
 	
 	spawn_area()
 	assert(area_node)
-	area_node.body_exited.connect(self._okej)
+	area_node.body_exited.connect(self.left_indicator)
 	
 	pointer_ref = s_pointer.instantiate() as FlatPointer
 	assert(pointer_ref)
 	add_child(pointer_ref)
-	pointer_ref.name = "pointer"
+	pointer_ref.name = "spawned_pointer"
 	pointer_ref.owner = self
+	pointer_ref.z_index = 25
 	
 	pass_data.connect(pointer_ref._recive_pointer)
 
@@ -68,5 +69,5 @@ func spawn_area() -> void:
 	rect.size = Vector2(int(width)*0.75, int(height)*0.75)
 	
 		
-func _okej(area: Node2D) -> void:
-	print("okej")
+func left_indicator(area: Node2D) -> void:
+	print("+++ out of scene")

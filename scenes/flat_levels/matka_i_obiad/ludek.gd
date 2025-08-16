@@ -3,8 +3,9 @@ class_name Ludek
 @onready var sprite = $sprite_ludka
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var body: LudekHolder = $sprite_ludka/riggid
-
+@onready var audio: AudioStreamPlayer2D = $AudioStreamPlayer2D
 var holded: bool = false
+var holded_last: bool = false
 var holder: Node2D = null
 var ludek_data: LudekData = null
 
@@ -15,6 +16,7 @@ enum States {
 	ALMOST_AT_HOME
 }
 
+@export var walking_sound: AudioStream
 @export var state: States = States.WAITING
 var initial_pos: Vector2 = Vector2.ZERO
 
@@ -38,6 +40,8 @@ func initialize(data: LudekData) -> void:
 			body.add_to_group("family_member");
 		else:
 			body.remove_from_group("family_member");
+	
+	audio.stream = data.clip
 
 func you_are_capitan_now() -> void:
 	state = States.WAITING
@@ -49,8 +53,18 @@ func _ready() -> void:
 	body.hold_end_sig.connect(self.interaction_end)
 
 func _process(delta: float) -> void:
+	update(delta)
+	holded_last = holded
+	
+func update(delta: float) -> void:
 	if state == States.WAITING:
 		#sprite.scale = Vector2(1.5, -1)
+		if holded and not holded_last:
+			var pitch_bend = randf() 
+			print("pitch bend is: ", pitch_bend)
+			audio.pitch_scale = 1 + pitch_bend * 0.5
+			audio.play(0)
+		
 		if holded:
 			anim.play("excited")
 			sprite.scale = Vector2(1, -1)
@@ -60,6 +74,9 @@ func _process(delta: float) -> void:
 			#print("diff: ", diff.x)
 			if diff.x > 200:
 				state = States.WALKING
+				audio.stream = walking_sound
+				audio.pitch_scale = 1
+				
 				
 		else:
 			if body.hover:
@@ -72,11 +89,15 @@ func _process(delta: float) -> void:
 			
 	if state == States.WALKING:
 		anim.play("walking")
+		if not audio.playing:
+			audio.play()
+			
 		var pos = self.position
-		pos.x += delta * -100
+		pos.x += delta * -400
 		self.position = pos
 		#print("pos: ", pos.x)
 		if pos.x < -50:
 			state = States.ALMOST_AT_HOME
 			anim.play("RESET")
+			audio.stop()
 			left_screan.emit()

@@ -19,7 +19,7 @@ config/icon="res://textures/icon.webp"
 
 [audio]
 
-buses/default_bus_layout="res://audio/default_bus_layout.tres"
+buses/default_bus_layout=""
 
 [autoload]
 
@@ -36,6 +36,7 @@ window/stretch/mode="canvas_items"
 canvas=""
 holdable=""
 family_member=""
+vision=""
 
 [input]
 

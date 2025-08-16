@@ -17,7 +17,7 @@ var pos: Vector2 = Vector2.ZERO
 var hold: bool = false
 
 func _ready() -> void:
-	assert(scene)
+	assert(scene != null)
 	flat_scene = scene.instantiate() as GlueLayer
 	assert(flat_scene)
 	viewport.add_child(flat_scene)

@@ -1,10 +1,13 @@
-[gd_resource type="Resource" script_class="LudekData" load_steps=3 format=3 uid="uid://cmkjokqrbuymy"]
+[gd_resource type="Resource" script_class="LudekData" load_steps=4 format=3 uid="uid://cmkjokqrbuymy"]
 
 [ext_resource type="Script" uid="uid://dcml4bv070oni" path="res://scenes/flat_levels/matka_i_obiad/templates/ludekData.gd" id="1_a5451"]
+[ext_resource type="AudioStream" uid="uid://dihgpymfpu1bo" path="res://audio/ojciec.mp3" id="1_r1n4h"]
 [ext_resource type="Texture2D" uid="uid://cotd0do5kmn17" path="res://textures/ojciec.png" id="2_sbgke"]
 
 [resource]
 script = ExtResource("1_a5451")
 texture = ExtResource("2_sbgke")
 is_family_member = true
+name = "ojciec"
+clip = ExtResource("1_r1n4h")
 metadata/_custom_type_script = "uid://dcml4bv070oni"

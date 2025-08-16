@@ -36,7 +36,7 @@ albedo_texture = ExtResource("11_smnin")
 texture_filter = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vu5h"]
-albedo_color = Color(0.582922, 0.209187, 0.199727, 1)
+albedo_color = Color(0.246268, 0.381028, 0.37329, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_o8m8r"]
 
@@ -105,9 +105,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_qtjao")
 material_override = SubResource("StandardMaterial3D_1vu5h")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(7.64912, 0, 0, 0, 3.26687, 0, 0, 0, 3.26687, 2.92218, 1.02829, -0.598807)
+transform = Transform3D(7.64912, 0, 0, 0, 3.26687, 0, 0, 0, 3.26687, 3.24093, 1.02829, -0.598807)
 material_override = SubResource("StandardMaterial3D_1vu5h")
-size = Vector3(2.25934, 1.6221, 4.97506)
+size = Vector3(2.34268, 1.6221, 4.97506)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(0.997554, 0, 0, 0, 0.997554, 0, 0, 0, 0.997554, 4.754, 1.6, -1.63758)

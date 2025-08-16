@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://ba5rctj1d43ux"]
+[gd_scene load_steps=15 format=3 uid="uid://ba5rctj1d43ux"]
 
+[ext_resource type="Script" uid="uid://cyld68s7fwvgt" path="res://scenes/flat_levels/matka_i_obiad/okno.gd" id="1_oavbo"]
 [ext_resource type="Texture2D" uid="uid://b0h8msrvpupg1" path="res://textures/okno.png" id="1_pr1qh"]
-[ext_resource type="Script" uid="uid://bsi6e0yewy0y" path="res://scenes/flat_levels/matka_i_obiad/beam.gd" id="1_qlx7b"]
 [ext_resource type="Texture2D" uid="uid://ds68gxh38if0w" path="res://textures/aureolka/aureolka_0.png" id="2_lxy0i"]
 [ext_resource type="Texture2D" uid="uid://dj2ehh6ux2f4i" path="res://textures/tile.png" id="2_oavbo"]
 [ext_resource type="Texture2D" uid="uid://clmylle6y1q36" path="res://textures/aureolka/aureolka_1.png" id="3_32d5w"]
@@ -14,25 +14,34 @@
 
 [sub_resource type="Curve" id="Curve_oavbo"]
 _limits = [0.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0.00755667, 1), 0.0, 0.0, 0, 0, Vector2(0.989924, 2), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.18961, 1.4068), 0.0, 0.0, 0, 0, Vector2(0.412987, 1.20221), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lxy0i"]
+size = Vector2(44, 44)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lxy0i"]
 radius = 38.0
 height = 130.0
 
-[node name="root" type="Node2D" node_paths=PackedStringArray("contact")]
-script = ExtResource("1_qlx7b")
+[node name="root" type="Node2D" node_paths=PackedStringArray("contact_area", "view_area")]
+script = ExtResource("1_oavbo")
+contact_area = NodePath("contact_area")
+view_area = NodePath("view_area")
 steps = Array[Texture2D]([ExtResource("2_lxy0i"), ExtResource("3_32d5w"), ExtResource("4_bm5xq"), ExtResource("5_ucdvw"), ExtResource("6_nc0n0"), ExtResource("7_t655i"), ExtResource("8_5lpqa"), ExtResource("9_p8yab")])
-target_pos = Vector2(100, 100)
 curve = SubResource("Curve_oavbo")
-contact = NodePath("Area2D")
 
-[node name="pozycja" type="Sprite2D" parent="."]
+[node name="view_area" type="Area2D" parent="." groups=["vision"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="view_area"]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_lxy0i")
+
+[node name="rama" type="Sprite2D" parent="."]
 z_index = 10
 texture = ExtResource("1_pr1qh")
 
-[node name="szyba" type="Sprite2D" parent="pozycja"]
+[node name="szyba" type="Sprite2D" parent="rama"]
 modulate = Color(1, 1, 1, 0.607843)
 self_modulate = Color(0.254841, 0.5695, 0.817408, 1)
 z_index = -1
@@ -40,9 +49,8 @@ position = Vector2(1.49999, -1.00002)
 scale = Vector2(6, 6)
 texture = ExtResource("2_oavbo")
 
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(100, 100)
+[node name="contact_area" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="contact_area"]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_lxy0i")

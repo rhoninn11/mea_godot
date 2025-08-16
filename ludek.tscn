@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://we7jmwfne3iw"]
+[gd_scene load_steps=10 format=3 uid="uid://we7jmwfne3iw"]
 
 [ext_resource type="Texture2D" uid="uid://cyvw2ubxgr2go" path="res://textures/matka.png" id="2_hgd5i"]
 [ext_resource type="Script" uid="uid://b20rh5b83dxh8" path="res://scenes/flat_levels/matka_i_obiad/ludek.gd" id="2_jmx04"]
+[ext_resource type="AudioStream" uid="uid://cvk5v64m0xfbw" path="res://audio/tup_tup.mp3" id="2_xwnuh"]
 [ext_resource type="Script" uid="uid://bxg6yiua34skc" path="res://scenes/flat_levels/matka_i_obiad/ludek_holder.gd" id="3_jmx04"]
 
 [sub_resource type="Animation" id="Animation_4da6c"]
@@ -65,6 +66,7 @@ size = Vector2(51, 116)
 
 [node name="ludek" type="Node2D"]
 script = ExtResource("2_jmx04")
+walking_sound = ExtResource("2_xwnuh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -83,3 +85,5 @@ script = ExtResource("3_jmx04")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sprite_ludka/riggid"]
 position = Vector2(-0.5, 5)
 shape = SubResource("RectangleShape2D_4da6c")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

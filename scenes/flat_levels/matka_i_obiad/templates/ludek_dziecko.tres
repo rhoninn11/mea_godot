@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="LudekData" load_steps=3 format=3 uid="uid://j8qvu0ntcw0j"]
+[gd_resource type="Resource" script_class="LudekData" load_steps=4 format=3 uid="uid://j8qvu0ntcw0j"]
 
+[ext_resource type="AudioStream" uid="uid://7eli24blmclf" path="res://audio/dziecko.mp3" id="1_ox3c5"]
 [ext_resource type="Script" uid="uid://dcml4bv070oni" path="res://scenes/flat_levels/matka_i_obiad/templates/ludekData.gd" id="1_qy21p"]
 [ext_resource type="Texture2D" uid="uid://l6c4uiniftqe" path="res://textures/dziecko.png" id="2_qy21p"]
 
@@ -7,4 +8,6 @@
 script = ExtResource("1_qy21p")
 texture = ExtResource("2_qy21p")
 is_family_member = true
+name = "dziecko"
+clip = ExtResource("1_ox3c5")
 metadata/_custom_type_script = "uid://dcml4bv070oni"

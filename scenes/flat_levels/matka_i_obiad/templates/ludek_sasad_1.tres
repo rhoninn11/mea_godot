@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LudekData" load_steps=4 format=3 uid="uid://cm83oucqpsbt7"]
+
+[ext_resource type="Script" uid="uid://dcml4bv070oni" path="res://scenes/flat_levels/matka_i_obiad/templates/ludekData.gd" id="1_0kvqd"]
+[ext_resource type="AudioStream" uid="uid://cdw7kjq2h1u7y" path="res://audio/sasiad.mp3" id="1_qvb8o"]
+[ext_resource type="Texture2D" uid="uid://3khu6upaklwd" path="res://textures/sasiad_1.png" id="2_0kvqd"]
+
+[resource]
+script = ExtResource("1_0kvqd")
+texture = ExtResource("2_0kvqd")
+is_family_member = false
+name = "artur"
+clip = ExtResource("1_qvb8o")
+metadata/_custom_type_script = "uid://dcml4bv070oni"

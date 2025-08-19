@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4d3xraflmjjy"]
+[gd_scene load_steps=17 format=3 uid="uid://d4d3xraflmjjy"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_74byd"]
 [ext_resource type="PackedScene" uid="uid://05dpwd0rbxa4" path="res://scenes/flat_levels/matka_i_obiad/budynek.tscn" id="3_kfpaw"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://cm83oucqpsbt7" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_sasad_1.tres" id="12_cp44c"]
 [ext_resource type="Resource" uid="uid://j8qvu0ntcw0j" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_dziecko.tres" id="12_oidy7"]
 [ext_resource type="Resource" uid="uid://b1v3n56gxlf4n" path="res://scenes/flat_levels/matka_i_obiad/templates/ludek_sasad_2.tres" id="13_5lb7v"]
+[ext_resource type="AudioStream" uid="uid://bx2uxpq5qugcx" path="res://audio/drzwi.mp3" id="13_emtci"]
 [ext_resource type="Texture2D" uid="uid://c56y4obrnjylu" path="res://textures/block.png" id="13_oidy7"]
 [ext_resource type="Texture2D" uid="uid://kuhhmxiatnyv" path="res://textures/cosy.png" id="15_ku2rg"]
 [ext_resource type="PackedScene" uid="uid://ba5rctj1d43ux" path="res://scenes/flat_levels/matka_i_obiad/okno.tscn" id="21_1ieb1"]
@@ -30,7 +31,9 @@ steam_is = false
 
 [node name="Matka" parent="." instance=ExtResource("4_drlms")]
 position = Vector2(129, 145)
+mom_speed = 100.0
 window_limit = 50.0
+oven_limit = -90.0
 
 [node name="ludek_spawner" type="Node2D" parent="."]
 position = Vector2(597, 301)
@@ -39,6 +42,10 @@ ludki = Array[ExtResource("10_htsrt")]([ExtResource("12_oidy7"), ExtResource("11
 ludekScene = ExtResource("6_4da6c")
 spawn_point = Vector2(550, 335)
 wait_point = Vector2(450, 335)
+play_door_delay = 2.0
+
+[node name="door_effect" type="AudioStreamPlayer2D" parent="ludek_spawner"]
+stream = ExtResource("13_emtci")
 
 [node name="okno" parent="." instance=ExtResource("21_1ieb1")]
 position = Vector2(186, 101)

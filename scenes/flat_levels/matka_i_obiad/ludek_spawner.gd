@@ -6,6 +6,8 @@ extends Node2D
 @export var wait_point: Vector2
 @export var limit: int = 3
 
+@onready var audio: AudioStreamPlayer2D = $door_effect
+
 enum SpawneStates {
 	SPAWN,
 	IDLE
@@ -18,12 +20,23 @@ var spawn_node: Ludek
 var exluded: Array[int] = []
 var fammily_wait: int = 0
 var all_family_members: bool = false
+var last_ludek_data: LudekData
+
+var play_door_sound: bool = false
+var play_door_timer: float = 0
+@export var play_door_delay: float = 4
 
 func spawn_next() -> void:
 	if spawne_state == SpawneStates.IDLE:
 		spawne_state = SpawneStates.SPAWN
 		spawn_time = 0
 		spawn_flag = false
+		
+		if last_ludek_data:
+			if last_ludek_data.is_family_member:
+				play_door_sound = true
+				play_door_timer = 0
+				
 
 func _ready() -> void:
 	spawn_next()
@@ -58,7 +71,8 @@ func _process(delta: float) -> void:
 			spawn_flag = true
 			spawn_node = ludekScene.instantiate() as Ludek
 			
-			spawn_node.config(self.select_next_ludek())
+			last_ludek_data = select_next_ludek()
+			spawn_node.config(last_ludek_data)
 			spawn_node.left_screan.connect(self.spawn_next)
 			self.get_parent().add_child(spawn_node)
 			
@@ -69,3 +83,10 @@ func _process(delta: float) -> void:
 		if spawn_time == 1:
 			spawn_node.you_are_capitan_now()
 			spawne_state = SpawneStates.IDLE
+	
+	if play_door_sound:
+		play_door_timer += delta
+		if play_door_timer >= play_door_delay:
+			play_door_sound = false
+			audio.play()
+			

@@ -13,7 +13,7 @@ config_version=5
 config/name="scene_capture_demo"
 config/description="An example showing how to take screenshots of the screen."
 config/tags=PackedStringArray("demo", "official", "rendering")
-run/main_scene="uid://b3ahbfvwtdsif"
+run/main_scene="uid://d4d3xraflmjjy"
 config/features=PackedStringArray("4.4")
 config/icon="res://textures/icon.webp"
 
@@ -37,6 +37,7 @@ canvas=""
 holdable=""
 family_member=""
 vision=""
+interact=""
 
 [input]
 

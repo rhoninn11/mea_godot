@@ -24,17 +24,20 @@ func on_node_spoted(node: Node2D) -> void:
 
 func on_node_left(node: Node2D) -> void:
 	node_left.emit(node)
-	pass
 
 func on_observer_present(node: Node2D) -> void:
 	if node.is_in_group("vision"):
 		print("+++ observer showed up")
 		start_using()
+		var main_node: Node2D = node.get_main_node()
+		node_spoted.connect(main_node.on_vision)
 
 func on_observer_left(node: Node2D) -> void:
 	if node.is_in_group("vision"):
 		print("+++ observer left view")
 		stop_using()
+		var main_node: Node2D = node.get_main_node()
+		node_spoted.disconnect(main_node.on_vision)
 
 func start_using() -> void:
 	used = true
@@ -98,10 +101,6 @@ func beam_update(delta: float) -> void:
 
 	var look_at := self.target_pos - self.position
 	
-	# var p1 := self.position
-	# var p2 := target_pos
-	# print("x: ", p1.x, ", y: ", p1.y, ", x: ", p2.x, ", y: ", p2.y)
-
 	var arg := TAU*freq*time	
 	var vscale := Vector2(3, 1) * gaze_delta
 	var off_by := Vector2(cos(arg),sin(arg)) * vscale

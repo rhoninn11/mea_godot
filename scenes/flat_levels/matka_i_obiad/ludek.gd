@@ -61,7 +61,6 @@ func update(delta: float) -> void:
 		#sprite.scale = Vector2(1.5, -1)
 		if holded and not holded_last:
 			var pitch_bend = randf() 
-			print("pitch bend is: ", pitch_bend)
 			audio.pitch_scale = 1 + pitch_bend * 0.5
 			audio.play(0)
 		

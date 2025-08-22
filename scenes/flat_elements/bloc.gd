@@ -3,6 +3,7 @@ extends RigidBody2D
 var position_provider: Node2D = null
 var in_hold_state: bool = false
 @export var debug: bool = false
+var hover: bool = false
 
 func _process(delta: float) -> void:
 	pass

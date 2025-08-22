@@ -14,21 +14,12 @@ var tex: ViewportTexture
 func _ready() -> void:
 	print("+++ to scena z kamerką")
 	elapsed = 0
-	config_material()
 
 
 func print_screan() -> void:
 	var img = tex.get_image()
 	img.save_png("user://debug1.png")
 	print("image saved")
-
-func config_material() -> void:
-	self.tex = scene_2d.get_viewport().get_texture()
-	var material = StandardMaterial3D.new()
-	material.albedo_color = Color.HOT_PINK
-	material.albedo_texture = self.tex
-	display.set_surface_override_material(0, material)
-			
 
 func _process(delta: float) -> void:
 	elapsed += delta
@@ -42,10 +33,7 @@ func _process(delta: float) -> void:
 
 
 func save_modified_scene() -> void:
+	return
 	var dyn_scene_state = PackedScene.new()
 	dyn_scene_state.pack(get_tree().current_scene)
 	ResourceSaver.save(dyn_scene_state, "res://runtime_tmp/dynamic.tscn")
-
-
-func _on_display_3_visibility_changed() -> void:
-	print("stało się")

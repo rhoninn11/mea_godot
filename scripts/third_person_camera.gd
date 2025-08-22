@@ -4,6 +4,7 @@ extends Camera3D
 @onready var rot: RotationComponent = $rotation_component
 @export var target: Node3D
 @export var turn_rate: float = 1
+@export var camera_distance: float = 1
 
 var tpos_last: Vector3
 var tpos: Vector3
@@ -21,7 +22,7 @@ func _ready() -> void:
 func adjust_position(pos: Vector3) -> void:
 	var t = Transform3D()
 	t = t.rotated(Vector3.UP, rot.fn_turn())
-	var camera_offset = t * Vector3(0, 2, -3)
+	var camera_offset = t * Vector3(0, 2, -3) * camera_distance
 	transform.origin = pos + camera_offset
 	transform = transform.looking_at(target.position)
 

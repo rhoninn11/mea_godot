@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csh6gk0i4f66a"
-path="res://.godot/imported/pamper.png-bb036a5028576bdc58fb0b02fdcf2011.ctex"
+uid="uid://bwbk2c88ujk3m"
+path="res://.godot/imported/kurtyna.png-6c5c608718eb0b78d80679c3c58015fb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/pamper.png"
-dest_files=["res://.godot/imported/pamper.png-bb036a5028576bdc58fb0b02fdcf2011.ctex"]
+source_file="res://textures/kurtyna.png"
+dest_files=["res://.godot/imported/kurtyna.png-6c5c608718eb0b78d80679c3c58015fb.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

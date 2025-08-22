@@ -10,7 +10,7 @@ func steam_level_up() -> void:
 		var p_mat = particles.process_material as ParticleProcessMaterial
 		p_mat.initial_velocity_min = 100
 		p_mat.initial_velocity_max = 100
-		p_mat.spread = 60
+		p_mat.spread = 20
 	if garnek_level == 0:
 		particles.amount = 8
 		steam_is = true

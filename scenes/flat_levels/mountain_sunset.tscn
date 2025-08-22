@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dgyeryrq5nclc"]
+[gd_scene load_steps=7 format=3 uid="uid://dgyeryrq5nclc"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_e3c1j"]
 [ext_resource type="Texture2D" uid="uid://dw1pklqf1qe3i" path="res://textures/b.png" id="2_x8b5x"]
@@ -11,27 +11,8 @@ size = Vector2(384, 384)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fx8hn"]
 size = Vector2(484, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_44tfe"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cunw3"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h7v84"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ku7eh"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4v34"]
-size = Vector2(384, 384)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlpuy"]
-size = Vector2(384, 384)
-
-[node name="DarkForest" type="Node2D" node_paths=PackedStringArray("area_node")]
+[node name="DarkForest" type="Node2D"]
 script = ExtResource("1_e3c1j")
-area_node = NodePath("stay_in7")
 metadata/_custom_type_script = "uid://tgl4u318vatv"
 
 [node name="Jerry" type="Sprite2D" parent="."]
@@ -45,7 +26,7 @@ position = Vector2(149.755, 145.03)
 position = Vector2(148, 102)
 
 [node name="Bloc2" parent="." instance=ExtResource("3_x8b5x")]
-position = Vector2(339, 163)
+position = Vector2(185, 163)
 
 [node name="Bloc3" parent="." instance=ExtResource("3_x8b5x")]
 position = Vector2(170, 213)
@@ -56,62 +37,31 @@ position = Vector2(170, 213)
 position = Vector2(256, 256)
 shape = SubResource("RectangleShape2D_x8b5x")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="zbocze_0" type="StaticBody2D" parent="."]
+position = Vector2(0, 383)
+rotation = 0.20944
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(256, 495)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zbocze_0"]
+shape = SubResource("RectangleShape2D_fx8hn")
+
+[node name="zbocze_1" type="StaticBody2D" parent="."]
+position = Vector2(453, 535)
+rotation = 0.436332
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zbocze_1"]
+shape = SubResource("RectangleShape2D_fx8hn")
+
+[node name="granica_0" type="StaticBody2D" parent="."]
+position = Vector2(453, 498)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="granica_0"]
+shape = SubResource("RectangleShape2D_fx8hn")
+
+[node name="granica_1" type="StaticBody2D" parent="."]
+position = Vector2(502, 498)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="granica_1"]
 shape = SubResource("RectangleShape2D_fx8hn")
 
 [node name="pointer" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="pointer2" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in2" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in2"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_44tfe")
-
-[node name="pointer3" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in3" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in3"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_cunw3")
-
-[node name="pointer4" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in4" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in4"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_h7v84")
-
-[node name="pointer5" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in5" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in5"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_ku7eh")
-
-[node name="pointer6" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in6" type="Area2D" parent="."]
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in6"]
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_f4v34")
-
-[node name="pointer7" parent="." instance=ExtResource("4_44tfe")]
-
-[node name="stay_in7" type="Area2D" parent="."]
-visible = false
-
-[node name="zone_shape" type="CollisionShape2D" parent="stay_in7"]
-visible = false
-position = Vector2(256, 256)
-shape = SubResource("RectangleShape2D_jlpuy")
-
-[node name="pointer8" parent="." instance=ExtResource("4_44tfe")]

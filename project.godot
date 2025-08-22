@@ -13,7 +13,7 @@ config_version=5
 config/name="scene_capture_demo"
 config/description="An example showing how to take screenshots of the screen."
 config/tags=PackedStringArray("demo", "official", "rendering")
-run/main_scene="uid://d4d3xraflmjjy"
+run/main_scene="uid://b3ahbfvwtdsif"
 config/features=PackedStringArray("4.4")
 config/icon="res://textures/icon.webp"
 
@@ -105,6 +105,7 @@ rotate_r={
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 
 [xr]
 
@@ -112,3 +113,4 @@ openxr/enabled=true
 openxr/environment_blend_mode=1
 shaders/enabled=true
 openxr/extensions/meta/passthrough=true
+openxr/extensions/meta/color_space/starting_color_space=3

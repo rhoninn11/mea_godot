@@ -1,17 +1,13 @@
-[gd_scene load_steps=24 format=3 uid="uid://b3ahbfvwtdsif"]
+[gd_scene load_steps=16 format=3 uid="uid://b3ahbfvwtdsif"]
 
 [ext_resource type="Script" uid="uid://ctt2ry1s18lu0" path="res://scenes/grande/main_scene.gd" id="1_1vu5h"]
 [ext_resource type="PackedScene" uid="uid://ss6nkq2apysy" path="res://scenes/_kamerka.tscn" id="2_sjxqc"]
-[ext_resource type="Script" uid="uid://brhlj07b3hccp" path="res://scenes/grande/display.gd" id="3_o8m8r"]
 [ext_resource type="PackedScene" uid="uid://bndfl0mjnqp6h" path="res://scenes/interactive_painting.tscn" id="4_f31tm"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="6_1prhs"]
 [ext_resource type="PackedScene" uid="uid://cigsii13tao5a" path="res://scenes/flat_levels/dark_forest.tscn" id="6_f31tm"]
 [ext_resource type="PackedScene" uid="uid://dgyeryrq5nclc" path="res://scenes/flat_levels/mountain_sunset.tscn" id="6_o8m8r"]
 [ext_resource type="PackedScene" uid="uid://d4d3xraflmjjy" path="res://scenes/flat_levels/matka_i_obiad/matka_i_obiad.tscn" id="7_f31tm"]
 [ext_resource type="PackedScene" uid="uid://dfoqyvbtpnhis" path="res://scenes/interactive_spot.tscn" id="7_kgubf"]
-[ext_resource type="PackedScene" uid="uid://dvl2al7j8h05w" path="res://scenes/grande/display_content_2D.tscn" id="9_rg16k"]
-[ext_resource type="Script" uid="uid://dqfaak70aj8ny" path="res://scenes/grande/2d_activator.gd" id="10_v1cyt"]
-[ext_resource type="Texture2D" uid="uid://c1xv1kuvr04bi" path="res://textures/interaction_ring.png" id="11_smnin"]
 [ext_resource type="PackedScene" uid="uid://cqqucr8mgk8h3" path="res://scenes/xr_person.tscn" id="13_o8m8r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_b7am0"]
@@ -22,18 +18,6 @@ sky_material = SubResource("ProceduralSkyMaterial_b7am0")
 [sub_resource type="Environment" id="Environment_vdmdy"]
 background_mode = 2
 sky = SubResource("Sky_8oc3c")
-
-[sub_resource type="QuadMesh" id="QuadMesh_s4orp"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3sfxr"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_xcogc"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtjao"]
-transparency = 1
-albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
-albedo_texture = ExtResource("11_smnin")
-texture_filter = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vu5h"]
 albedo_color = Color(0.246268, 0.381028, 0.37329, 1)
@@ -52,15 +36,10 @@ shadow_enabled = true
 [node name="_kamerka" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_sjxqc")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.385, 2, -3)
 target = NodePath("../_niby_player")
+camera_distance = 2.0
 
 [node name="_bg" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vdmdy")
-
-[node name="display" type="MeshInstance3D" parent="."]
-transform = Transform3D(-2.97224, 0, -2.59842e-07, 0, 2.97223, 0, 2.59841e-07, 0, -2.97224, 8.26466, 1.59571, 5.62376)
-mesh = SubResource("QuadMesh_s4orp")
-skeleton = NodePath("../_niby_player")
-script = ExtResource("3_o8m8r")
 
 [node name="display2" parent="." instance=ExtResource("4_f31tm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7714, 1.49261, 5.92794)
@@ -79,27 +58,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9028, 0, 0)
 
 [node name="Area3D" parent="." instance=ExtResource("7_kgubf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47475, 0, 1.37243)
-
-[node name="_context_2d" type="SubViewport" parent="."]
-render_target_update_mode = 4
-
-[node name="scene_2d" parent="_context_2d" instance=ExtResource("9_rg16k")]
-position = Vector2(11, 17)
-speed = null
-has_control = null
-
-[node name="Area3D2" type="Area3D" parent="." node_paths=PackedStringArray("node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.17071, -0.419968, 3.50721)
-script = ExtResource("10_v1cyt")
-node = NodePath("../_context_2d/scene_2d")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
-shape = SubResource("BoxShape3D_3sfxr")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0155258, 0)
-mesh = SubResource("PlaneMesh_xcogc")
-surface_material_override/0 = SubResource("StandardMaterial3D_qtjao")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_1vu5h")
@@ -142,5 +100,3 @@ mesh = SubResource("TorusMesh_o8m8r")
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 mesh = SubResource("TorusMesh_f31tm")
 skeleton = NodePath("../pol")
-
-[connection signal="area_entered" from="Area3D2" to="Area3D2" method="_on_area_entered"]

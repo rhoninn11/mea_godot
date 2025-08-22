@@ -12,9 +12,9 @@ var images: Array[ImageTexture]
 const slot_num = 12
 const sprite_num = 10
 const tekstury: Dictionary[String, String] = {
-	"jerry": "res://textures/a.png",
-	"panicz": "res://textures/b.png",
-	"skarpeta": "res://textures/c.png",
+	"a": "res://textures/a.png",
+	"b": "res://textures/b.png",
+	"c": "res://textures/c.png",
 }
 const tex_num = len(tekstury)
 

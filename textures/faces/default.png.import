@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbq4ovjbcb8xl"
-path="res://.godot/imported/view_beam.png-ad78f40f7301738d534eb6e8340f53a5.ctex"
+uid="uid://dsp1jjw12jxu4"
+path="res://.godot/imported/default.png-43c9bcbcbc83345b3a9be04be05c3365.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/view_beam.png"
-dest_files=["res://.godot/imported/view_beam.png-ad78f40f7301738d534eb6e8340f53a5.ctex"]
+source_file="res://textures/faces/default.png"
+dest_files=["res://.godot/imported/default.png-43c9bcbcbc83345b3a9be04be05c3365.ctex"]
 
 [params]
 

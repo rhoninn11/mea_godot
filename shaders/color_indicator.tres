@@ -1,0 +1,16 @@
+[gd_resource type="VisualShader" load_steps=2 format=3 uid="uid://bqk8cwnbyt75a"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_abyo2"]
+parameter_name = "ColorParameter"
+default_value_enabled = true
+default_value = Color(2.59906e-06, 0.533607, 0.747598, 1)
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+nodes/vertex/2/node = SubResource("VisualShaderNodeColorParameter_abyo2")
+nodes/vertex/2/position = Vector2(40, 200)

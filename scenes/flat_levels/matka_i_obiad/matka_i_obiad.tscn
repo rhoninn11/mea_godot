@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d4d3xraflmjjy"]
+[gd_scene load_steps=18 format=3 uid="uid://d4d3xraflmjjy"]
 
 [ext_resource type="Script" uid="uid://tgl4u318vatv" path="res://scenes/flat_levels/GlueLayer.gd" id="1_74byd"]
 [ext_resource type="PackedScene" uid="uid://05dpwd0rbxa4" path="res://scenes/flat_levels/matka_i_obiad/budynek.tscn" id="3_kfpaw"]
@@ -15,8 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://bx2uxpq5qugcx" path="res://audio/drzwi.mp3" id="13_emtci"]
 [ext_resource type="Texture2D" uid="uid://c56y4obrnjylu" path="res://textures/block.png" id="13_oidy7"]
 [ext_resource type="Texture2D" uid="uid://kuhhmxiatnyv" path="res://textures/cosy.png" id="15_ku2rg"]
-[ext_resource type="Script" uid="uid://vm6i8rt0yot8" path="res://scenes/flat_levels/matka_i_obiad/scene_capture.gd" id="17_5lb7v"]
-[ext_resource type="Texture2D" uid="uid://bwbk2c88ujk3m" path="res://textures/kurtyna.png" id="17_cp44c"]
+[ext_resource type="Script" uid="uid://co6sp78ahp7vp" path="res://scenes/flat_levels/matka_i_obiad/camera_2d.gd" id="17_cp44c"]
 [ext_resource type="PackedScene" uid="uid://ba5rctj1d43ux" path="res://scenes/flat_levels/matka_i_obiad/okno.tscn" id="21_1ieb1"]
 
 [node name="MatkaCzekaZObiadem" type="Node2D"]
@@ -69,13 +68,6 @@ position = Vector2(258, 255)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_ku2rg")
 
-[node name="scene_capture" type="Camera2D" parent="."]
-offset = Vector2(256, 256)
-script = ExtResource("17_5lb7v")
-
-[node name="kurtyna_0" type="Sprite2D" parent="scene_capture"]
-self_modulate = Color(0, 0, 0, 1)
-z_index = 10
-position = Vector2(242, 248)
-scale = Vector2(18.0333, 18.0333)
-texture = ExtResource("17_cp44c")
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+script = ExtResource("17_cp44c")

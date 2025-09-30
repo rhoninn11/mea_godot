@@ -1,0 +1,66 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://bb8bi3bd0q5my"]
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_ha7hw"]
+constant = Color(0.1128, 0.24, 0.15732, 1)
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_vos3l"]
+constant = Color(0.294298, 0.144317, 0.141748, 1)
+
+[sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_ha7hw"]
+default_input_values = [0, 0.0, 1, 0.0, 2, 0.2, 3, Vector3(0, 0, 0), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_vos3l"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+
+void fragment() {
+// FloatConstant:5
+	float n_out5p0 = 0.000000;
+
+
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.112800, 0.240000, 0.157320, 1.000000);
+
+
+// ColorConstant:3
+	vec4 n_out3p0 = vec4(0.294298, 0.144317, 0.141748, 1.000000);
+
+
+	vec3 n_out4p0;
+// If:4
+	float n_in4p1 = 0.00000;
+	float n_in4p2 = 0.20000;
+	if(abs(n_out5p0 - n_in4p1) < n_in4p2)
+	{
+		n_out4p0 = vec3(n_out2p0.xyz);
+	}
+	else if(n_out5p0 < n_in4p1)
+	{
+		n_out4p0 = vec3(n_out3p0.xyz);
+	}
+	else
+	{
+		n_out4p0 = vec3(n_out2p0.xyz);
+	}
+
+
+// Output:0
+	ALBEDO = n_out4p0;
+
+
+}
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_ha7hw")
+nodes/fragment/2/position = Vector2(-240, 440)
+nodes/fragment/3/node = SubResource("VisualShaderNodeColorConstant_vos3l")
+nodes/fragment/3/position = Vector2(-240, 540)
+nodes/fragment/4/node = SubResource("VisualShaderNodeIf_ha7hw")
+nodes/fragment/4/position = Vector2(160, 220)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatConstant_vos3l")
+nodes/fragment/5/position = Vector2(-140, 60)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 5, 2, 0, 4, 3, 2, 0, 4, 4, 5, 0, 4, 0, 4, 0, 0, 0)

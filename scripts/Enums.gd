@@ -1,4 +1,4 @@
-extends Object
+extends Node
 
 enum ControlState {NONE, TRAVEL, POINTING}
 

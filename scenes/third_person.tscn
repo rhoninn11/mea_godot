@@ -1,18 +1,31 @@
-[gd_scene load_steps=9 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=12 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
-[ext_resource type="PackedScene" uid="uid://s2nn78ktn2tw" path="res://scenes/hand_tracker.tscn" id="4_h6acs"]
+[ext_resource type="Shader" uid="uid://c154elpe4xn2b" path="res://shaders/third_person.gdshader" id="4_h6acs"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pg6is"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_pg6is"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3bf3"]
+render_priority = 0
+shader = ExtResource("4_h6acs")
+shader_parameter/hmm = 1
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w0x8w"]
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h6acs"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_x45r8"]
+transform_format = 1
+instance_count = 1
+mesh = SubResource("CapsuleMesh_h6acs")
+buffer = PackedFloat32Array(2.1e-44, 2.1e-44, 1e-45, 0, 2.2e-44, 3.1e-44, 2.4e-44, 2.2e-44, 3.2e-44, 3.1e-44, 2.4e-44, 3e-44)
+
+[node name="third_person" type="Node3D"]
 script = ExtResource("1_3xrgj")
 
 [node name="pawn" type="MeshInstance3D" parent="."]
@@ -29,8 +42,6 @@ script = ExtResource("2_f743c")
 active_on = 1
 metadata/_custom_type_script = "uid://n8blyodjwbxs"
 
-[node name="_flashlight" type="SpotLight3D" parent="pawn"]
-
 [node name="hand" type="Node3D" parent="pawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -1.2)
 
@@ -38,8 +49,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -1.2)
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
-
-[node name="hand_tracker" parent="pawn/hand" instance=ExtResource("4_h6acs")]
+surface_material_override/0 = SubResource("ShaderMaterial_a3bf3")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 
@@ -53,3 +63,6 @@ one_shot = true
 [node name="fonk_music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_vurlo")
 volume_db = -3.0
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+multimesh = SubResource("MultiMesh_x45r8")

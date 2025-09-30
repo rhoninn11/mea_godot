@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="scene_capture_demo"
+config/name="scene_capture_demo_4_4"
 config/description="An example showing how to take screenshots of the screen."
 config/tags=PackedStringArray("demo", "official", "rendering")
-run/main_scene="uid://b3ahbfvwtdsif"
+run/main_scene="uid://coye4xcnm2in"
 config/features=PackedStringArray("4.4")
 config/icon="res://textures/icon.webp"
 
@@ -24,6 +24,7 @@ buses/default_bus_layout=""
 [autoload]
 
 Libgeo="*res://geo/libgeo.gd"
+Libcolor="*res://colors/libcolor.gd"
 Uimanager="*res://scripts/UiManager.gd"
 Enums="*res://scripts/Enums.gd"
 
@@ -109,7 +110,6 @@ textures/vram_compression/import_etc2_astc=true
 
 [xr]
 
-openxr/enabled=true
 openxr/environment_blend_mode=1
 shaders/enabled=true
 openxr/extensions/meta/passthrough=true

@@ -55,8 +55,8 @@ curve = SubResource("Curve3D_564e6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -1.7221, 0)
-material_override = ExtResource("1_sevdo")
 mesh = SubResource("PlaneMesh_564e6")
+surface_material_override/0 = ExtResource("1_sevdo")
 
 [node name="ProceduralGeometry" parent="." instance=ExtResource("2_4dtpq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.04283, 0, -1.11301)

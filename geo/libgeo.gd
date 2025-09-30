@@ -62,6 +62,16 @@ class Math:
 			ts_new[i] = ts[i] * t_s
 		
 		return ts_new
+	
+	static func sin_along(ts: Array[Transform3D], dir: Vector3) -> Array[Transform3D]:
+		var moved: Array[Transform3D] = []
+		moved.resize(len(ts))
+
+		for i in range(len(ts)):
+			var prog := float(i)/float(len(ts) - 1)
+			moved[i] = ts[i].translated(dir * prog)
+
+		return moved;
 
 class Shapes:
 	# retun data of position and normal vector, both packed as Vector2 inside single Vector4

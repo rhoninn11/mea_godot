@@ -23,8 +23,8 @@ buses/default_bus_layout=""
 
 [autoload]
 
-Libgeo="*res://geo/libgeo.gd"
 Libcolor="*res://colors/libcolor.gd"
+Libgeo="*res://geo/libgeo.gd"
 Uimanager="*res://scripts/UiManager.gd"
 Enums="*res://scripts/Enums.gd"
 

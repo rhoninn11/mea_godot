@@ -1,6 +1,6 @@
 shader_type spatial;
 
-uniform int hmm = 2;
+uniform int hand = 2;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -8,10 +8,10 @@ void vertex() {
 
 void fragment() {
 	// Called for every pixel the material is visible on.
-	if (hmm == 1) {
-		ALBEDO = vec3(1, 0, 0);
+	if (hand == 1) {
+		ALBEDO = vec3(0, 0, 1);
 	} else {
-		ALBEDO = vec3(0, 1, 0);
+		ALBEDO = vec3(1, 0, 0);
 	}
 		
 }

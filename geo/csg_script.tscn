@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dt6hp4kajbv72"]
+[gd_scene load_steps=11 format=3 uid="uid://dt6hp4kajbv72"]
 
+[ext_resource type="Shader" uid="uid://dft5tumoutr4r" path="res://mat/spectral_gradient.gdshader" id="1_44qcq"]
 [ext_resource type="Shader" uid="uid://8o630hklbo6o" path="res://shaders/for_instance.gdshader" id="1_dlla8"]
 [ext_resource type="Script" uid="uid://cnrdxcmv457yu" path="res://geo/multi_mesh_instance_3d.gd" id="1_hi4vh"]
 [ext_resource type="Script" uid="uid://cfwocyddvfe05" path="res://geo/csg_script.gd" id="1_tf8oc"]
@@ -7,6 +8,10 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5viud"]
 albedo_color = Color(0.105039, 0.187568, 0.311878, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vgqc3"]
+render_priority = 0
+shader = ExtResource("1_44qcq")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dlla8"]
 render_priority = 0
@@ -26,6 +31,7 @@ buffer = PackedFloat32Array(-1, 0, 0, 5, 0, 1, 0, 0, 0, 0, -1, 0, 0.289948, 0.12
 
 [node name="mesh_canvas" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_5viud")
+material_overlay = SubResource("ShaderMaterial_vgqc3")
 calculate_tangents = false
 script = ExtResource("1_tf8oc")
 profile = PackedVector2Array(5, -1.5, 4.80491, -1.48079, 4.61732, -1.42388, 4.44443, -1.33147, 4.29289, -1.20711, 4.16853, -1.05557, 4.07612, -0.882684, 4.01921, -0.69509, 4, -0.5, 4, 0.5, 3.98079, 0.69509, 3.92388, 0.882683, 3.83147, 1.05557, 3.70711, 1.20711, 3.55557, 1.33147, 3.38268, 1.42388, 3.19509, 1.48079, 3, 1.5, 2.80491, 1.48079, 2.61732, 1.42388, 2.44443, 1.33147, 2.29289, 1.20711, 2.16853, 1.05557, 2.07612, 0.882683, 2.01921, 0.69509, 2, 0.5, 2, -0.5, 1.98079, -0.69509, 1.92388, -0.882683, 1.83147, -1.05557, 1.70711, -1.20711, 1.55557, -1.33147, 1.38268, -1.42388, 1.19509, -1.48079, 1, -1.5)

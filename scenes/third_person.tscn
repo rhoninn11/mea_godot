@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=14 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
 [ext_resource type="Shader" uid="uid://c154elpe4xn2b" path="res://shaders/third_person.gdshader" id="4_h6acs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6acs"]
+blend_mode = 1
+albedo_color = Color(0.533037, 0.533037, 0.533037, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pg6is"]
 
@@ -13,7 +17,12 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a3bf3"]
 render_priority = 0
 shader = ExtResource("4_h6acs")
-shader_parameter/hmm = 1
+shader_parameter/hand = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6acs"]
+render_priority = 0
+shader = ExtResource("4_h6acs")
+shader_parameter/hand = 0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w0x8w"]
 
@@ -23,10 +32,11 @@ shader_parameter/hmm = 1
 transform_format = 1
 instance_count = 1
 mesh = SubResource("CapsuleMesh_h6acs")
-buffer = PackedFloat32Array(2.1e-44, 2.1e-44, 1e-45, 0, 2.2e-44, 3.1e-44, 2.4e-44, 2.2e-44, 3.2e-44, 3.1e-44, 2.4e-44, 3e-44)
+buffer = PackedFloat32Array(2.10195e-44, 2.10195e-44, 1.4013e-45, 0, 2.24208e-44, 3.08286e-44, 2.38221e-44, 2.24208e-44, 3.22299e-44, 3.08286e-44, 2.38221e-44, 2.94273e-44)
 
 [node name="third_person" type="Node3D"]
 script = ExtResource("1_3xrgj")
+highlight = SubResource("StandardMaterial3D_h6acs")
 
 [node name="pawn" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_pg6is")
@@ -42,14 +52,23 @@ script = ExtResource("2_f743c")
 active_on = 1
 metadata/_custom_type_script = "uid://n8blyodjwbxs"
 
-[node name="hand" type="Node3D" parent="pawn"]
+[node name="right" type="Node3D" parent="pawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -1.2)
 
-[node name="mesh" type="MeshInstance3D" parent="pawn/hand"]
+[node name="mesh" type="MeshInstance3D" parent="pawn/right"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_a3bf3")
+
+[node name="left" type="Node3D" parent="pawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389956, 0.75, -1.2)
+
+[node name="mesh" type="MeshInstance3D" parent="pawn/left"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
+mesh = SubResource("SphereMesh_pg6is")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_h6acs")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 

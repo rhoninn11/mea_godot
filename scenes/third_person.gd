@@ -8,8 +8,12 @@ var var_speed: float = speed
 @onready var fonk_music: AudioStreamPlayer = $fonk_music
 @onready var rot: RotationComponent = $pawn/RotationComponent
 
-@onready var hand := $pawn/hand
+var selected_idx: int = 0;
+@onready var hand_arr: Array[Node3D] = [$pawn/right, $pawn/left];
+@onready var mesh_arr: Array[MeshInstance3D] = [$pawn/right/mesh, $pawn/left/mesh];
+
 @onready var vert_pos: VerticalComponent = $pawn/VerticalComponent
+
 
 var speed_up: bool = false
 var speed_up_last: bool = false
@@ -22,13 +26,16 @@ var loud: bool = false
 @export var mute_volume: float = -120
 var just_speed_up: bool = false
 
+@export var highlight: Material
+
 var has_control:bool = false
 
 func _ready() -> void:
-	fonk_music.finished.connect(_on_track_finished)
-	ControlContext.register(self)
-	ControlContext.set_main(self)
-	var t = create_tween()
+	assert(highlight);
+	fonk_music.finished.connect(_on_track_finished);
+	ControlContext.register(self);
+	ControlContext.set_main(self);
+	var t = create_tween();
 
 func _process(delta: float) -> void:
 	update_speed()
@@ -37,6 +44,7 @@ func _process(delta: float) -> void:
 	update_hand()
 	
 	if Input.is_action_pressed("mouse_capture"):
+		switch_hand()
 		ControlContext.control_state = Enums.ControlState.POINTING
 	else:
 		ControlContext.control_state = Enums.ControlState.TRAVEL
@@ -111,4 +119,10 @@ func take_control() -> void:
 const default_pos:= Vector2(0,1)
 func update_hand() -> void:
 	var tmp = default_pos + vert_pos.fn_val()
-	hand.transform.origin = Vector3(-tmp.x, tmp.y, -2)
+	hand_arr[0].transform.origin = Vector3(-tmp.x, tmp.y, -2)
+
+func switch_hand() -> void:
+	mesh_arr[selected_idx].material_overlay = null
+	selected_idx += 1
+	selected_idx = selected_idx%2
+	mesh_arr[selected_idx].material_overlay = highlight

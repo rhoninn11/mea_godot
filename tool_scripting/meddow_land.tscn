@@ -17,13 +17,13 @@ albedo_color = Color(0.673979, 0.559325, 0.535461, 1)
 [node name="medow_land" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-light_color = Color(0.6255971, 0.6255971, 0.6255971, 1)
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_color = Color(0.625597, 0.625597, 0.625597, 1)
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(6.730065, 0, 0, 0, 1, 0, 0, 0, 7.9020114, 0, 0, 0)
+transform = Transform3D(6.73006, 0, 0, 0, 1, 0, 0, 0, 7.90201, 0, 0, 0)
 mesh = SubResource("BoxMesh_1emq6")
 surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 
@@ -32,23 +32,23 @@ material_override = SubResource("StandardMaterial3D_ffbo2")
 script = ExtResource("2_ffbo2")
 
 [node name="CSGBox3D_outer" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16407275, 2.6433754, -0.64651203)
-size = Vector3(13.635499, 4.2867413, 7.2588162)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.164073, 2.64338, -0.646512)
+size = Vector3(13.6355, 4.28674, 7.25882)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.16407275, 2.6433754, -0.64651203)
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.164073, 2.64338, -0.646512)
 operation = 2
-size = Vector3(13.435499, 4.0867414, 7.0588164)
+size = Vector3(13.4355, 4.08674, 7.05882)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -1.89246, 2.6213903, 0.852899)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -1.89246, 2.62139, 0.852899)
 operation = 2
-size = Vector3(1.96057, 4.4536114, 7.62033)
+size = Vector3(1.96057, 4.45361, 7.62033)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 2.8954043, 2.5639198, 0.852899)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 2.8954, 2.56392, 0.852899)
 operation = 2
-size = Vector3(1.96057, 4.3099346, 7.62033)
+size = Vector3(1.96057, 4.30993, 7.62033)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.94933, 2.49099, -2.16676)
@@ -56,6 +56,6 @@ omni_range = 3.0
 omni_shadow_mode = 0
 
 [node name="Node3D" parent="." instance=ExtResource("3_sjuej")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85615, 2.4243894, 7.487873)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85615, 2.42439, 7.48787)
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]

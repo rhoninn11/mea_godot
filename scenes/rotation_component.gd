@@ -9,8 +9,17 @@ var turn_mouse: float = 0
 var capture_ack: bool = false
 var mouse_start_point: Vector2
 
+var inertia: Inertia;
+
+func _ready() -> void:
+	var icfg = InertParams.new()
+	inertia = Inertia.init(icfg)
+	assert(self.inertia)
 
 func _process(delta: float) -> void:
+	var target := turn_keys + turn_mouse;
+	self.inertia.simulate(target, delta)
+	
 	var mv_vec = Input.get_vector("turn_right", "turn_left", "noop", "noop")
 	if mv_vec != Vector2.ZERO:
 		turn_keys += mv_vec.x * speed
@@ -32,4 +41,4 @@ func _process(delta: float) -> void:
 
 
 func fn_turn() -> float:
-	return turn_keys + turn_mouse
+	return self.inertia.result()

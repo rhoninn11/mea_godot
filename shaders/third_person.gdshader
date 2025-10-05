@@ -13,7 +13,7 @@ void fragment() {
 	} else {
 		ALBEDO = vec3(1, 0, 0);
 	}
-		
+
 }
 
 //void light() {

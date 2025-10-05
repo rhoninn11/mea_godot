@@ -44,10 +44,12 @@ func _process(delta: float) -> void:
 	update_hand()
 	
 	if Input.is_action_pressed("mouse_capture"):
-		switch_hand()
 		ControlContext.control_state = Enums.ControlState.POINTING
 	else:
 		ControlContext.control_state = Enums.ControlState.TRAVEL
+		
+	if Input.is_action_just_pressed("tab"):
+		switch_hand()
 
 
 func update_pos(delta: float) -> void:

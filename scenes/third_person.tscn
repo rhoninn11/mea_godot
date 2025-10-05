@@ -57,6 +57,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -1.2)
 
 [node name="mesh" type="MeshInstance3D" parent="pawn/right"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
+gi_mode = 2
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_a3bf3")
@@ -66,6 +67,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389956, 0.75, -1.2)
 
 [node name="mesh" type="MeshInstance3D" parent="pawn/left"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
+gi_mode = 2
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_h6acs")

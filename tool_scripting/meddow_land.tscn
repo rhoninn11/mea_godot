@@ -1,8 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://coye4xcnm2in"]
+[gd_scene load_steps=11 format=3 uid="uid://coye4xcnm2in"]
 
 [ext_resource type="Shader" uid="uid://bb8bi3bd0q5my" path="res://tool_scripting/land.tres" id="1_fclvo"]
 [ext_resource type="Script" uid="uid://do1ahwovpumdd" path="res://geo/domek/domek.gd" id="2_ffbo2"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="3_sjuej"]
+[ext_resource type="PackedScene" uid="uid://c0calr38syn4d" path="res://geo/csg_scene.tscn" id="4_yrpjq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sjuej"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_yrpjq"]
+sky_material = SubResource("ProceduralSkyMaterial_sjuej")
+
+[sub_resource type="Environment" id="Environment_s485t"]
+background_mode = 2
+sky = SubResource("Sky_yrpjq")
+tonemap_mode = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_1emq6"]
 size = Vector3(10, 1, 10)
@@ -16,8 +29,11 @@ albedo_color = Color(0.673979, 0.559325, 0.535461, 1)
 
 [node name="medow_land" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s485t")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+transform = Transform3D(-0.866025, 0.360312, -0.346663, -1.49012e-08, -0.693326, -0.720624, -0.5, -0.624078, 0.600438, -5.41782, 6.10854, 9.38393)
 light_color = Color(0.625597, 0.625597, 0.625597, 1)
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
@@ -55,7 +71,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.94933, 2.49099, -2.16676)
 omni_range = 3.0
 omni_shadow_mode = 0
 
-[node name="Node3D" parent="." instance=ExtResource("3_sjuej")]
+[node name="player" parent="." instance=ExtResource("3_sjuej")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85615, 2.42439, 7.48787)
 
-[node name="Camera3D" type="Camera3D" parent="Node3D"]
+[node name="Camera3D" type="Camera3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="csg_scene" parent="." instance=ExtResource("4_yrpjq")]
+transform = Transform3D(0.61616, -0.00018102, -0.787621, 1.52959e-05, 1, -0.000217883, 0.787621, 0.000122223, 0.61616, -14.9545, 3.11274, 16.7758)

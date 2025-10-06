@@ -6,7 +6,7 @@ class_name Inertia
 @export var k3: float = 0
 
 
-static func init(in_data: InertParams) -> Inertia:
+static func init(in_data: InertConfig) -> Inertia:
 	var inertia := Inertia.new()
 	var f_helper := in_data.freq * PI
 	inertia.k1 = in_data.zeta / f_helper

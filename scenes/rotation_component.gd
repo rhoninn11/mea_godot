@@ -12,7 +12,7 @@ var mouse_start_point: Vector2
 var inertia: Inertia;
 
 func _ready() -> void:
-	var icfg = InertParams.new()
+	var icfg = InertConfig.new()
 	inertia = Inertia.init(icfg)
 	assert(self.inertia)
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=15 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
 [ext_resource type="Shader" uid="uid://c154elpe4xn2b" path="res://shaders/third_person.gdshader" id="4_h6acs"]
+[ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://addons/raytraced_audio/raytraced_audio_listener.gd" id="6_x45r8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6acs"]
 blend_mode = 1
@@ -50,6 +51,7 @@ metadata/_custom_type_script = "uid://dhpnacfjofxaj"
 [node name="RotationComponent" type="Node" parent="pawn"]
 script = ExtResource("2_f743c")
 active_on = 1
+speed = null
 metadata/_custom_type_script = "uid://n8blyodjwbxs"
 
 [node name="right" type="Node3D" parent="pawn"]
@@ -87,3 +89,10 @@ volume_db = -3.0
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_x45r8")
+
+[node name="RaytracedAudioListener" type="AudioListener3D" parent="."]
+script = ExtResource("6_x45r8")
+rays_count = 256
+max_bounces = 8
+ray_scatter_model = 1
+metadata/_custom_type_script = "uid://bjpmu5sklv5h8"

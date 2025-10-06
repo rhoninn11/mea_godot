@@ -121,7 +121,7 @@ func take_control() -> void:
 const default_pos:= Vector2(0,1)
 func update_hand() -> void:
 	var tmp = default_pos + vert_pos.fn_val()
-	hand_arr[0].transform.origin = Vector3(-tmp.x, tmp.y, -2)
+	hand_arr[selected_idx].transform.origin = Vector3(-tmp.x, tmp.y, -2)
 
 func switch_hand() -> void:
 	mesh_arr[selected_idx].material_overlay = null

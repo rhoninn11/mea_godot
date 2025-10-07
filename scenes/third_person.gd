@@ -35,7 +35,6 @@ func _ready() -> void:
 	fonk_music.finished.connect(_on_track_finished);
 	ControlContext.register(self);
 	ControlContext.set_main(self);
-	var t = create_tween();
 
 func _process(delta: float) -> void:
 	update_speed()

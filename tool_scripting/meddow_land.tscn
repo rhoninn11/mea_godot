@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://coye4xcnm2in"]
+[gd_scene load_steps=15 format=3 uid="uid://coye4xcnm2in"]
 
 [ext_resource type="Shader" uid="uid://bb8bi3bd0q5my" path="res://tool_scripting/land.tres" id="1_fclvo"]
 [ext_resource type="Script" uid="uid://do1ahwovpumdd" path="res://geo/domek/domek.gd" id="2_ffbo2"]
-[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="2_s485t"]
+[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://audio/raytraced_audio_player_3d.gd" id="2_s485t"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="3_sjuej"]
 [ext_resource type="AudioStream" uid="uid://d1lqk4p0hc44x" path="res://audio/vivaldi.mp3" id="3_xsxfr"]
 [ext_resource type="PackedScene" uid="uid://c0calr38syn4d" path="res://geo/csg_scene.tscn" id="4_yrpjq"]
+[ext_resource type="AudioStream" uid="uid://bc1u4dqryyo12" path="res://audio/retro_demo.mp3" id="5_yeest"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sjuej"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -75,13 +76,27 @@ operation = 2
 size = Vector3(8.04974, 14.3207, 10.9415)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="StaticBody3D/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.94933, 3.06394, -2.16676)
-omni_range = 3.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.17895, 5.37369, -1.49623)
+omni_attenuation = 0.43
 omni_shadow_mode = 0
 
 [node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="StaticBody3D/CSGCombiner3D/OmniLight3D"]
 transform = Transform3D(-0.463466, 0, 0.886115, 0, 1, 0, -0.886115, 0, -0.463466, 0, 0, 0)
 stream = ExtResource("3_xsxfr")
+attenuation_model = 2
+volume_db = -14.118
+script = ExtResource("2_s485t")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="StaticBody3D/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.82433, 17.7895, -12.98)
+light_color = Color(0.391482, 0.234803, 0.557198, 1)
+omni_attenuation = 0.43
+omni_shadow_mode = 0
+
+[node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="StaticBody3D/CSGCombiner3D/OmniLight3D2"]
+transform = Transform3D(-0.463466, 0, 0.886115, 0, 1, 0, -0.886115, 0, -0.463466, 0, 0, 0)
+stream = ExtResource("5_yeest")
 volume_db = -14.118
 autoplay = true
 script = ExtResource("2_s485t")

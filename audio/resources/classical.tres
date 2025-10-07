@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioColor" load_steps=3 format=3 uid="uid://doqtxy63ykqoq"]
+
+[ext_resource type="Script" uid="uid://po4aoxl0dw2o" path="res://audio/resources/AudioColor.gd" id="1_etybw"]
+[ext_resource type="AudioStream" uid="uid://d1lqk4p0hc44x" path="res://audio/vivaldi.mp3" id="1_u13cu"]
+
+[resource]
+script = ExtResource("1_etybw")
+audio = ExtResource("1_u13cu")
+color = Color(0.543019, 0.479042, 0.261711, 1)
+metadata/_custom_type_script = "uid://po4aoxl0dw2o"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioColor" load_steps=3 format=3 uid="uid://br03yvhllnihp"]
+
+[ext_resource type="AudioStream" uid="uid://bc1u4dqryyo12" path="res://audio/retro_demo.mp3" id="1_nsu13"]
+[ext_resource type="Script" uid="uid://po4aoxl0dw2o" path="res://audio/resources/AudioColor.gd" id="2_f30od"]
+
+[resource]
+script = ExtResource("2_f30od")
+audio = ExtResource("1_nsu13")
+color = Color(0.784555, 0.821987, 0.9123, 1)
+metadata/_custom_type_script = "uid://po4aoxl0dw2o"

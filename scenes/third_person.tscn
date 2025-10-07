@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
 [ext_resource type="Shader" uid="uid://c154elpe4xn2b" path="res://shaders/third_person.gdshader" id="4_h6acs"]
-[ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://addons/raytraced_audio/raytraced_audio_listener.gd" id="6_x45r8"]
+[ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://audio/raytraced_audio_listener.gd" id="6_x45r8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6acs"]
 blend_mode = 1
@@ -92,7 +92,20 @@ multimesh = SubResource("MultiMesh_x45r8")
 
 [node name="RaytracedAudioListener" type="AudioListener3D" parent="."]
 script = ExtResource("6_x45r8")
-rays_count = 256
-max_bounces = 8
-ray_scatter_model = 1
+is_enabled = null
+auto_update = null
+rays_count = null
+max_raycast_dist = null
+max_bounces = null
+ray_scatter_model = null
+muffle_enabled = null
+muffle_interpolation = null
+echo_enabled = null
+echo_room_size_multiplier = null
+echo_interpolation = null
+ambient_enabled = null
+ambient_pan_interpolation = null
+ambient_pan_strength = null
+ambient_volume_interpolation = null
+ambient_volume_attenuation = null
 metadata/_custom_type_script = "uid://bjpmu5sklv5h8"

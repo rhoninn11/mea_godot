@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AudioColor" load_steps=2 format=3 uid="uid://bune4j2aup70c"]
+
+[ext_resource type="Script" uid="uid://po4aoxl0dw2o" path="res://audio/resources/AudioColor.gd" id="2_leyrt"]
+
+[resource]
+script = ExtResource("2_leyrt")
+color = Color(0, 0, 0, 1)
+metadata/_custom_type_script = "uid://po4aoxl0dw2o"

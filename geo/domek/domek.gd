@@ -20,8 +20,9 @@ func edit_activity() -> void:
 
 func _ready() -> void:
 	in_edit = Engine.is_editor_hint();
-	if in_edit: return;		
-
+	if in_edit: return;	
+	
+	print("sanity")
 
 func _process(delta: float) -> void:
 	if not in_edit: return;

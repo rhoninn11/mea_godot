@@ -1,37 +1,20 @@
 @tool
-extends EditorScript
+extends Node
 
 var reload_counter: int = 0
 
-@export_tool_button("export") var export = export_mesh_resource 
+@export_tool_button("export") var export = export_mesh_resource
 
-func find_geo_mng() -> CSGCombiner3D:
-	var scene = get_scene()
-	var nodes = scene.get_children()
-	
-	var scriptable_geo: CSGCombiner3D
-	for node in nodes:
-		if node is CSGCombiner3D:
-			scriptable_geo = node
-			break
-	
-	return scriptable_geo
+@export var dural_geo: CSGCombiner3D = null;
 
 func export_mesh_resource():
-	var geo_mng = find_geo_mng()
-	if geo_mng != null:
-		csg_2_mesh(geo_mng)
+	assert(dural_geo);
+	csg_2_mesh(dural_geo, self.name);
 	
-func csg_2_mesh(geo_mng: CSGCombiner3D) -> void:
-	if geo_mng == null:
-		print("!!! failed to find geo_mng")
-		return
-	
+func csg_2_mesh(geo_mng: CSGCombiner3D, name: String) -> void:
 	var exported_mesh: ArrayMesh = geo_mng.bake_static_mesh()
 	var surfaces_num := exported_mesh.get_surface_count()
-	if surfaces_num == 0:
-		print("!!! no surface")
-		return
+	assert(surfaces_num > 0)
 	
 	var arrays = exported_mesh.surface_get_arrays(0)
 	if len(arrays) == 0:
@@ -40,9 +23,23 @@ func csg_2_mesh(geo_mng: CSGCombiner3D) -> void:
 	
 	print("+++ verts count ", len(arrays[Mesh.ARRAY_VERTEX]))
 	
-	var timestump = Time.get_datetime_string_from_system(true).replace(":", "-").replace(" ", "_")
-	var res_path = "res://tmp/geo_%s.tres" % timestump
-	ResourceSaver.save(exported_mesh, res_path)
-	print("+++ geometry saved at ", res_path)
+	var mesh_res_path = "res://tmp/geo_%s.tres" % [name]
+	var glb_res_path = "res://tmp/geo_%s.glb" % [name]
+	ResourceSaver.save(exported_mesh, mesh_res_path)
+	print("+++ geometry saved at ", mesh_res_path)
+
+
+	var v_mesh: = MeshInstance3D.new();
+	v_mesh.mesh = exported_mesh;
+	var g_doc: = GLTFDocument.new();
+	var g_state: = GLTFState.new();
+
+	var e0 = g_doc.append_from_scene(v_mesh, g_state);
+	var e1 = g_doc.write_to_filesystem(g_state, glb_res_path);
+	if e1 == OK:
+		print("+++ geometry :D saved at ", glb_res_path);
+	else:
+		print("+++ failed to save");
+	print(e0, " ", e1);
 	
 	

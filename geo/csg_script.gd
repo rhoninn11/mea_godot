@@ -7,6 +7,7 @@ extends CSGCombiner3D
 @export_tool_button("regenerate") var regenerate_btn = regenerate
 
 @export var scale_curve: Curve
+@export var mesh_resolution: int = 8
 
 # this functions will go to other lib script
 func circle(points: int, closed: bool, fill_c: float) -> PackedVector2Array:
@@ -111,7 +112,7 @@ func spawn_cap(resolution: int, t: Transform3D, name: String) -> void:
 	cap_0.transform = t
 
 func csg_geometry():
-	var resolution = 8
+	var resolution = mesh_resolution;
 	const bigger: float = 7
 	var _profile = bump(resolution)
 	

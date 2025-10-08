@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ole3u587afsi"]
+
+[ext_resource type="Script" uid="uid://dts6hcgmm2ygg" path="res://geo/mesh_export.gd" id="1_dlvxh"]
+
+[node name="MeshExport" type="Node"]
+script = ExtResource("1_dlvxh")

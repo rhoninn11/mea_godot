@@ -63,13 +63,31 @@ func bump(resolution: int) -> PackedVector2Array:
 	var end = rotate_2d(quater, 0.75)
 	
 	start = translate_2d(start, Vector2(2, -0.5))
+	start.get(0)
+	
 	end = translate_2d(end, Vector2(-2, -0.5))
 	var middle = translate_2d(half, Vector2(0, 0.5))
 
 	start.append_array(middle)
 	start.append_array(end)
-	return start
 
+	return translate_2d(start, Vector2(0, 1))
+
+func half_bump(resolution: int) -> PackedVector2Array:
+	if resolution < 4:
+		push_error("+++ bad resolution")
+	
+	var quater_a = circle(resolution, true, 0.25)
+	var quater_b = circle(resolution, true, 0.25)
+	quater_b.reverse()
+
+	quater_a = translate_2d(quater_a, Vector2(0, 0.5))
+	quater_b = rotate_2d(quater_b, 0.5)
+	quater_b = translate_2d(quater_b, Vector2(2, -0.5))
+
+	quater_a.append_array([Vector2(0, -1.5)])
+	quater_a.append_array(quater_b)
+	return translate_2d(quater_a, Vector2(0, 1))
 
 func regenerate():
 	for child in get_children():
@@ -80,6 +98,17 @@ func regenerate():
 	csg_geometry()
 	print("geometry spawned")
 
+
+func spawn_cap(resolution: int, t: Transform3D, name: String) -> void:
+	var cap_0 = CSGPolygon3D.new()
+	self.add_child(cap_0)
+	cap_0.owner = get_tree().edited_scene_root
+
+	cap_0.name = name
+	cap_0.mode = CSGPolygon3D.MODE_SPIN;
+	cap_0.spin_degrees = 180
+	cap_0.polygon = half_bump(resolution)
+	cap_0.transform = t
 
 func csg_geometry():
 	var resolution = 8
@@ -92,11 +121,29 @@ func csg_geometry():
 	
 	tranform_polygon.name = "tranformed_profile"
 	tranform_polygon.polygon = _profile
-	var ts = Libgeo.Shapes.circle_4d(64, 0.75, false)
+	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
 	var scale = Transform3D.IDENTITY.scaled(Vector3(bigger, bigger, bigger))
 	ts = Libgeo.Math.ts_xform_orgin(ts, scale)
 	ts = Libgeo.Math.ts_scale_along(ts, scale_curve)
 	tranform_polygon.transform_data = Libgeo.Interop.Ts2Fs(ts)
+
+	# var cap_0 = CSGPolygon3D.new()
+	# self.add_child(cap_0)
+	# cap_0.owner = get_tree().edited_scene_root
+
+	# cap_0.name = "cap_0"
+	# cap_0.mode = CSGPolygon3D.MODE_SPIN;
+	# cap_0.spin_degrees = 180
+	# cap_0.polygon = half_bump(resolution)
+	# cap_0.transform = ts.get(len(ts) - 1)
+
+	var first_t: = ts[0];
+	first_t.basis.x = -first_t.basis.x
+	first_t.basis.z = -first_t.basis.z
+	spawn_cap(resolution, first_t, "cap_0")
+
+	var last_t: = ts[len(ts) - 1];
+	spawn_cap(resolution, last_t, "cap_1")
 
 func test_geometry() -> void:
 	var csg_polygon = CSGPolygon3D.new()

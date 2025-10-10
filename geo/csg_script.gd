@@ -9,6 +9,8 @@ extends CSGCombiner3D
 @export var scale_curve: Curve
 @export var mesh_resolution: int = 8
 
+var shift: float = 1.5;
+
 # this functions will go to other lib script
 func circle(points: int, closed: bool, fill_c: float) -> PackedVector2Array:
 	var scratchpad: PackedVector2Array
@@ -72,7 +74,7 @@ func bump(resolution: int) -> PackedVector2Array:
 	start.append_array(middle)
 	start.append_array(end)
 
-	return translate_2d(start, Vector2(0, 1))
+	return translate_2d(start, Vector2(0, shift))
 
 func half_bump(resolution: int) -> PackedVector2Array:
 	if resolution < 4:
@@ -82,13 +84,13 @@ func half_bump(resolution: int) -> PackedVector2Array:
 	var quater_b = circle(resolution, true, 0.25)
 	quater_b.reverse()
 
-	quater_a = translate_2d(quater_a, Vector2(0, 0.5))
+	quater_a = translate_2d(quater_a, Vector2(0, 0.5 + shift))
 	quater_b = rotate_2d(quater_b, 0.5)
-	quater_b = translate_2d(quater_b, Vector2(2, -0.5))
+	quater_b = translate_2d(quater_b, Vector2(2, -0.5 + shift))
 
-	quater_a.append_array([Vector2(0, -1.5)])
+	quater_a.append_array([Vector2(0, 0)])
 	quater_a.append_array(quater_b)
-	return translate_2d(quater_a, Vector2(0, 1))
+	return quater_a
 
 func regenerate():
 	for child in get_children():
@@ -110,6 +112,7 @@ func spawn_cap(resolution: int, t: Transform3D, name: String) -> void:
 	cap_0.spin_degrees = 180
 	cap_0.polygon = half_bump(resolution)
 	cap_0.transform = t
+	cap_0.spin_sides = resolution
 
 func csg_geometry():
 	var resolution = mesh_resolution;

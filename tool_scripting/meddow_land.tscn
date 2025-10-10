@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://coye4xcnm2in"]
+[gd_scene load_steps=16 format=3 uid="uid://coye4xcnm2in"]
 
 [ext_resource type="Shader" uid="uid://bb8bi3bd0q5my" path="res://tool_scripting/land.tres" id="1_fclvo"]
 [ext_resource type="Script" uid="uid://do1ahwovpumdd" path="res://geo/domek/domek.gd" id="2_ffbo2"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://d1lqk4p0hc44x" path="res://audio/vivaldi.mp3" id="3_xsxfr"]
 [ext_resource type="PackedScene" uid="uid://c0calr38syn4d" path="res://geo/csg_scene.tscn" id="4_yrpjq"]
 [ext_resource type="AudioStream" uid="uid://bc1u4dqryyo12" path="res://audio/retro_demo.mp3" id="5_yeest"]
+[ext_resource type="PackedScene" uid="uid://bgtfamvegrt75" path="res://exp/updating_instances.tscn" id="6_d6pb1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sjuej"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -39,13 +40,13 @@ data = PackedVector3Array(2.11117, 0.49995, -8.294, -6.98182, 0.49995, -15.6587,
 environment = SubResource("Environment_s485t")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, 0.360312, -0.346663, -1.49012e-08, -0.693326, -0.720624, -0.5, -0.624078, 0.600438, -5.41782, 6.10854, 9.38393)
+transform = Transform3D(-0.866025, -0.374188, 0.331637, -1.49012e-08, 0.663273, 0.748378, -0.5, 0.648113, -0.574411, -5.41782, 6.10854, 9.38393)
 light_color = Color(0.625597, 0.625597, 0.625597, 1)
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(13.1012, 0, 0, 0, 1, 0, 0, 0, 7.90201, 0, 0, 0)
+transform = Transform3D(13.1012, 0.000609, -0.00156398, -0.00797694, 1, 0.00508259, 0.00259822, -0.00064308, 7.90201, 0, -0.5, 0)
 mesh = SubResource("BoxMesh_1emq6")
 surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 
@@ -53,6 +54,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 transform = Transform3D(-0.463466, 0, -0.886115, 0, 1, 0, 0.886115, 0, -0.463466, -4.78482, 0, -14.9416)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.773246, 0)
 material_override = SubResource("StandardMaterial3D_ffbo2")
 script = ExtResource("2_ffbo2")
 
@@ -106,10 +108,16 @@ metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 shape = SubResource("ConcavePolygonShape3D_xsxfr")
 
 [node name="player" parent="." instance=ExtResource("3_sjuej")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85615, 2.42439, 7.48787)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="csg_scene" parent="." instance=ExtResource("4_yrpjq")]
-transform = Transform3D(0.61616, -0.00018102, -0.787621, 1.52959e-05, 1, -0.000217883, 0.787621, 0.000122223, 0.61616, -16.5136, 3.11162, 23.6201)
+transform = Transform3D(0.993612, -0.00018102, -0.112852, 0.000166095, 1, -0.00014187, 0.112852, 0.000122223, 0.993612, -16.5132, 0.73496, 23.6198)
+
+[node name="updating_instances" parent="." instance=ExtResource("6_d6pb1")]
+transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 15.473, 0, 22.426)
+num = 64
+fill = 3.0
+y_scale = 10.0

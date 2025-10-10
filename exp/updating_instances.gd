@@ -1,7 +1,6 @@
 @tool
 extends MultiMeshInstance3D
 
-@export_tool_button("regenerate") var btn = regenerate
 @export_tool_button("regenerate_ok") var btn_ok = regenerate_ok
 
 @export var num: int = 8;
@@ -26,31 +25,37 @@ func merge_instance_data(transforms: PackedFloat32Array, colors: PackedFloat32Ar
 
 	return shared_data
 
-func regenerate():
-	var color_data := Libcolor.Utils.gradient(0.1, 0.6, num)
-	regenerate_with_color(color_data)
-	print("+++ regenerate called")
-
-func regenerate_ok():
+func gen_color() -> PackedFloat32Array:
 	var ok_0 := Vector3(0.1, 0.62, 0.2)
 	var ok_1 := Vector3(0.6, 0.62, 0.2)
 	var color_data := Libcolor.Utils.ok_gradient(ok_0, ok_1, num)
-	regenerate_with_color(color_data)
-	print("+++ ok regeneratge called")
+	return color_data;
+
+func regenerate_ok():
+	var color_data: = gen_color();
+	regenerate_with_color(color_data);
+	print("+++ ok regeneratge called");
 
 var timer: float = 0;
+var total_time: float = 0;
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	color_bytes = gen_color();
+
 func _process(delta: float) -> void:
 	const recalc_every = 1
 	if Engine.is_editor_hint():
 		return
 
 	timer += delta;
-	if timer > recalc_every:
-		timer -= recalc_every	
-		transform_bytes = calc_positions(randf()*8)
-		print(len(color_bytes))
-		update_buffer()
-		print("data updated")
+	total_time += delta;
+	# if timer > recalc_every:
+	# 	timer -= recalc_every	
+	transform_bytes = calc_positions(total_time)
+	update_buffer()
 
 var transform_bytes: PackedFloat32Array
 var color_bytes: PackedFloat32Array
@@ -59,13 +64,26 @@ func update_buffer() -> void:
 	assert(self.multimesh);
 	multimesh.buffer = merge_instance_data(transform_bytes, color_bytes)
 
+@export var y_scale: float = 5;
+@export var xz_radius: float = 5;
 func calc_positions(offset: float) -> PackedFloat32Array:
-	var spots = Libgeo.Shapes.circle_4d(num, fill, false);
-	spots = Libgeo.Math.ts_xform_orgin(spots, Libgeo.Math.scale_m(5));
-	var translation = Transform3D.IDENTITY
-	translation.origin.y = offset;
-	spots = Libgeo.Math.ts_xform_orgin(spots, translation)
-	return Libgeo.Interop.Ts2Fs(spots)
+	var tforms = Libgeo.Shapes.circle_4d(num, fill, false);
+	var prog = Libgeo.Shapes.line_y_4d(num, fill*y_scale);
+
+	var line: = Libgeo.Shapes.line_1d(num);
+	var result: = Libgeo.Shapes.empty_1d(num);
+	print("results len: ", len(result))
+	for i in range(num):
+		result[i] = line[i]*y_scale + sin(line[i]*TAU+offset)
+		# result[i] = line[i]*y_scale;
+	
+	var tmp: = Libgeo.Shapes.up_1d_to_3d_y(result);
+	prog = Libgeo.Shapes.up_3d_to_4d(tmp); 
+
+	tforms = Libgeo.Math.ts_xform_orgin(tforms, Libgeo.Math.scale_m(xz_radius));
+	tforms = Libgeo.Math.ts_xforms_origin(tforms, prog);
+	
+	return Libgeo.Interop.Ts2Fs(tforms)
 
 func regenerate_with_color(color_data: PackedFloat32Array):
 	assert(mesh_src);

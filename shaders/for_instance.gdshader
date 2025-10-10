@@ -15,6 +15,7 @@ void fragment() {
 	} else {
 		ALBEDO = vec3(0, 0, 0);
 	}
+	ALBEDO = COLOR.rgb;
 }
 
 //void light() {

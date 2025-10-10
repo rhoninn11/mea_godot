@@ -18,7 +18,7 @@ point_count = 6
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0137575, 0, -0.0076251)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42871, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2904, 5.25633, 0)
 calculate_tangents = false
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
@@ -55,12 +55,11 @@ path_joined = false
 curve = SubResource("Curve3D_564e6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -1.7221, 0)
+transform = Transform3D(9.32278, 0, -9.16352, 0, 10, 0, 8.35781, 0, 10.2215, 0, 0, 0)
 mesh = SubResource("PlaneMesh_564e6")
 surface_material_override/0 = ExtResource("1_sevdo")
 
 [node name="ProceduralGeometry" parent="." instance=ExtResource("2_4dtpq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.04283, 0, -1.11301)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ProceduralGeometry"]
 transform = Transform3D(0.020925, -0.999781, 0, 0.999781, 0.020925, 0, 0, 0, 1, 0, 0, 0)

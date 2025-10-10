@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://bgtfamvegrt75"]
+
+[ext_resource type="Shader" uid="uid://8o630hklbo6o" path="res://shaders/for_instance.gdshader" id="1_6m57j"]
+[ext_resource type="Script" uid="uid://dp22x3jda7jr8" path="res://exp/updating_instances.gd" id="1_vkgjm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cmvv4"]
+render_priority = 0
+shader = ExtResource("1_6m57j")
+
+[sub_resource type="BoxMesh" id="BoxMesh_q4rqc"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_yv2gm"]
+transform_format = 1
+use_colors = true
+instance_count = 8
+mesh = SubResource("BoxMesh_q4rqc")
+buffer = PackedFloat32Array(-1, 0, 0, 5, 0, 1, 0, 0, 0, 0, -1, 0, 0.289948, 0.126323, 0.0824711, 1, -0.900969, 0, 0.433884, 4.50484, 0, 1, 0, 0, -0.433884, 0, -0.900969, 2.16942, 0.254672, 0.155299, 0.0619247, 1, -0.62349, 0, 0.781832, 3.11745, 0, 1, 0, 0, -0.781832, 0, -0.62349, 3.90916, 0.22027, 0.174903, 0.061697, 1, -0.222521, 0, 0.974928, 1.1126, 0, 1, 0, 0, -0.974928, 0, -0.222521, 4.87464, 0.18137, 0.191292, 0.0665349, 1, 0.222521, 0, 0.974928, -1.1126, 0, 1, 0, 0, -0.974928, 0, 0.222521, 4.87464, 0.122876, 0.20666, 0.0983213, 1, 0.62349, 0, 0.781832, -3.11745, 0, 1, 0, 0, -0.781832, 0, 0.62349, 3.90916, 0.0819107, 0.20953, 0.157629, 1, 0.900969, 0, 0.433884, -4.50484, 0, 1, 0, 0, -0.433884, 0, 0.900969, 2.16942, 0.0685776, 0.206554, 0.198961, 1, 1, 0, 1.22465e-16, -5, 0, 1, 0, 0, -1.22465e-16, 0, 1, 6.12323e-16, 0.0659746, 0.201618, 0.233816, 1)
+
+[node name="updating_instances" type="MultiMeshInstance3D"]
+material_overlay = SubResource("ShaderMaterial_cmvv4")
+multimesh = SubResource("MultiMesh_yv2gm")
+script = ExtResource("1_vkgjm")
+mesh_src = SubResource("BoxMesh_q4rqc")

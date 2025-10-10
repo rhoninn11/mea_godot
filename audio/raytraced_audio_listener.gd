@@ -187,7 +187,6 @@ func _ready() -> void:
 	else:
 		_pan_effect = AudioServer.get_bus_effect(i, 0)
 	
-	print("halo")
 	if is_enabled:
 		setup()
 
@@ -260,7 +259,7 @@ func clear():
 	rays.clear()
 	print("+++ clear call");
 
-
+@export var verbose: bool = false;
 var stat_timer: float = 0;
 func _process(delta: float) -> void:
 	if !auto_update:
@@ -271,11 +270,12 @@ func _process(delta: float) -> void:
 	const stat_delta: = 0.25;
 	stat_timer += delta;
 	if stat_timer > stat_delta:
-		print("summary should be:")
 		stat_timer -= stat_delta;
 
-		if stat_ray: 
-			print(stat_ray.summary(stat_delta));
+		if verbose:
+			print("summary should be:")
+			if stat_ray: 
+				print(stat_ray.summary(stat_delta));
 
 
 

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://clb36j20eu85p"]
+
+[ext_resource type="Script" uid="uid://cs25wq3b5orb6" path="res://scenes/vertival_component_v2.gd" id="1_0rbek"]
+
+[node name="VertivalComponentV2" type="Node"]
+script = ExtResource("1_0rbek")

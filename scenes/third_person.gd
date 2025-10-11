@@ -11,6 +11,7 @@ var var_speed: float = speed
 var selected_idx: int = 0;
 @onready var hand_arr: Array[Node3D] = [$pawn/right, $pawn/left];
 @onready var mesh_arr: Array[MeshInstance3D] = [$pawn/right/mesh, $pawn/left/mesh];
+@onready var plane_arr: Array[VerticalComponentInert] = [$pawn/right/plane_2d, $pawn/left/plane_2d];
 
 @onready var vert_pos: VerticalComponent = $pawn/VerticalComponent
 
@@ -46,6 +47,12 @@ func _process(delta: float) -> void:
 		ControlContext.control_state = Enums.ControlState.POINTING
 	else:
 		ControlContext.control_state = Enums.ControlState.TRAVEL
+	
+	for i in range(len(plane_arr)):
+		var obj: = plane_arr[i]
+		var cond_expr: = ControlContext.control_state == Enums.ControlState.POINTING;
+		cond_expr = cond_expr && i ==selected_idx;
+		obj.simulate(delta, cond_expr)
 		
 	if Input.is_action_just_pressed("tab"):
 		switch_hand()
@@ -119,8 +126,9 @@ func take_control() -> void:
 
 const default_pos:= Vector2(0,1)
 func update_hand() -> void:
-	var tmp = default_pos + vert_pos.fn_val()
-	hand_arr[selected_idx].transform.origin = Vector3(-tmp.x, tmp.y, -2)
+	for i in range(len(hand_arr)):
+		var calc_pos = default_pos + plane_arr[i].fn_val();
+		hand_arr[i].transform.origin = Vector3(-calc_pos.x, calc_pos.y, -1.3)
 
 func switch_hand() -> void:
 	mesh_arr[selected_idx].material_overlay = null

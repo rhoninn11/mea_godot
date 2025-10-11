@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=16 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
 [ext_resource type="Script" uid="uid://dhpnacfjofxaj" path="res://scenes/vertival_component.gd" id="2_hyabu"]
 [ext_resource type="AudioStream" uid="uid://duf1i82r8ul6m" path="res://audio/speed_up.wav" id="2_vurlo"]
 [ext_resource type="Shader" uid="uid://c154elpe4xn2b" path="res://shaders/third_person.gdshader" id="4_h6acs"]
+[ext_resource type="PackedScene" uid="uid://clb36j20eu85p" path="res://scenes/vertival_component_v2.tscn" id="5_dl8so"]
 [ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://audio/raytraced_audio_listener.gd" id="6_x45r8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6acs"]
@@ -45,7 +46,6 @@ mesh = SubResource("CapsuleMesh_pg6is")
 [node name="VerticalComponent" type="Node" parent="pawn"]
 script = ExtResource("2_hyabu")
 active_on = 2
-lim = 2.0
 metadata/_custom_type_script = "uid://dhpnacfjofxaj"
 
 [node name="RotationComponent" type="Node" parent="pawn"]
@@ -64,6 +64,9 @@ mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_a3bf3")
 
+[node name="plane_2d" parent="pawn/right" instance=ExtResource("5_dl8so")]
+active_on = 2
+
 [node name="left" type="Node3D" parent="pawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389956, 0.75, -1.2)
 
@@ -73,6 +76,9 @@ gi_mode = 2
 mesh = SubResource("SphereMesh_pg6is")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_h6acs")
+
+[node name="plane_2d" parent="pawn/left" instance=ExtResource("5_dl8so")]
+active_on = 2
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 

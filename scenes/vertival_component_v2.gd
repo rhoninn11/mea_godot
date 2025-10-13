@@ -12,9 +12,9 @@ func _ready() -> void:
 
 	assert(inertia_x && inertia_y)
 
-func _process(delta: float) -> void:
-	var mouse_capture := ControlContext.control_state == self.active_on
-	simulate(delta, mouse_capture);
+# func _process(delta: float) -> void:
+# 	var mouse_capture := ControlContext.control_state == self.active_on
+# 	simulate(delta, mouse_capture);
 
 func simulate(_delta: float, cond: bool):
 	var target = super.fn_val();

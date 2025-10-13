@@ -8,6 +8,7 @@ var m_pos: Vector2 = Vector2.ZERO
 var m_delta_pos: Vector2 = Vector2.ZERO
 @export var active_on: Enums.ControlState = Enums.ControlState.NONE
 
+
 func one_minus_one(val: Vector2, lim: float) -> Vector2:
 	return Vector2(clamp(val.x, -lim, lim), clamp(val.y, -lim, lim))
 
@@ -28,4 +29,5 @@ func simulate(_delta: float, active: bool) -> void:
 
 func fn_val() -> Vector2:
 	var lim: float = 1;
+	var lim_2d = Vector2(1, 2)
 	return one_minus_one(m_pos + m_delta_pos, lim);

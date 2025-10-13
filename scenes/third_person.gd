@@ -12,6 +12,8 @@ var selected_idx: int = 0;
 @onready var hand_arr: Array[Node3D] = [$pawn/right, $pawn/left];
 @onready var mesh_arr: Array[MeshInstance3D] = [$pawn/right/mesh, $pawn/left/mesh];
 @onready var plane_arr: Array[VerticalComponentInert] = [$pawn/right/plane_2d, $pawn/left/plane_2d];
+@onready var active_arr: Array[bool] = [false, false]
+@onready var poses_arr: Array[Vector2] = [Vector2(-1, 0.75), Vector2(1, 0.75)]
 
 @onready var vert_pos: VerticalComponent = $pawn/VerticalComponent
 
@@ -38,25 +40,37 @@ func _ready() -> void:
 	ControlContext.set_main(self);
 
 func _process(delta: float) -> void:
+	var spacja: = Input.is_action_pressed("mouse_capture")
+	if spacja: 
+		ControlContext.control_state = Enums.ControlState.POINTING
+		speed_t.start()
+	else:
+		ControlContext.control_state = Enums.ControlState.TRAVEL
+
+	
+
+	active_arr[0] = Input.is_action_pressed("right_hand");
+	active_arr[1] = Input.is_action_pressed("left_hand");
+
 	update_speed()
 	update_pos(delta)
 	update_playback(delta)
-	update_hand()
-	
-	if Input.is_action_pressed("mouse_capture"):
-		ControlContext.control_state = Enums.ControlState.POINTING
-	else:
-		ControlContext.control_state = Enums.ControlState.TRAVEL
-	
-	for i in range(len(plane_arr)):
-		var obj: = plane_arr[i]
-		var cond_expr: = ControlContext.control_state == Enums.ControlState.POINTING;
-		cond_expr = cond_expr && i ==selected_idx;
-		obj.simulate(delta, cond_expr)
-		
-	if Input.is_action_just_pressed("tab"):
-		switch_hand()
+	update_hand(delta)
 
+	# if Input.is_action_just_pressed("tab"):
+		# switch_hand()
+
+func update_hand(delta: float) -> void:
+	for i in range(len(hand_arr)):
+
+		plane_arr[i].simulate(delta, active_arr[i]);
+		var calc_pos = poses_arr[i] + plane_arr[i].fn_val();
+		hand_arr[i].transform.origin = Vector3(-calc_pos.x, calc_pos.y, -1.3);
+
+		if active_arr[i]:
+			mesh_arr[i].material_overlay = highlight
+		else:
+			mesh_arr[i].material_overlay = null
 
 func update_pos(delta: float) -> void:
 	if not has_control:
@@ -72,15 +86,16 @@ func update_pos(delta: float) -> void:
 		self.transform.origin += move_delta
 	
 	self.transform.basis = xform.basis
-	
+
+@export var speed_mult: float = 2;
 func update_speed() -> void:
 	speed_up_last = speed_up
 	speed_up = speed_t.time_left > 0
 	
 	if speed_up:
-		var_speed = speed * 2
+		var_speed = speed * speed_mult;
 	else:
-		var_speed = speed
+		var_speed = speed;
 		
 	just_speed_up = speed_up and not speed_up_last
 
@@ -123,15 +138,3 @@ func pass_control() -> void:
 	
 func take_control() -> void:
 	has_control = false
-
-const default_pos:= Vector2(0,1)
-func update_hand() -> void:
-	for i in range(len(hand_arr)):
-		var calc_pos = default_pos + plane_arr[i].fn_val();
-		hand_arr[i].transform.origin = Vector3(-calc_pos.x, calc_pos.y, -1.3)
-
-func switch_hand() -> void:
-	mesh_arr[selected_idx].material_overlay = null
-	selected_idx += 1
-	selected_idx = selected_idx%2
-	mesh_arr[selected_idx].material_overlay = highlight

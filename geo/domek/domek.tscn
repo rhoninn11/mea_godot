@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://cepuw5or1tqbe"]
+
+[ext_resource type="Script" uid="uid://do1ahwovpumdd" path="res://geo/domek/domek.gd" id="1_srfpl"]
+[ext_resource type="AudioStream" uid="uid://d1lqk4p0hc44x" path="res://audio/vivaldi.mp3" id="2_4tkam"]
+[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://audio/raytraced_audio_player_3d.gd" id="3_fu4hh"]
+[ext_resource type="AudioStream" uid="uid://bc1u4dqryyo12" path="res://audio/retro_demo.mp3" id="4_ju03k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffbo2"]
+albedo_color = Color(0.673979, 0.559325, 0.535461, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_srfpl"]
+data = PackedVector3Array(-2, 0, -2, -6, 0, 6, 6, 0, -6, -6, 20, 6, 2, 20, 2, 2, 20, 6, 6, 0, 6, 2, 16, 6, 6, 16, 6, 6, 16, 2, 6, 0, -6, 6, 16, 6, 6, 20, -6, 6, 16, 2, 6, 20, 2, 2, 20, 2, 6, 20, -6, 6, 20, 2, 6, 0, -6, 6, 16, 2, 6, 20, -6, 2, 20, 2, -6, 20, -6, 6, 20, -6, -6, 20, -6, -6, 4, -2, -6, 4, -6, -6, 0, 6, -2, 0, -2, -6, 0, -2, -2, 4, -6, -6, 20, -6, -6, 4, -6, -6, 20, -6, -6, 20, 6, -6, 0, 6, -6, 4, -2, -6, 20, -6, -6, 0, 6, 6, 0, 6, 6, 16, 6, 6, 0, -6, 6, 0, -6, 6, 20, -6, -6, 20, -6, 2, 16, 6, 6, 0, 6, -6, 0, 6, -6, 0, 6, 6, 0, 6, 6, 0, -6, 6, 0, -6, -2, 4, -6, -2, 0, -6, -2, 0, -2, 6, 0, -6, -2, 0, -6, 2, 16, 6, -6, 0, 6, -6, 20, 6, -6, 20, -6, -2, 4, -6, 6, 0, -6, 2, 16, 6, -6, 20, 6, 2, 20, 6, -6, 4, -2, -6, 0, 6, -6, 0, -2, -6, 20, -6, 2, 20, 2, -6, 20, 6, 5.9, 0.1, 5.9, 5.9, 16, 5.9, 2, 16, 5.9, -5.9, 4, -2, -5.9, 19.9, -5.9, -5.9, 4, -5.9, -5.9, 4, -5.9, -5.9, 19.9, -5.9, -2, 4, -5.9, -5.9, 4, -2, -5.9, 0.1, 5.9, -5.9, 19.9, -5.9, 5.9, 0.1, -5.9, -5.9, 0.1, 5.9, -2, 0.1, -2, -5.9, 19.9, -5.9, 5.9, 0.1, -5.9, -2, 4, -5.9, -5.9, 0.1, -2, -5.9, 0.1, 5.9, -5.9, 4, -2, -5.9, 0.1, -2, -2, 0.1, -2, -5.9, 0.1, 5.9, -5.9, 0.1, 5.9, 2, 16, 5.9, -5.9, 19.9, 5.9, -5.9, 19.9, 5.9, 2, 19.9, 2, -5.9, 19.9, -5.9, -5.9, 19.9, 5.9, 2, 16, 5.9, 2, 19.9, 5.9, -5.9, 19.9, 5.9, 2, 19.9, 5.9, 2, 19.9, 2, -5.9, 0.1, 5.9, -5.9, 19.9, 5.9, -5.9, 19.9, -5.9, -2, 4, -5.9, 5.9, 0.1, -5.9, -2, 0.1, -5.9, 5.9, 0.1, -5.9, 5.9, 0.1, 5.9, -5.9, 0.1, 5.9, -5.9, 0.1, 5.9, 5.9, 0.1, 5.9, 2, 16, 5.9, 5.9, 0.1, -5.9, 5.9, 16, 5.9, 5.9, 0.1, 5.9, -2, 0.1, -5.9, 5.9, 0.1, -5.9, -2, 0.1, -2, -5.9, 19.9, -5.9, 5.9, 19.9, -5.9, 5.9, 0.1, -5.9, -5.9, 19.9, -5.9, 2, 19.9, 2, 5.9, 19.9, -5.9, 5.9, 19.9, -5.9, 5.9, 16, 2, 5.9, 0.1, -5.9, 5.9, 19.9, 2, 5.9, 19.9, -5.9, 2, 19.9, 2, 5.9, 19.9, -5.9, 5.9, 19.9, 2, 5.9, 16, 2, 5.9, 0.1, -5.9, 5.9, 16, 2, 5.9, 16, 5.9, 2, 16, 6, 2, 20, 6, 2, 16, 5.9, 2, 20, 2, 2, 19.9, 2, 2, 19.9, 5.9, 2, 19.9, 5.9, 2, 16, 5.9, 2, 20, 6, 2, 20, 2, 2, 19.9, 5.9, 2, 20, 6, 2, 19.9, 2, 2, 20, 2, 6, 20, 2, 6, 16, 2, 5.9, 16, 2, 5.9, 19.9, 2, 2, 19.9, 2, 6, 20, 2, 5.9, 19.9, 2, 6, 16, 2, 5.9, 19.9, 2, 6, 20, 2, 5.9, 16, 5.9, 2, 16, 6, 2, 16, 5.9, 6, 16, 6, 5.9, 16, 2, 6, 16, 2, 2, 16, 6, 5.9, 16, 5.9, 6, 16, 6, 6, 16, 6, 5.9, 16, 5.9, 5.9, 16, 2, -5.9, 4, -5.9, -2, 4, -5.9, -6, 4, -6, -2, 0.1, -5.9, -2, 0, -6, -2, 4, -6, -6, 4, -2, -5.9, 4, -5.9, -6, 4, -6, -6, 4, -2, -6, 0, -2, -5.9, 4, -2, -5.9, 0.1, -2, -6, 0, -2, -2, 0.1, -2, -2, 0, -2, -2, 0, -6, -2, 0.1, -2, -2, 4, -6, -2, 4, -5.9, -2, 0.1, -5.9, -5.9, 0.1, -2, -5.9, 4, -2, -6, 0, -2, -2, 0.1, -5.9, -2, 0.1, -2, -2, 0, -6, -2, 4, -6, -6, 4, -6, -2, 4, -5.9, -2, 0.1, -2, -6, 0, -2, -2, 0, -2, -6, 4, -2, -5.9, 4, -2, -5.9, 4, -5.9)
+
+[node name="StaticBody3D2" type="StaticBody3D"]
+transform = Transform3D(0.0448751, 0, -0.998993, 0, 1, 0, 0.998993, 0, 0.0448751, 0, 0, 0)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." node_paths=PackedStringArray("collistion", "geo_arr")]
+material_override = SubResource("StandardMaterial3D_ffbo2")
+script = ExtResource("1_srfpl")
+collistion = NodePath("../csg_colision")
+geo_arr = [NodePath("geo_000"), NodePath("geo_001"), NodePath("geo_002"), NodePath("geo_003")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.17895, 5.37369, -1.49623)
+omni_attenuation = 0.43
+omni_shadow_mode = 0
+
+[node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="CSGCombiner3D/OmniLight3D"]
+transform = Transform3D(-0.463466, 0, 0.886115, 0, 1, 0, -0.886115, 0, -0.463466, 0, 0, 0)
+stream = ExtResource("2_4tkam")
+attenuation_model = 2
+volume_db = -14.118
+script = ExtResource("3_fu4hh")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 0, 0, 1, -2.96735, 4.26901, -7.8201)
+light_color = Color(0.391482, 0.234803, 0.557198, 1)
+omni_attenuation = 0.43
+omni_shadow_mode = 0
+
+[node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="CSGCombiner3D/OmniLight3D2"]
+transform = Transform3D(-0.463466, 0, 0.886115, 0, 1, 0, -0.886115, 0, -0.463466, 0, 0, 0)
+stream = ExtResource("4_ju03k")
+attenuation_model = 2
+volume_db = -14.118
+unit_size = 5.0
+autoplay = true
+script = ExtResource("3_fu4hh")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="geo_000" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+size = Vector3(12, 20, 12)
+
+[node name="geo_001" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+operation = 2
+size = Vector3(11.8, 19.8, 11.8)
+
+[node name="geo_002" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 20, 6)
+operation = 2
+size = Vector3(8, 8, 8)
+
+[node name="geo_003" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
+operation = 2
+size = Vector3(8, 8, 8)
+
+[node name="csg_colision" type="CollisionShape3D" parent="."]
+shape = SubResource("ConcavePolygonShape3D_srfpl")

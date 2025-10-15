@@ -2,6 +2,7 @@ class_name VerticalComponentInert
 extends VerticalComponent
 
 # TODO: Stąd chciałbym przenieś inercję trochę wyżej
+@export var higher_val: float = 0;
 
 var inertia_x: Inertia = null;
 var inertia_y: Inertia = null;

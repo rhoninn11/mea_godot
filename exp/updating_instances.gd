@@ -72,7 +72,6 @@ func calc_positions(offset: float) -> PackedFloat32Array:
 
 	var line: = Libgeo.Shapes.line_1d(num);
 	var result: = Libgeo.Shapes.empty_1d(num);
-	print("results len: ", len(result))
 	for i in range(num):
 		result[i] = line[i]*y_scale + sin(line[i]*TAU+offset)
 		# result[i] = line[i]*y_scale;

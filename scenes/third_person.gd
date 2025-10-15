@@ -17,6 +17,8 @@ var selected_idx: int = 0;
 
 @onready var vert_pos: VerticalComponent = $pawn/VerticalComponent
 
+@onready var plane_char: VerticalComponentInert = $pawn/plane_2d
+
 
 var speed_up: bool = false
 var speed_up_last: bool = false
@@ -39,6 +41,8 @@ func _ready() -> void:
 	ControlContext.register(self);
 	ControlContext.set_main(self);
 
+	plane_char.lim_2d = Vector2(1000, 1)
+
 func _process(delta: float) -> void:
 	var spacja: = Input.is_action_pressed("mouse_capture")
 	if spacja: 
@@ -51,6 +55,8 @@ func _process(delta: float) -> void:
 
 	active_arr[0] = Input.is_action_pressed("right_hand");
 	active_arr[1] = Input.is_action_pressed("left_hand");
+
+	plane_char.simulate(delta, !active_arr[0] && !active_arr[1]);
 
 	update_speed()
 	update_pos(delta)
@@ -76,7 +82,18 @@ func update_pos(delta: float) -> void:
 	if not has_control:
 		return
 	
-	var xform := Transform3D.IDENTITY.rotated(Vector3.UP, rot.fn_turn() + PI) 
+	var char_delta: = plane_char.fn_val().x;
+	
+	var xform := Transform3D.IDENTITY;
+	var angle := char_delta + PI
+	var m_forward := cos(angle) * Vector3.FORWARD + sin(angle) * Vector3.LEFT
+	var m_left := cos(angle + PI*0.5) * Vector3.FORWARD + sin(angle + PI*0.5) * Vector3.LEFT
+	UiManager.print("m_forward", str(m_forward))
+	UiManager.print("m_left", str(m_left))
+
+	xform.basis.z = m_forward;
+	xform.basis.x = m_left;
+
 	var move := Input.get_vector("up", "down", "left", "right")
 	var move_3d := Vector3(move.y, 0, move.x)
 	

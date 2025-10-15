@@ -43,6 +43,9 @@ highlight = SubResource("StandardMaterial3D_h6acs")
 [node name="pawn" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_pg6is")
 
+[node name="plane_2d" parent="pawn" instance=ExtResource("5_dl8so")]
+active_on = 2
+
 [node name="VerticalComponent" type="Node" parent="pawn"]
 script = ExtResource("2_hyabu")
 active_on = 2

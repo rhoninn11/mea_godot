@@ -50,7 +50,7 @@ script = ExtResource("3_fu4hh")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
 [node name="geo_000" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+transform = Transform3D(1, 0, 8.97795e-07, 0, 1, 0, -8.97795e-07, 0, 1, 0, 10, 0)
 size = Vector3(12, 20, 12)
 
 [node name="geo_001" type="CSGBox3D" parent="CSGCombiner3D"]

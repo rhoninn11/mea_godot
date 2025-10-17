@@ -8,15 +8,20 @@ class_name Inertia
 
 static func init(in_data: InertConfig) -> Inertia:
 	var inertia := Inertia.new()
-	var f_helper := in_data.freq * PI
-	inertia.k1 = in_data.zeta / f_helper
+	var f_helper := in_data.m_freq * PI
+	inertia.k1 = in_data.m_zeta / f_helper
 	inertia.k2 = 1 / (4 * f_helper * f_helper)
-	inertia.k3 = (in_data.r * inertia.k1) / 2
+	inertia.k3 = (in_data.m_r * inertia.k1) / 2
 	return inertia	
+
 
 
 var y: float = 0
 var y_d: float = 0
+
+func reset(val: float) -> void:
+	y = val;
+	y_d = 0;
 
 func simulate(target: float, delta: float) -> void:
 	var x_d = 0;

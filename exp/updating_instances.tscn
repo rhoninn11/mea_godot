@@ -8,6 +8,7 @@ render_priority = 0
 shader = ExtResource("1_6m57j")
 
 [sub_resource type="BoxMesh" id="BoxMesh_q4rqc"]
+resource_local_to_scene = true
 
 [sub_resource type="MultiMesh" id="MultiMesh_yv2gm"]
 transform_format = 1

@@ -6,6 +6,10 @@ extends MultiMeshInstance3D
 @export var num: int = 8;
 @export var mesh_src: Mesh;
 @export var fill: float = 0.5;
+@export var global: bool = false;
+
+var m_xform_bytes: PackedFloat32Array
+var m_color_bytes: PackedFloat32Array
 
 func merge_instance_data(transforms: PackedFloat32Array, colors: PackedFloat32Array) -> PackedFloat32Array:
 	var n = num
@@ -32,9 +36,14 @@ func gen_color() -> PackedFloat32Array:
 	return color_data;
 
 func regenerate_ok():
-	var color_data: = gen_color();
-	regenerate_with_color(color_data);
-	print("+++ ok regeneratge called");
+	assert(mesh_src)
+	regenerate_with_color(num);
+	m_color_bytes = gen_color();
+	m_xform_bytes = calc_positions(0);
+	assert(multimesh)
+	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
+
+	print("+++ instances regenerated");
 
 var timer: float = 0;
 var total_time: float = 0;
@@ -43,7 +52,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	color_bytes = gen_color();
+	m_color_bytes = gen_color();
 
 func _process(delta: float) -> void:
 	const recalc_every = 1
@@ -52,17 +61,12 @@ func _process(delta: float) -> void:
 
 	timer += delta;
 	total_time += delta;
-	# if timer > recalc_every:
-	# 	timer -= recalc_every	
-	transform_bytes = calc_positions(total_time)
-	update_buffer()
+	m_xform_bytes = calc_positions(total_time)
+	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
-var transform_bytes: PackedFloat32Array
-var color_bytes: PackedFloat32Array
 
-func update_buffer() -> void:
-	assert(self.multimesh);
-	multimesh.buffer = merge_instance_data(transform_bytes, color_bytes)
+func update_buffer(mm: MultiMesh, xform_b_arr: PackedFloat32Array, color_b_arr: PackedFloat32Array) -> void:
+	mm.buffer = merge_instance_data(xform_b_arr, color_b_arr)
 
 @export var y_scale: float = 5;
 @export var xz_radius: float = 5;
@@ -81,25 +85,28 @@ func calc_positions(offset: float) -> PackedFloat32Array:
 
 	tforms = Libgeo.Math.ts_xform_orgin(tforms, Libgeo.Math.scale_m(xz_radius));
 	tforms = Libgeo.Math.ts_xforms_origin(tforms, prog);
+	if global:
+		var g_inv = self.global_transform.affine_inverse();
+		for i in range(len(tforms)):
+			tforms[i] = g_inv *tforms[i]
 	
 	return Libgeo.Interop.Ts2Fs(tforms)
 
-func regenerate_with_color(color_data: PackedFloat32Array):
-	assert(mesh_src);
+func calc_foreign_possition(offset: float) -> PackedFloat32Array:
+
+	
+	return calc_positions(offset)
+
+func regenerate_with_color(size: int):
 	if not multimesh:
 		multimesh = MultiMesh.new()
 		var shader_material: = ShaderMaterial.new();
 		shader_material.shader = load("res://shaders/for_instance.gdshader");
 		self.material_overlay = shader_material;
 
-	transform_bytes = calc_positions(0);
-	color_bytes = color_data;
-
-
 	multimesh.instance_count = 0;
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D;
 	multimesh.use_colors = true;
 
-	multimesh.instance_count = num;
-	update_buffer()
+	multimesh.instance_count = size;
 	multimesh.mesh = self.mesh_src;

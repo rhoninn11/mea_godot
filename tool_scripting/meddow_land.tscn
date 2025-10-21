@@ -62,6 +62,13 @@ transform = Transform3D(1.21188, 0.000105331, 2.78366, -0.00261197, 0.999899, 0.
 mesh = SubResource("BoxMesh_1emq6")
 surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 
+[node name="updating_instances" parent="." instance=ExtResource("6_d6pb1")]
+transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 26.4082, 0, 9.68925)
+num = 64
+mesh_src = SubResource("BoxMesh_s485t")
+fill = 3.0
+y_scale = 10.0
+
 [node name="player" parent="." instance=ExtResource("3_sjuej")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.89382, 2, 5.72411)
 speed_mult = 5.5
@@ -71,13 +78,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="csg_scene" parent="." instance=ExtResource("4_yrpjq")]
 transform = Transform3D(0.993612, -0.00018102, -0.112852, 0.000166095, 1, -0.00014187, 0.112852, 0.000122223, 0.993612, -16.5132, 0.73496, 23.6198)
-
-[node name="updating_instances" parent="." instance=ExtResource("6_d6pb1")]
-transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 26.4082, 0, 9.68925)
-num = 64
-mesh_src = SubResource("BoxMesh_s485t")
-fill = 3.0
-y_scale = 10.0
 
 [node name="StaticBody3D2" parent="." instance=ExtResource("6_2wvyq")]
 transform = Transform3D(-0.886971, 0, 0.461826, 0, 1, 0, -0.461826, 0, -0.886971, -0.0379796, 0, -37.3798)

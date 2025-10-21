@@ -11,6 +11,8 @@ extends MultiMeshInstance3D
 var m_xform_bytes: PackedFloat32Array
 var m_color_bytes: PackedFloat32Array
 
+@export var xforms_driver: Node3D = null;
+
 func merge_instance_data(transforms: PackedFloat32Array, colors: PackedFloat32Array) -> PackedFloat32Array:
 	var n = num
 
@@ -39,7 +41,8 @@ func regenerate_ok():
 	assert(mesh_src)
 	regenerate_with_color(num);
 	m_color_bytes = gen_color();
-	m_xform_bytes = calc_positions(0);
+	var xforms: = calc_positions(0);
+	m_xform_bytes = Libgeo.Interop.Ts2Fs(xforms)
 	assert(multimesh)
 	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
@@ -61,7 +64,8 @@ func _process(delta: float) -> void:
 
 	timer += delta;
 	total_time += delta;
-	m_xform_bytes = calc_positions(total_time)
+	var xforms: = xform_calc(total_time);
+	m_xform_bytes = Libgeo.Interop.Ts2Fs(xforms);
 	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
 
@@ -70,7 +74,7 @@ func update_buffer(mm: MultiMesh, xform_b_arr: PackedFloat32Array, color_b_arr: 
 
 @export var y_scale: float = 5;
 @export var xz_radius: float = 5;
-func calc_positions(offset: float) -> PackedFloat32Array:
+func calc_positions(offset: float) -> Array[Transform3D]:
 	var tforms = Libgeo.Shapes.circle_4d(num, fill, false);
 	var prog = Libgeo.Shapes.line_y_4d(num, fill*y_scale);
 
@@ -85,17 +89,26 @@ func calc_positions(offset: float) -> PackedFloat32Array:
 
 	tforms = Libgeo.Math.ts_xform_orgin(tforms, Libgeo.Math.scale_m(xz_radius));
 	tforms = Libgeo.Math.ts_xforms_origin(tforms, prog);
+	return tforms;
+
+func locals_to_globals(locals: Array[Transform3D], _global: Transform3D) -> Array[Transform3D]:
+	var g_inv = _global.affine_inverse();
+	for i in range(len(locals)):
+		locals[i] = g_inv *locals[i];
+	return locals;
+
+
+func xform_calc(offset: float) -> Array[Transform3D]:
+	var xforms: Array[Transform3D]
+	if xforms_driver:
+		xforms = xforms_driver.give_xforms();
+	else:
+		xforms = calc_positions(offset);
+
 	if global:
-		var g_inv = self.global_transform.affine_inverse();
-		for i in range(len(tforms)):
-			tforms[i] = g_inv *tforms[i]
-	
-	return Libgeo.Interop.Ts2Fs(tforms)
+		xforms = locals_to_globals(xforms, self.global_transform);
 
-func calc_foreign_possition(offset: float) -> PackedFloat32Array:
-
-	
-	return calc_positions(offset)
+	return xforms;
 
 func regenerate_with_color(size: int):
 	if not multimesh:

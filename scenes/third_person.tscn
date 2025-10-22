@@ -28,6 +28,10 @@ render_priority = 0
 shader = ExtResource("4_h6acs")
 shader_parameter/hand = 0
 
+[sub_resource type="BoxMesh" id="BoxMesh_weqlu"]
+resource_local_to_scene = true
+size = Vector3(0.1, 0.2, 0.3)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w0x8w"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_h6acs"]
@@ -37,10 +41,6 @@ transform_format = 1
 instance_count = 1
 mesh = SubResource("CapsuleMesh_h6acs")
 buffer = PackedFloat32Array(2.10195e-44, 2.10195e-44, 1.4013e-45, 0, 2.24208e-44, 3.08286e-44, 2.38221e-44, 2.24208e-44, 3.22299e-44, 3.08286e-44, 2.38221e-44, 2.94273e-44)
-
-[sub_resource type="BoxMesh" id="BoxMesh_weqlu"]
-resource_local_to_scene = true
-size = Vector3(0.1, 0.2, 0.3)
 
 [node name="third_person" type="Node3D"]
 script = ExtResource("1_3xrgj")
@@ -79,6 +79,8 @@ active_on = 2
 
 [node name="left" type="Node3D" parent="pawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389956, 0.75, -1.2)
+script = ExtResource("6_weqlu")
+alt_mode = true
 
 [node name="mesh" type="MeshInstance3D" parent="pawn/left"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, -0.5)
@@ -89,6 +91,11 @@ surface_material_override/0 = SubResource("ShaderMaterial_h6acs")
 
 [node name="plane_2d" parent="pawn/left" instance=ExtResource("5_dl8so")]
 active_on = 2
+
+[node name="updating_instances" parent="pawn" node_paths=PackedStringArray("xforms_driver") instance=ExtResource("9_oh1c0")]
+num = 64
+mesh_src = SubResource("BoxMesh_weqlu")
+xforms_driver = NodePath("../right")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 
@@ -125,8 +132,3 @@ ambient_pan_strength = null
 ambient_volume_interpolation = null
 ambient_volume_attenuation = null
 metadata/_custom_type_script = "uid://bjpmu5sklv5h8"
-
-[node name="updating_instances" parent="." node_paths=PackedStringArray("xforms_driver") instance=ExtResource("9_oh1c0")]
-num = 64
-mesh_src = SubResource("BoxMesh_weqlu")
-xforms_driver = NodePath("../pawn/right")

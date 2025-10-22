@@ -56,6 +56,7 @@ func _ready() -> void:
 		return
 	
 	m_color_bytes = gen_color();
+	multimesh = multimesh.duplicate()
 
 func _process(delta: float) -> void:
 	const recalc_every = 1

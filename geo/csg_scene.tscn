@@ -61,7 +61,7 @@ surface_material_override/0 = ExtResource("1_sevdo")
 
 [node name="ProceduralGeometry" parent="." instance=ExtResource("2_4dtpq")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ProceduralGeometry"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ProceduralGeometry"]
 transform = Transform3D(0.020925, -0.999781, 0, 0.999781, 0.020925, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("TorusMesh_564e6")
 

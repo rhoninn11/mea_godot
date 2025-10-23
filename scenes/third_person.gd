@@ -9,7 +9,7 @@ var var_speed: float = speed
 @onready var rot: RotationComponent = $pawn/RotationComponent
 
 var selected_idx: int = 0;
-@onready var hand_arr: Array[Node3D] = [$pawn/right, $pawn/left];
+@onready var hand_arr: Array[TransformDriver] = [$pawn/right, $pawn/left];
 @onready var mesh_arr: Array[MeshInstance3D] = [$pawn/right/mesh, $pawn/left/mesh];
 @onready var plane_arr: Array[VerticalComponentInert] = [$pawn/right/plane_2d, $pawn/left/plane_2d];
 @onready var active_arr: Array[bool] = [false, false]
@@ -32,7 +32,6 @@ var loud: bool = false
 var just_speed_up: bool = false
 
 @export var highlight: Material
-
 var has_control:bool = false
 
 func _ready() -> void:
@@ -42,6 +41,21 @@ func _ready() -> void:
 	ControlContext.set_main(self);
 
 	plane_char.lim_2d = Vector2(1000, 1)
+	
+	var nodes: = get_tree().get_nodes_in_group("trails");
+	var instances: Array[UpdatingInstances];
+	for node in nodes:
+		print(node.get_class())
+		if node.is_class("UpdatingInstances"):
+			instances.append(node)
+		if node.has_method("set_driver"):
+			instances.append(node)
+	print("+++ found %d instances"%[len(instances)])
+	assert(len(instances) >= len(hand_arr));
+	for i in range(len(hand_arr)):
+		instances[i].set_driver(hand_arr[i]);
+
+
 
 func _process(delta: float) -> void:
 	var spacja: = Input.is_action_pressed("mouse_capture")
@@ -88,8 +102,8 @@ func update_pos(delta: float) -> void:
 	var angle := char_delta + PI
 	var m_forward := cos(angle) * Vector3.FORWARD + sin(angle) * Vector3.LEFT
 	var m_left := cos(angle + PI*0.5) * Vector3.FORWARD + sin(angle + PI*0.5) * Vector3.LEFT
-	UiManager.print("m_forward", str(m_forward))
-	UiManager.print("m_left", str(m_left))
+	#UiManager.print("m_forward", str(m_forward))
+	#UiManager.print("m_left", str(m_left))
 
 	xform.basis.z = m_forward;
 	xform.basis.x = m_left;

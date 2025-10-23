@@ -26,6 +26,7 @@ render_priority = 0
 shader = ExtResource("1_fclvo")
 
 [sub_resource type="BoxMesh" id="BoxMesh_s485t"]
+size = Vector3(0.1, 0.33, 0.33)
 
 [node name="medow_land" type="Node3D"]
 
@@ -38,32 +39,41 @@ light_color = Color(0.625597, 0.625597, 0.625597, 1)
 shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(3.30472, 0.000609, 2.06766, -0.00324806, 1, 0.00102801, -1.9212, -0.00064308, 3.55664, 0.00276147, -0.508974, -32.4815)
-mesh = SubResource("BoxMesh_1emq6")
-surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(3.30472, 0.000609, 2.06766, -0.00324806, 1, 0.00102801, -1.9212, -0.00064308, 3.55664, 0.00276147, -0.508974, -32.4815)
-mesh = SubResource("BoxMesh_1emq6")
-surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="substrate" type="MeshInstance3D" parent="."]
 transform = Transform3D(11.8221, 0.0021786, 7.39671, -0.0116194, 3.57733, 0.00367753, -6.87277, -0.00230051, 12.7233, -0.000996435, -6.67959, -14.246)
 mesh = SubResource("BoxMesh_1emq6")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="platforma_a" type="MeshInstance3D" parent="."]
+transform = Transform3D(3.30472, 0.000609, 2.06766, -0.00324806, 1, 0.00102801, -1.9212, -0.00064308, 3.55664, 0.00276147, -0.508974, -32.4815)
+mesh = SubResource("BoxMesh_1emq6")
+surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
+
+[node name="platforma_b" type="MeshInstance3D" parent="."]
 transform = Transform3D(3.12645, 0.000609003, 1.64635, -0.00307284, 1.00001, 0.000818537, -1.81757, -0.000643083, 2.83193, -17.5596, -0.510045, 23.0755)
 mesh = SubResource("BoxMesh_1emq6")
 surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="platforma_c" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.21188, 0.000105331, 2.78366, -0.00261197, 0.999899, 0.000756884, -2.82502, -0.000879306, 1.19413, 25.9867, -0.508974, 6.86583)
 mesh = SubResource("BoxMesh_1emq6")
 surface_material_override/0 = SubResource("ShaderMaterial_ffbo2")
 
 [node name="updating_instances" parent="." instance=ExtResource("6_d6pb1")]
 transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 26.4082, 0, 9.68925)
+num = 64
+mesh_src = SubResource("BoxMesh_s485t")
+fill = 3.0
+y_scale = 10.0
+
+[node name="trail_a" parent="." groups=["trails"] instance=ExtResource("6_d6pb1")]
+transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 0, 0, 0)
+num = 64
+mesh_src = SubResource("BoxMesh_s485t")
+fill = 3.0
+y_scale = 10.0
+
+[node name="trail_b" parent="." groups=["trails"] instance=ExtResource("6_d6pb1")]
+transform = Transform3D(0.901704, 0, 0.432353, 0, 1, 0, -0.432353, 0, 0.901704, 0, 0, 0)
 num = 64
 mesh_src = SubResource("BoxMesh_s485t")
 fill = 3.0

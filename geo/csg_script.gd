@@ -6,28 +6,10 @@ extends CSGCombiner3D
 @export var fill: float = 0.5
 @export_tool_button("regenerate") var regenerate_btn = regenerate
 
-@export var scale_curve: Curve
+@export var p_scale_curve: Curve
 @export var mesh_resolution: int = 8
 
 var shift: float = 1.5;
-
-# this functions will go to other lib script
-func circle(points: int, closed: bool, fill_c: float) -> PackedVector2Array:
-	var scratchpad: PackedVector2Array
-	if closed:
-		points += 1
-	scratchpad.resize(points)
-	for i in range(points):
-		var phase = float(i)/(points-1) * TAU * fill_c
-		var circle_point = Vector2(cos(phase), sin(phase))
-		scratchpad[i] = circle_point
-	return scratchpad
-
-func pie(points: int, fill_c: float) -> PackedVector2Array:
-	var crcl = circle(points, true, fill_c)
-	if fill_c < 1:
-		crcl.append(Vector2.ZERO)
-	return crcl
 	
 func translate_2d(arr2D: PackedVector2Array, delta: Vector2) -> PackedVector2Array:
 	var scratchpad: PackedVector2Array
@@ -54,12 +36,11 @@ func scale_2d(arr2D: PackedVector2Array, scale: Vector2) -> PackedVector2Array:
 	return scratchpad
 
 # to ma taki kształ spawu chyba, ale nie wiem jeszcze jak to dobrze nazwać
-func bump(resolution: int) -> PackedVector2Array:
-	if resolution < 4:
-		push_error("+++ bad resolution")
+func bump(res: int) -> PackedVector2Array:
+	assert(res > 8)
 
-	var half = circle(resolution*2, true, 0.5)
-	var quater = circle(resolution, true, 0.25)
+	var half = Libgeo.Shapes.circle_2D_pos(res*2, 0.5, true)
+	var quater = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
 	quater.reverse()
 		
 	var start = rotate_2d(quater, 0.5)
@@ -80,8 +61,8 @@ func half_bump(resolution: int) -> PackedVector2Array:
 	if resolution < 4:
 		push_error("+++ bad resolution")
 	
-	var quater_a = circle(resolution, true, 0.25)
-	var quater_b = circle(resolution, true, 0.25)
+	var quater_a: = Libgeo.Shapes.circle_2D_pos(resolution, 0.25, true)
+	var quater_b: = Libgeo.Shapes.circle_2D_pos(resolution, 0.25, true)
 	quater_b.reverse()
 
 	quater_a = translate_2d(quater_a, Vector2(0, 0.5 + shift))
@@ -114,10 +95,16 @@ func spawn_cap(resolution: int, t: Transform3D, name: String) -> void:
 	cap_0.transform = t
 	cap_0.spin_sides = resolution
 
+@export var p_diameter: float = 7;
 func csg_geometry():
 	var resolution = mesh_resolution;
-	const bigger: float = 7
 	var _profile = bump(resolution)
+	
+	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
+	var t_scale: = Transform3D.IDENTITY.scaled(Vector3.ONE*p_diameter)
+	#Libgeo.Math.form_sxform(ts, t_scale)
+	ts = Libgeo.Math.ts_xform_orgin(ts, t_scale)
+	ts = Libgeo.Math.ts_scale_along(ts, p_scale_curve)
 	
 	var tranform_polygon = CSGAlongTransform.new()
 	self.add_child(tranform_polygon)
@@ -125,10 +112,6 @@ func csg_geometry():
 	
 	tranform_polygon.name = "tranformed_profile"
 	tranform_polygon.polygon = _profile
-	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
-	var scale = Transform3D.IDENTITY.scaled(Vector3(bigger, bigger, bigger))
-	ts = Libgeo.Math.ts_xform_orgin(ts, scale)
-	ts = Libgeo.Math.ts_scale_along(ts, scale_curve)
 	tranform_polygon.transform_data = Libgeo.Interop.Ts2Fs(ts)
 
 	# var cap_0 = CSGPolygon3D.new()

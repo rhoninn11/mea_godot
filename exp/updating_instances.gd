@@ -1,4 +1,5 @@
 @tool
+class_name UpdatingInstances
 extends MultiMeshInstance3D
 
 @export_tool_button("regenerate_ok") var btn_ok = regenerate_ok
@@ -12,6 +13,8 @@ var m_xform_bytes: PackedFloat32Array
 var m_color_bytes: PackedFloat32Array
 
 @export var xforms_driver: Node3D = null;
+func set_driver(n: Node3D) -> void:
+	xforms_driver = n;
 
 func merge_instance_data(transforms: PackedFloat32Array, colors: PackedFloat32Array) -> PackedFloat32Array:
 	var n = num

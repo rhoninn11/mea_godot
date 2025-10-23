@@ -38,7 +38,7 @@ class Interop:
 
 class Math:
 	static func scale_m(scale: float) -> Transform3D:
-		return Transform3D.IDENTITY.scaled(Vector3(scale,scale,scale))
+		return Transform3D.IDENTITY.scaled(Vector3.ONE*scale)
 	
 	static func ts_xforms_origin(ts: Array[Transform3D], ts_: Array[Transform3D]) -> Array[Transform3D]:
 		var result: Array[Transform3D]
@@ -50,6 +50,16 @@ class Math:
 			result.set(i, a)
 			
 		return result
+
+	static func form_sxform(ts: Array[Transform3D], t: Transform3D, alloc: bool = false) -> Array[Transform3D]:
+		var out_forms: Array[Transform3D];
+		out_forms = out_forms if alloc else ts;
+		out_forms.resize(len(ts))
+		for i in range(len(ts)):
+			out_forms[i] = t * ts[i];
+
+		return out_forms;
+
 
 	static func ts_xform_orgin(ts: Array[Transform3D], t: Transform3D) -> Array[Transform3D]:
 		var result: Array[Transform3D]
@@ -122,6 +132,17 @@ class Shapes:
 		return data_4d;
 
 
+	static func circle_2D_pos(points: int, fill_c: float, closed: bool) -> PackedVector2Array:
+		var sports_2d: PackedVector2Array
+		if closed:
+			points += 1
+			
+		sports_2d.resize(points)
+		for i in range(points):
+			var phase = float(i)/(points-1) * TAU * fill_c
+			var circle_point = Vector2(cos(phase), sin(phase))
+			sports_2d[i] = circle_point
+		return sports_2d
 
 	# retun data of position and normal vector, both packed as Vector2 inside single Vector4
 	static func circle_2D(steps: int, fill_c: float, closed: bool) -> PackedVector4Array:

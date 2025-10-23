@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bd7upt7hgbq6c"]
+[gd_scene load_steps=17 format=3 uid="uid://bd7upt7hgbq6c"]
 
 [ext_resource type="Script" uid="uid://brabc1ahe7dy5" path="res://scenes/third_person.gd" id="1_3xrgj"]
 [ext_resource type="Script" uid="uid://n8blyodjwbxs" path="res://scenes/rotation_component.gd" id="2_f743c"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://clb36j20eu85p" path="res://scenes/vertival_component_v2.tscn" id="5_dl8so"]
 [ext_resource type="Script" uid="uid://dff8bbyduxaop" path="res://exp/transform_driver.gd" id="6_weqlu"]
 [ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://audio/raytraced_audio_listener.gd" id="6_x45r8"]
-[ext_resource type="PackedScene" uid="uid://bgtfamvegrt75" path="res://exp/updating_instances.tscn" id="9_oh1c0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6acs"]
 blend_mode = 1
@@ -27,10 +26,6 @@ shader_parameter/hand = 1
 render_priority = 0
 shader = ExtResource("4_h6acs")
 shader_parameter/hand = 0
-
-[sub_resource type="BoxMesh" id="BoxMesh_weqlu"]
-resource_local_to_scene = true
-size = Vector3(0.1, 0.2, 0.3)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w0x8w"]
 
@@ -91,11 +86,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_h6acs")
 
 [node name="plane_2d" parent="pawn/left" instance=ExtResource("5_dl8so")]
 active_on = 2
-
-[node name="updating_instances" parent="pawn" node_paths=PackedStringArray("xforms_driver") instance=ExtResource("9_oh1c0")]
-num = 64
-mesh_src = SubResource("BoxMesh_weqlu")
-xforms_driver = NodePath("../right")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 

@@ -77,7 +77,6 @@ class Math:
 		ts_new.resize(len(ts))
 		for i in range(len(ts)):
 			var prog := float(i)/float(len(ts) - 1)
-			print("halo")
 			var s := scale.sample(prog)
 			var t_s = Transform3D.IDENTITY.scaled(Vector3(s,s,s))
 			ts_new[i] = ts[i] * t_s

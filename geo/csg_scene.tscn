@@ -17,40 +17,6 @@ point_count = 6
 [node name="csg_scene" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0137575, 0, -0.0076251)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2904, 5.25633, 0)
-calculate_tangents = false
-
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.612814, 0, -0.327247)
-radius = 0.296768
-radial_segments = 32
-rings = 16
-
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.462092, -0.800266)
-polygon = PackedVector2Array(0.769946, 0.16088, 0.578588, 0.793357, 1.19242, 0.894529, 1.05563, 0.156494)
-mode = 1
-spin_degrees = 360.0
-spin_sides = 32
-
-[node name="CSGPolygon3D2" type="CSGPolygon3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00554512, -0.00781696, 0.0163357)
-polygon = PackedVector2Array(-0.15186, 0.147556, -0.0414763, 0.231901, 0.126182, 0.187791, 0.20703, 0.0105542, 0.136793, -0.176402, -0.0494425, -0.226285, -0.176616, -0.0870676, -0.194029, 0.0124088)
-mode = 2
-path_node = NodePath("../../Path3D")
-path_interval_type = 0
-path_interval = 0.1
-path_simplify_angle = 0.0
-path_rotation = 2
-path_rotation_accurate = false
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-
 [node name="Path3D" type="Path3D" parent="."]
 curve = SubResource("Curve3D_564e6")
 
@@ -60,10 +26,8 @@ mesh = SubResource("PlaneMesh_564e6")
 surface_material_override/0 = ExtResource("1_sevdo")
 
 [node name="ProceduralGeometry" parent="." instance=ExtResource("2_4dtpq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.54107, 0)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="ProceduralGeometry"]
-transform = Transform3D(0.020925, -0.999781, 0, 0.999781, 0.020925, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(-7.25609e-08, -1, 0, 1.66, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("TorusMesh_564e6")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.47082, 2.72106, 3.38136)

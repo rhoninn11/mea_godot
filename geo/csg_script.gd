@@ -165,10 +165,10 @@ func spawn_cap(shape: PackedVector2Array, xform: Transform3D, _name: String) -> 
 
 	cap_0.name = _name
 	cap_0.mode = CSGPolygon3D.MODE_SPIN;
-	cap_0.spin_degrees = 180
+	cap_0.spin_degrees = 360
 	cap_0.polygon = shape 
 	cap_0.transform = xform
-	cap_0.spin_sides = len(shape);
+	cap_0.spin_sides = 16;
 
 func test_geometry() -> void:
 	var csg_polygon = CSGPolygon3D.new()

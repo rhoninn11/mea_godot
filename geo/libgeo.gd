@@ -34,7 +34,19 @@ class Interop:
 
 		return buffer
 	
-
+	static func packed_2d_data(unpacked_2d: Array[Vector2]) -> PackedVector2Array:
+		var ops_memory: PackedVector2Array;
+		ops_memory.resize(len(unpacked_2d))
+		for i in range(len(ops_memory)):
+			ops_memory[i] = unpacked_2d[i];
+		return ops_memory;
+	
+	static func unpacked_2d_data(packed_2d: PackedVector2Array) -> Array[Vector2]:
+		var ops_memory: Array[Vector2];
+		ops_memory.resize(len(packed_2d));
+		for i in range(len(packed_2d)):
+			ops_memory[i] = packed_2d[i];
+		return ops_memory;
 
 class Math:
 	static func scale_m(scale: float) -> Transform3D:
@@ -92,6 +104,16 @@ class Math:
 			moved[i] = ts[i].translated(dir * prog)
 
 		return moved;
+	
+	static func ops2d_translation(data_2d: Array[Vector2], delta: Vector2, _alloc: bool = false) -> Array[Vector2]:
+		var ops_memory: Array[Vector2];
+		if not _alloc:
+			ops_memory = data_2d;
+		ops_memory.resize(len(data_2d));
+
+		for i in range(len(ops_memory)):
+			ops_memory[i] = ops_memory[i] + delta;
+		return ops_memory;
 
 class Shapes:
 	static func empty_1d(num: int) -> Array[float]:

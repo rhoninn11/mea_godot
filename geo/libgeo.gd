@@ -1,6 +1,7 @@
 extends Node
 
-class Interop:
+# interop
+class Itop:
 	const T_SIZE: int = 12
 	static func t_flat(t: Transform3D) -> PackedFloat32Array:
 		var buffer: PackedFloat32Array
@@ -23,7 +24,7 @@ class Interop:
 
 		return buffer
 
-	static func Ts2Fs(ts: Array[Transform3D]) -> PackedFloat32Array:
+	static func xform_pkd(ts: Array[Transform3D]) -> PackedFloat32Array:
 		var buffer: PackedFloat32Array
 		buffer.resize(len(ts)*T_SIZE)
 		var i = 0
@@ -34,14 +35,16 @@ class Interop:
 
 		return buffer
 	
-	static func packed_2d_data(unpacked_2d: Array[Vector2]) -> PackedVector2Array:
+	# packed
+	static func pkd_2d(unpacked_2d: Array[Vector2]) -> PackedVector2Array:
 		var ops_memory: PackedVector2Array;
 		ops_memory.resize(len(unpacked_2d))
 		for i in range(len(ops_memory)):
 			ops_memory[i] = unpacked_2d[i];
 		return ops_memory;
 	
-	static func unpacked_2d_data(packed_2d: PackedVector2Array) -> Array[Vector2]:
+	# unpacked
+	static func unpkd_2d(packed_2d: PackedVector2Array) -> Array[Vector2]:
 		var ops_memory: Array[Vector2];
 		ops_memory.resize(len(packed_2d));
 		for i in range(len(packed_2d)):
@@ -105,7 +108,7 @@ class Math:
 
 		return moved;
 	
-	static func ops2d_translation(data_2d: Array[Vector2], delta: Vector2, _alloc: bool = false) -> Array[Vector2]:
+	static func _ops2d_translate(data_2d: Array[Vector2], delta: Vector2, _alloc: bool = false) -> Array[Vector2]:
 		var ops_memory: Array[Vector2];
 		if not _alloc:
 			ops_memory = data_2d;
@@ -114,6 +117,58 @@ class Math:
 		for i in range(len(ops_memory)):
 			ops_memory[i] = ops_memory[i] + delta;
 		return ops_memory;
+	
+	static func _ops2d_rotate(data_2d: Array[Vector2], angle: float, _alloc: bool = false) -> Array[Vector2]:
+		var ops_memory: Array[Vector2];
+		if not _alloc:
+			ops_memory = data_2d;
+		ops_memory.resize(len(data_2d));
+
+		for i in range(len(ops_memory)):
+			ops_memory[i] = ops_memory[i].rotated(angle);
+		return ops_memory;
+
+	static func _ops2d_scale(data_2d: Array[Vector2], scale: Vector2, _alloc: bool = false) -> Array[Vector2]:
+		var ops_memory: Array[Vector2];
+		if not _alloc:
+			ops_memory = data_2d;
+		ops_memory.resize(len(data_2d));
+
+		for i in range(len(ops_memory)):
+			ops_memory[i] = ops_memory[i] * scale;
+		return ops_memory;
+
+	static func ops2d_move(arr2D: PackedVector2Array, delta: Vector2, _alloc: bool = true) -> PackedVector2Array:
+		var memory: PackedVector2Array
+		if not _alloc:
+			memory = arr2D
+		memory.resize(arr2D.size())
+		
+		for i in range(arr2D.size()):
+			var moved = arr2D[i] + delta
+			memory[i] = moved
+		return memory 
+
+	static func ops2d_rotate(arr2D: PackedVector2Array, turn: float, _alloc: bool = true) -> PackedVector2Array:
+		var memory: PackedVector2Array
+		if not _alloc:
+			memory = arr2D
+		memory.resize(arr2D.size())
+
+		var rad_angle = TAU * turn
+		for i in range(arr2D.size()):
+			memory[i] = arr2D[i].rotated(rad_angle)
+		return memory 
+		
+	static func ops2d_scale(arr2D: PackedVector2Array, _scale: Vector2, _alloc: bool = true) -> PackedVector2Array:
+		var memory: PackedVector2Array
+		if not _alloc:
+			memory = arr2D
+		memory.resize(arr2D.size())
+
+		for i in range(arr2D.size()):
+			memory[i] = arr2D[i] * _scale
+		return memory
 
 class Shapes:
 	static func empty_1d(num: int) -> Array[float]:
@@ -209,3 +264,25 @@ class Shapes:
 			transforms[i].origin.y = line[i];
 		
 		return transforms;
+
+class Tools:
+	static func bound_info(dots_2d: PackedVector2Array):
+		assert(len(dots_2d) >= 1)
+		var _min: Vector2 = dots_2d[0];
+		var _max: Vector2 = dots_2d[0];
+		for p in dots_2d:
+			var less_x: = _min.x > p.x;
+			var less_y: = _min.y > p.y;
+			var more_x: = p.x > _max.x;
+			var more_y: = p.y > _max.y;
+			if less_x:
+				_min.x = p.x;
+			if less_y:
+				_min.y = p.y;
+			if more_x:
+				_max.x = p.x;
+			if more_y:
+				_max.y = p.y
+		
+		var informat = "| l <-> r | %.02f <-> %.02f || d <-> u | %02f <-> %02f |" 
+		print(informat%[_min.x, _max.x, _min.y, _max.y])

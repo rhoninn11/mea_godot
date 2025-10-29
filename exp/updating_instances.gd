@@ -45,7 +45,7 @@ func regenerate_ok():
 	regenerate_with_color(num);
 	m_color_bytes = gen_color();
 	var xforms: = calc_positions(0);
-	m_xform_bytes = Libgeo.Interop.Ts2Fs(xforms)
+	m_xform_bytes = Libgeo.itop.Ts2Fs(xforms)
 	assert(multimesh)
 	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
@@ -69,7 +69,7 @@ func _process(delta: float) -> void:
 	timer += delta;
 	total_time += delta;
 	var xforms: = xform_calc(total_time);
-	m_xform_bytes = Libgeo.Interop.Ts2Fs(xforms);
+	m_xform_bytes = Libgeo.itop.Ts2Fs(xforms);
 	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
 

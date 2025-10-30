@@ -9,45 +9,29 @@ extends CSGCombiner3D
 @export var p_scale_curve: Curve
 @export var mesh_resolution: int = 16
 
-var shift: float = 1.5;
+func half_i_profile(res: int, spacing: float) -> PackedVector2Array:
+	assert(res > 4 && spacing >= 0)
 
-# to ma taki kształ spawu chyba, ale nie wiem jeszcze jak to dobrze nazwać
-func u_shape(res: int) -> PackedVector2Array:
-	assert(res > 8)
-
-	var half = Libgeo.Shapes.circle_2D_pos(res*2, 0.5, true)
-	var quater = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	quater.reverse()
+	var top: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
+	Libgeo.Math.ops2d_move(top, Vector2(0, spacing), false)
+	top.reverse()
 	
-	var start = Libgeo.Math.ops2d_rotate(quater, 0.5, true)
-	var end = Libgeo.Math.ops2d_rotate(quater, 0.75, true)
-	
-	start = Libgeo.Math.ops2d_move(start, Vector2(2, -0.5))
-	start.get(0)
-	
-	end = Libgeo.Math.ops2d_move(end, Vector2(-2, -0.5))
-	var middle = Libgeo.Math.ops2d_move(half, Vector2(0, 0.5), true)
+	var bot: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
+	Libgeo.Math.ops2d_rotate(bot, 0.5, false)
+	Libgeo.Math.ops2d_move(bot, Vector2(2,0), false)
+	# bot.reverse()
+	top.append_array(bot)
+	Libgeo.Math.ops2d_move(top, Vector2(0, 1), false)
+	top.append(Vector2.ZERO)
+	return top
 
-	start.append_array(middle)
-	start.append_array(end)
-
-	var shape_data: = Libgeo.Math.ops2d_move(start, Vector2(0, shift), true)
-	return shape_data; 
-
-func half_profil_2d(res: int) -> PackedVector2Array:
-	assert(res > 4)
-
-	var quater_a: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	var quater_b: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	quater_b.reverse()
-
-	quater_a = Libgeo.Math.ops2d_move(quater_a, Vector2(0, 0.5 + shift))
-	quater_b = Libgeo.Math.ops2d_rotate(quater_b, 0.5)
-	quater_b = Libgeo.Math.ops2d_move(quater_b, Vector2(2, -0.5 + shift))
-
-	quater_a.append_array([Vector2(0, 0)])
-	quater_a.append_array(quater_b)
-	return quater_a
+func profile_form_half(half_profile: PackedVector2Array) -> PackedVector2Array:
+	var left_copy := Libgeo.Math.ops2d_scale(half_profile, Vector2(1, 1), true)
+	var right_copy := Libgeo.Math.ops2d_scale(left_copy, Vector2(-1, 1), true)
+	right_copy = right_copy.slice(1, len(right_copy)-1)	
+	right_copy.reverse()
+	left_copy.append_array(right_copy)
+	return left_copy;
 
 func regenerate():
 	for child in get_children():
@@ -61,15 +45,15 @@ func regenerate():
 
 @export var p_diameter: float = 7;
 @export var p_flip: bool = false;
-@export var p_y_scale: float = 1;
+@export var p_y_spacing: float = 1;
 func csg_geometry():
 	var resolution = mesh_resolution;
-	var _profile = u_shape(resolution)
-	var _half_profile = half_profil_2d(resolution)
+	var _half_profile = half_i_profile(resolution, p_y_spacing)
 	if p_flip:
-		var scale_flip = Vector2(1, -p_y_scale);
-		_profile = Libgeo.Math.ops2d_scale(_profile, scale_flip)
+		var scale_flip = Vector2(1, -1);
 		_half_profile = Libgeo.Math.ops2d_scale(_half_profile, scale_flip)
+	
+	var _profile: = profile_form_half(_half_profile)
 	
 	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
 	var t_scale: = Transform3D.IDENTITY.scaled(Vector3.ONE*p_diameter)
@@ -102,22 +86,6 @@ func spawn_cap(shape: PackedVector2Array, xform: Transform3D, _name: String) -> 
 	cap_0.polygon = shape 
 	cap_0.transform = xform
 	cap_0.spin_sides = 16;
-
-func test_geometry() -> void:
-	var csg_polygon = CSGPolygon3D.new()
-	add_child(csg_polygon)
-	csg_polygon.owner = get_tree().edited_scene_root
-	csg_polygon.name = "shape_test"
-
-	# var t_data = Libgeo.Shapes.circle4D(48, 0.75, false)
-	var t_data = Libgeo.Shapes.circle_4d(48, 0.75, false)
-	print("len of t data was: ", len(t_data))
-	var scale_t = Transform3D.IDENTITY.scaled(Vector3(3,3,3))
-	t_data = Libgeo.Math.ts_xform_orgin(t_data, scale_t)
-	var path = as_path(t_data)
-	csg_polygon.mode = CSGPolygon3D.MODE_PATH
-	csg_polygon.path_node = path.get_path()
-
 
 func as_path(ts: Array[Transform3D]) -> Path3D:
 	var num = len(ts)

@@ -44,22 +44,30 @@ func regenerate():
 
 
 @export var p_diameter: float = 7;
-@export var p_flip: bool = false;
 @export var p_y_spacing: float = 1;
+@export var p_y_flip: bool = false;
+@export var p_along_flip: bool = false;	
+
+var m_xforms: Array[Transform3D]
+
 func csg_geometry():
+	assert(p_scale_curve)
+	
 	var resolution = mesh_resolution;
 	var _half_profile = half_i_profile(resolution, p_y_spacing)
-	if p_flip:
+	if p_y_flip:
 		var scale_flip = Vector2(1, -1);
 		_half_profile = Libgeo.Math.ops2d_scale(_half_profile, scale_flip)
 	
 	var _profile: = profile_form_half(_half_profile)
 	
 	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
-	var t_scale: = Transform3D.IDENTITY.scaled(Vector3.ONE*p_diameter)
-	#Libgeo.Math.form_sxform(ts, t_scale)
-	ts = Libgeo.Math.ts_xform_orgin(ts, t_scale)
-	ts = Libgeo.Math.ts_scale_along(ts, p_scale_curve)
+	Libgeo.Math.scale_along_xforms_o(ts, p_diameter)
+	
+	var sapmles: = Libgeo.Tools.sample_curve(p_scale_curve, len(ts))
+	if p_along_flip:
+		sapmles.reverse()
+	ts = Libgeo.Math.scale_along_xforms(ts, sapmles)
 	
 	var tranform_polygon = CSGAlongTransform.new()
 	self.add_child(tranform_polygon)
@@ -67,7 +75,7 @@ func csg_geometry():
 	
 	tranform_polygon.name = "tranformed_profile"
 	tranform_polygon.polygon = _profile
-	tranform_polygon.transform_data = Libgeo.Itop.xform_pkd(ts)
+	tranform_polygon.transform_data = Libgeo.Itop.pkd_xform(ts)
 
 	var first_t: = ts[0];
 	spawn_cap(_half_profile, first_t, "cap_0")

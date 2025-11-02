@@ -69,7 +69,7 @@ func _process(delta: float) -> void:
 	timer += delta;
 	total_time += delta;
 	var xforms: = xform_calc(total_time);
-	m_xform_bytes = Libgeo.itop.Ts2Fs(xforms);
+	m_xform_bytes = Libgeo.Itop.pkd_xform(xforms);
 	update_buffer(multimesh, m_xform_bytes, m_color_bytes)
 
 

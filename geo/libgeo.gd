@@ -24,7 +24,7 @@ class Itop:
 
 		return buffer
 
-	static func xform_pkd(ts: Array[Transform3D]) -> PackedFloat32Array:
+	static func pkd_xform(ts: Array[Transform3D]) -> PackedFloat32Array:
 		var buffer: PackedFloat32Array
 		buffer.resize(len(ts)*T_SIZE)
 		var i = 0
@@ -87,16 +87,36 @@ class Math:
 			
 		return result
 	
-	static func ts_scale_along(ts: Array[Transform3D], scale: Curve) -> Array[Transform3D]:
-		var ts_new: Array[Transform3D] = []
+	static func scale_along_xforms(ts: Array[Transform3D], samples: PackedFloat32Array, alloc: bool = false) -> Array[Transform3D]:
+		assert(len(ts) == len(samples))
+
+		var ts_new: Array[Transform3D]
+		ts_new = ts_new if alloc else ts;
 		ts_new.resize(len(ts))
+
+		var show: bool = true 
 		for i in range(len(ts)):
-			var prog := float(i)/float(len(ts) - 1)
-			var s := scale.sample(prog)
-			var t_s = Transform3D.IDENTITY.scaled(Vector3(s,s,s))
+			# var xform = ts[i]
+			var scale := samples[i] * Vector3.ONE
+			var t_s = Transform3D.IDENTITY.scaled(scale)
+			if show:
+				show = false
+				print(t_s);
+
 			ts_new[i] = ts[i] * t_s
 		
 		return ts_new
+	
+	static func scale_along_xforms_o(xforms: Array[Transform3D], scale: float, alloc: bool = false) -> Array[Transform3D]:
+		var num: = len(xforms)
+		var xforms_out: Array[Transform3D]	
+		xforms_out = xforms_out if alloc else xforms;
+		for i in range(num):
+			xforms_out[i].origin = xforms[i].origin * scale;
+		
+		return xforms_out
+
+		
 	
 	static func sin_along(ts: Array[Transform3D], dir: Vector3) -> Array[Transform3D]:
 		var moved: Array[Transform3D] = []
@@ -286,3 +306,13 @@ class Tools:
 		
 		var informat = "| l <-> r | %.02f <-> %.02f || d <-> u | %02f <-> %02f |" 
 		print(informat%[_min.x, _max.x, _min.y, _max.y])
+	
+	static func sample_curve(curve: Curve, num: int) -> PackedFloat32Array:
+		var samples: PackedFloat32Array;
+		samples.resize(num)
+		for i in range(num):
+			var prog := float(i)/float(num - 1)
+			samples[i] = curve.sample(prog)
+		
+		return samples
+	

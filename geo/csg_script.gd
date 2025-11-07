@@ -13,21 +13,22 @@ func half_i_profile(res: int, spacing: float) -> PackedVector2Array:
 	assert(res > 4 && spacing >= 0)
 
 	var top: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	Libgeo.Math.ops2d_move(top, Vector2(0, spacing), false)
+	Libgeo.Math.ops2d_move(top, Vector2(0, spacing))
 	top.reverse()
 	
 	var bot: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	Libgeo.Math.ops2d_rotate(bot, 0.5, false)
-	Libgeo.Math.ops2d_move(bot, Vector2(2,0), false)
+	Libgeo.Math.ops2d_rotate(bot, 0.5)
+	Libgeo.Math.ops2d_move(bot, Vector2(2,0))
 	# bot.reverse()
 	top.append_array(bot)
-	Libgeo.Math.ops2d_move(top, Vector2(0, 1), false)
+	Libgeo.Math.ops2d_move(top, Vector2(0, 1))
 	top.append(Vector2.ZERO)
 	return top
 
 func profile_form_half(half_profile: PackedVector2Array) -> PackedVector2Array:
-	var left_copy := Libgeo.Math.ops2d_scale(half_profile, Vector2(1, 1), true)
-	var right_copy := Libgeo.Math.ops2d_scale(left_copy, Vector2(-1, 1), true)
+	var left_copy := Libgeo.Math.ops2d_scale(Libgeo.Memory.copy(half_profile), Vector2(1, 1))
+	var right_copy := Libgeo.Math.ops2d_scale(Libgeo.Memory.copy(half_profile), Vector2(-1, 1))
+
 	right_copy = right_copy.slice(1, len(right_copy)-1)	
 	right_copy.reverse()
 	left_copy.append_array(right_copy)
@@ -47,6 +48,7 @@ func regenerate():
 @export var p_y_spacing: float = 1;
 @export var p_y_flip: bool = false;
 @export var p_along_flip: bool = false;	
+@export var p_circle_flip: bool = false;	
 
 var m_xforms: Array[Transform3D]
 
@@ -61,7 +63,8 @@ func csg_geometry():
 	
 	var _profile: = profile_form_half(_half_profile)
 	
-	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, false)
+	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, true, p_circle_flip)
+
 	Libgeo.Math.scale_along_xforms_o(ts, p_diameter)
 	
 	var sapmles: = Libgeo.Tools.sample_curve(p_scale_curve, len(ts))

@@ -79,7 +79,7 @@ func update_buffer(mm: MultiMesh, xform_b_arr: PackedFloat32Array, color_b_arr: 
 @export var y_scale: float = 5;
 @export var xz_radius: float = 5;
 func calc_positions(offset: float) -> Array[Transform3D]:
-	var tforms = Libgeo.Shapes.circle_4d(num, fill, false);
+	var tforms = Libgeo.Shapes.circle_4d(num, fill, true);
 	var prog = Libgeo.Shapes.line_y_4d(num, fill*y_scale);
 
 	var line: = Libgeo.Shapes.line_1d(num);

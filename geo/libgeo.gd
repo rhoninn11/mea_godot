@@ -128,66 +128,25 @@ class Math:
 
 		return moved;
 	
-	static func _ops2d_translate(data_2d: Array[Vector2], delta: Vector2, _alloc: bool = false) -> Array[Vector2]:
-		var ops_memory: Array[Vector2];
-		if not _alloc:
-			ops_memory = data_2d;
-		ops_memory.resize(len(data_2d));
 
-		for i in range(len(ops_memory)):
-			ops_memory[i] = ops_memory[i] + delta;
-		return ops_memory;
-	
-	static func _ops2d_rotate(data_2d: Array[Vector2], angle: float, _alloc: bool = false) -> Array[Vector2]:
-		var ops_memory: Array[Vector2];
-		if not _alloc:
-			ops_memory = data_2d;
-		ops_memory.resize(len(data_2d));
-
-		for i in range(len(ops_memory)):
-			ops_memory[i] = ops_memory[i].rotated(angle);
-		return ops_memory;
-
-	static func _ops2d_scale(data_2d: Array[Vector2], scale: Vector2, _alloc: bool = false) -> Array[Vector2]:
-		var ops_memory: Array[Vector2];
-		if not _alloc:
-			ops_memory = data_2d;
-		ops_memory.resize(len(data_2d));
-
-		for i in range(len(ops_memory)):
-			ops_memory[i] = ops_memory[i] * scale;
-		return ops_memory;
-
-	static func ops2d_move(arr2D: PackedVector2Array, delta: Vector2, _alloc: bool = true) -> PackedVector2Array:
-		var memory: PackedVector2Array
-		if not _alloc:
-			memory = arr2D
-		memory.resize(arr2D.size())
-		
+	static func ops2d_move(arr2D: PackedVector2Array, delta: Vector2) -> PackedVector2Array:
+		var memory: = arr2D
 		for i in range(arr2D.size()):
 			var moved = arr2D[i] + delta
 			memory[i] = moved
 		return memory 
 
-	static func ops2d_rotate(arr2D: PackedVector2Array, turn: float, _alloc: bool = true) -> PackedVector2Array:
-		var memory: PackedVector2Array
-		if not _alloc:
-			memory = arr2D
-		memory.resize(arr2D.size())
-
+	static func ops2d_rotate(arr2D: PackedVector2Array, turn: float) -> PackedVector2Array:
+		var memory: = arr2D
 		var rad_angle = TAU * turn
 		for i in range(arr2D.size()):
 			memory[i] = arr2D[i].rotated(rad_angle)
 		return memory 
 		
-	static func ops2d_scale(arr2D: PackedVector2Array, _scale: Vector2, _alloc: bool = true) -> PackedVector2Array:
-		var memory: PackedVector2Array
-		if not _alloc:
-			memory = arr2D
-		memory.resize(arr2D.size())
-
+	static func ops2d_scale(arr2D: PackedVector2Array, scale: Vector2) -> PackedVector2Array:
+		var memory: = arr2D
 		for i in range(arr2D.size()):
-			memory[i] = arr2D[i] * _scale
+			memory[i] = arr2D[i] * scale
 		return memory
 
 class Shapes:
@@ -201,7 +160,12 @@ class Shapes:
 		empty.resize(num)
 		return empty;
 
-	static func empty_4d(num: int) -> Array[Transform3D]:
+	static func empty_4d(num: int) -> PackedVector4Array:
+		var empty: PackedVector4Array;
+		empty.resize(num)
+		return empty;
+
+	static func empty_xform(num: int) -> Array[Transform3D]:
 		var empty: Array[Transform3D];
 		empty.resize(num)
 		return empty;
@@ -213,6 +177,12 @@ class Shapes:
 			res[i] = float(i)/(steps-1)*length;
 		return res;
 	
+	static func phase_1d(num: int, fill_c: float) -> PackedFloat32Array:
+		var arc := line_1d(num, fill_c)
+		for i in range(len(arc)):
+			arc[i] *= TAU
+		return arc
+	
 	static func up_1d_to_3d_y(one_d: Array[float]) -> Array[Vector3]:
 		var data_3d = empty_3d(len(one_d));
 		
@@ -221,12 +191,27 @@ class Shapes:
 		return data_3d;
 
 	static func up_3d_to_4d(tri_d: Array[Vector3]) -> Array[Transform3D]:
-		var data_4d = empty_4d(len(tri_d));
+		var data_4d = empty_xform(len(tri_d));
 		for i in range(len(tri_d)):
 			data_4d[i] = Transform3D.IDENTITY;
 			data_4d[i].origin = tri_d[i];
 		return data_4d;
 
+	static func phi_circle_2d_pos(phases: PackedFloat32Array) -> PackedVector2Array:
+		var pos_2d_arr: PackedVector2Array
+		pos_2d_arr.resize(len(phases))
+		for i in range(len(phases)):	
+			var phi := phases[i]
+			pos_2d_arr[i] = Vector2(cos(phi), sin(phi))
+		return pos_2d_arr;
+		
+	static func phi_circle_2d_norm(phases: PackedFloat32Array) -> PackedVector2Array:
+		var normal_2d_arr: PackedVector2Array
+		normal_2d_arr.resize(len(phases))
+		for i in range(len(phases)):	
+			var phi := phases[i]
+			normal_2d_arr[i] = Vector2(-sin(phi), cos(phi))
+		return normal_2d_arr;
 
 	static func circle_2D_pos(points: int, fill_c: float, closed: bool) -> PackedVector2Array:
 		var sports_2d: PackedVector2Array
@@ -241,7 +226,7 @@ class Shapes:
 		return sports_2d
 
 	# retun data of position and normal vector, both packed as Vector2 inside single Vector4
-	static func circle_2D(steps: int, fill_c: float, closed: bool) -> PackedVector4Array:
+	static func circle_2D_w_normals(steps: int, fill_c: float, closed: bool) -> PackedVector4Array:
 		var gen_steps = steps
 		if closed:
 			gen_steps += 1
@@ -271,9 +256,29 @@ class Shapes:
 			transforms.set(i, t)
 		return transforms
 
-	static func circle_4d(steps: int, fill_c: float, closed: bool) -> Array[Transform3D]:
-		var data_2d = circle_2D(steps, fill_c, closed)
-		return transfer_3d_from_data_2d(data_2d)
+	static func circle_4d(num: int, fill_c: float, closed: bool, flip: bool = false) -> Array[Transform3D]:
+		assert(num >= 2)
+		if not closed:
+			fill_c = fill_c - (fill_c/num)
+		
+		var phi_arr := phase_1d(num, fill_c)
+		var pos_arr := phi_circle_2d_pos(phi_arr)
+		var flip_scale := Vector2(-1, 1)
+		if flip:
+			Libgeo.Math.ops2d_scale(pos_arr, flip_scale)
+		var norm_arr := phi_circle_2d_norm(phi_arr)
+		if flip:	
+			Libgeo.Math.ops2d_scale(norm_arr, flip_scale)
+	
+		var pos_norm_arr := empty_4d(num)
+		var pos_off: = pos_arr[0]
+		# pos_off = Vector2.ZERO
+		for i in range(num):
+			var pos := pos_arr[i] - pos_off
+			var norm := norm_arr[i]
+			pos_norm_arr[i] = Vector4(pos.x, pos.y, norm.x, norm.y)
+
+		return transfer_3d_from_data_2d(pos_norm_arr)
 	
 	static func line_y_4d(steps: int, length: float) -> Array[Transform3D]:
 		var line = line_1d(steps, length);
@@ -316,3 +321,11 @@ class Tools:
 		
 		return samples
 	
+class Memory:
+	static func copy(a: PackedVector2Array) -> PackedVector2Array:
+		var b: PackedVector2Array
+		b.resize(len(a))
+
+		for i in range(len(b)):
+			b[i] = a[i]
+		return b

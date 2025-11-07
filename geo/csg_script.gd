@@ -4,36 +4,11 @@ extends CSGCombiner3D
 @export var profile: PackedVector2Array
 @export var turn_val: float = 0
 @export var fill: float = 0.5
-@export_tool_button("regenerate") var regenerate_btn = regenerate
 
 @export var p_scale_curve: Curve
 @export var mesh_resolution: int = 16
 
-func half_i_profile(res: int, spacing: float) -> PackedVector2Array:
-	assert(res > 4 && spacing >= 0)
-
-	var top: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	Libgeo.Math.ops2d_move(top, Vector2(0, spacing))
-	top.reverse()
-	
-	var bot: = Libgeo.Shapes.circle_2D_pos(res, 0.25, true)
-	Libgeo.Math.ops2d_rotate(bot, 0.5)
-	Libgeo.Math.ops2d_move(bot, Vector2(2,0))
-	# bot.reverse()
-	top.append_array(bot)
-	Libgeo.Math.ops2d_move(top, Vector2(0, 1))
-	top.append(Vector2.ZERO)
-	return top
-
-func profile_form_half(half_profile: PackedVector2Array) -> PackedVector2Array:
-	var left_copy := Libgeo.Math.ops2d_scale(Libgeo.Memory.copy(half_profile), Vector2(1, 1))
-	var right_copy := Libgeo.Math.ops2d_scale(Libgeo.Memory.copy(half_profile), Vector2(-1, 1))
-
-	right_copy = right_copy.slice(1, len(right_copy)-1)	
-	right_copy.reverse()
-	left_copy.append_array(right_copy)
-	return left_copy;
-
+@export_tool_button("regenerate") var regenerate_btn = regenerate
 func regenerate():
 	for child in get_children():
 		print("removing ", child)
@@ -56,12 +31,12 @@ func csg_geometry():
 	assert(p_scale_curve)
 	
 	var resolution = mesh_resolution;
-	var _half_profile = half_i_profile(resolution, p_y_spacing)
+	var _half_profile = Libgeo.Shapes.Profiles.half_i(resolution, p_y_spacing)
 	if p_y_flip:
 		var scale_flip = Vector2(1, -1);
 		_half_profile = Libgeo.Math.ops2d_scale(_half_profile, scale_flip)
 	
-	var _profile: = profile_form_half(_half_profile)
+	var _profile: = Libgeo.Shapes.Profiles.profile_form_half(_half_profile)
 	
 	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, true, p_circle_flip)
 

@@ -150,8 +150,50 @@ class Math:
 		return memory
 
 class Shapes:
+	class Profiles:
+		static func square() -> PackedVector2Array:
+			var data: PackedVector2Array 
+			data.resize(4)
+			data[0] = Vector2(0.5, 0.5)
+			data[1] = Vector2(-0.5, 0.5)
+			data[2] = Vector2(-0.5, -0.5)
+			data[3] = Vector2(0.5, -0.5)
+			
+			return data
+
+		static func half_i(res: int, spacing: float) -> PackedVector2Array:
+			assert(res > 4 && spacing >= 0)
+
+			var top: = Shapes.circle_2D_pos(res, 0.25, true)
+			Math.ops2d_move(top, Vector2(0, spacing))
+			top.reverse()
+			
+			var bot: = Shapes.circle_2D_pos(res, 0.25, true)
+			Math.ops2d_rotate(bot, 0.5)
+			Math.ops2d_move(bot, Vector2(2,0))
+			# bot.reverse()
+			top.append_array(bot)
+			Math.ops2d_move(top, Vector2(0, 1))
+			top.append(Vector2.ZERO)
+			return top
+
+		static func profile_form_half(half_profile: PackedVector2Array) -> PackedVector2Array:
+			var left_copy := Math.ops2d_scale(Memory.copy(half_profile), Vector2(1, 1))
+			var right_copy := Math.ops2d_scale(Memory.copy(half_profile), Vector2(-1, 1))
+
+			var cropy: = right_copy.slice(1, len(right_copy)-1)	
+			cropy.reverse()
+			left_copy.append_array(cropy)
+			return left_copy;
+		
+
 	static func empty_1d(num: int) -> Array[float]:
 		var empty: Array[float];
+		empty.resize(num)
+		return empty;
+
+	static func empty_2d(num: int) -> PackedVector2Array: 
+		var empty: PackedVector2Array;
 		empty.resize(num)
 		return empty;
 	
@@ -205,7 +247,7 @@ class Shapes:
 			pos_2d_arr[i] = Vector2(cos(phi), sin(phi))
 		return pos_2d_arr;
 		
-	static func phi_circle_2d_norm(phases: PackedFloat32Array) -> PackedVector2Array:
+	static func phi_circle_2d_tangent(phases: PackedFloat32Array) -> PackedVector2Array:
 		var normal_2d_arr: PackedVector2Array
 		normal_2d_arr.resize(len(phases))
 		for i in range(len(phases)):	
@@ -266,18 +308,14 @@ class Shapes:
 		var flip_scale := Vector2(-1, 1)
 		if flip:
 			Libgeo.Math.ops2d_scale(pos_arr, flip_scale)
-		var norm_arr := phi_circle_2d_norm(phi_arr)
+		var tangent_arr := phi_circle_2d_tangent(phi_arr)
 		if flip:	
-			Libgeo.Math.ops2d_scale(norm_arr, flip_scale)
+			Libgeo.Math.ops2d_scale(tangent_arr, flip_scale)
 	
-		var pos_norm_arr := empty_4d(num)
 		var pos_off: = pos_arr[0]
 		# pos_off = Vector2.ZERO
-		for i in range(num):
-			var pos := pos_arr[i] - pos_off
-			var norm := norm_arr[i]
-			pos_norm_arr[i] = Vector4(pos.x, pos.y, norm.x, norm.y)
-
+		Libgeo.Math.ops2d_move(pos_arr, pos_off)
+		var pos_norm_arr := Memory.shuffle(pos_arr, tangent_arr)
 		return transfer_3d_from_data_2d(pos_norm_arr)
 	
 	static func line_y_4d(steps: int, length: float) -> Array[Transform3D]:
@@ -291,10 +329,18 @@ class Shapes:
 		return transforms;
 
 class Tools:
+	class DataBound extends Object:
+		@export var m_min: Vector2;
+		@export var m_max: Vector2;
+
 	static func bound_info(dots_2d: PackedVector2Array):
 		assert(len(dots_2d) >= 1)
 		var _min: Vector2 = dots_2d[0];
 		var _max: Vector2 = dots_2d[0];
+
+		var d_bnd: DataBound
+		d_bnd.m_min = _min
+		d_bnd.m_max = _max
 		for p in dots_2d:
 			var less_x: = _min.x > p.x;
 			var less_y: = _min.y > p.y;
@@ -329,3 +375,10 @@ class Memory:
 		for i in range(len(b)):
 			b[i] = a[i]
 		return b
+
+	static func shuffle(pos: PackedVector2Array, tangents: PackedVector2Array) -> PackedVector4Array:
+		assert(len(pos) == len(tangents))
+		var pos_norm_arr := Shapes.empty_4d(len(pos))
+		for i in range(len(pos)):
+			pos_norm_arr[i] = Vector4(pos[i].x, pos[i].y, tangents[i].x, tangents[i].y)
+		return pos_norm_arr

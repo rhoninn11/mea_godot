@@ -5,3 +5,7 @@ with embeding it on painting placed in space representing actual room.
 Implements simple pawn that simulates XR user interactions
 
 <!-- .gdignore -->
+Oh boy, there was many updates since then:D
+
+TODO:
+- figure out trigonometry for even bar spacing

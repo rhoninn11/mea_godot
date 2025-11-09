@@ -17,25 +17,50 @@ func regenerate():
 		remove_child(child)
 		child.free()
 		
-	geometry()
+	var bar_len: = 45.0
+	var sub1: = geometry(bar_len, 1.0/16, 0.1)
+	var sub2: = geometry(bar_len, -1.0/8, -0.1)
+	var canv: = spawn_canvas()
 
-@export var seg_count: int = 5;
-func geometry() -> void:
-	assert(seg_count >= 1)	
+	sub1.reparent(canv, false)
+	sub2.reparent(canv, false)
+	var _box: = spawn_box(canv)
+	_box.operation = CSGShape3D.OPERATION_INTERSECTION
+	_box.size = Vector3(bar_len/2, 10, bar_len/2)
 
-	var SQ2: = sqrt(2)
+	var thick := 7
+
+	var pos_arr := Libgeo.Memory.data_2d(2, Vector2.ZERO)
+	pos_arr[1] = Vector2.UP*0.5*thick;
+	pos_arr[0] = -Vector2.UP*0.5*thick;	
+	var tang_arr := Libgeo.Memory.data_2d(2, Vector2.UP)
+	var xform_spawn_data := Libgeo.Memory.shuffle(pos_arr, tang_arr)
+
+	var ts := Libgeo.Itop.xforms_from_2d(xform_spawn_data)
+	spawn_path(self, ts)
+	var profile := Libgeo.Shapes.Profiles.right_triangle(Vector2(30,15))
+	var along := spawn_along(canv, ts, profile)
+	along.operation = CSGShape3D.OPERATION_INTERSECTION
+
+@export var bar_count: int = 5;
+func geometry(line_len: float, rot_rate: float, shift: float) -> CSGCombiner3D:
+	assert(bar_count >= 1)	
+	print("generating_geometry")
+
 	var num: int = 12
-	var line_len: float = 18;
 	var line := Libgeo.Shapes.line_1d(num, line_len)
 	var pos_2d := Libgeo.Shapes.empty_2d(num)
 	var tangent_2d := Libgeo.Shapes.empty_2d(num)
 	for i in range(len(line)):
 		pos_2d[i] = Vector2(line[i], 0)
 		tangent_2d[i] = Vector2(1, 0)
-		print(pos_2d[i])
 	Libgeo.Math.ops2d_move(pos_2d, Vector2(-line_len/2, 0))
 
-	var rate: float = 0;
+	var rate: float = rot_rate
+	var rate_rad: = rate*TAU
+	var dir_vec: = Vector2(-sin(rate_rad), cos(rate_rad))
+	print("dir vec: ", dir_vec, " rate ", rate)
+	var shift_vec: = Vector3(0, shift, 0)
 	Libgeo.Math.ops2d_rotate(pos_2d, rate)
 	Libgeo.Math.ops2d_rotate(tangent_2d, rate)
 	
@@ -46,13 +71,17 @@ func geometry() -> void:
 	
 	var posnorm_data: PackedVector4Array;
 	var xforms: Array[Transform3D];
-	var spacing: float = 2;
+	var spacing: float = 2.24;
+	Libgeo.Math.ops2d_move(pos_2d, -dir_vec*spacing*(bar_count-1)*0.5)
 
-	for i in range(5):
+	for i in range(bar_count):
 		posnorm_data = Libgeo.Memory.shuffle(pos_2d, tangent_2d)
-		xforms = Libgeo.Shapes.transfer_3d_from_data_2d(posnorm_data)
+		xforms = Libgeo.Itop.xforms_from_2d(posnorm_data)
+		Libgeo.Math.ops3d_move(xforms, shift_vec) 
 		spawn_along(canv, xforms, profile)
-		Libgeo.Math.ops2d_move(pos_2d, Vector2(0, spacing*SQ2))
+		Libgeo.Math.ops2d_move(pos_2d, dir_vec*spacing)
+	
+	return canv
 	
 func spawn_canvas() -> CSGCombiner3D:
 	var combiner = CSGCombiner3D.new()

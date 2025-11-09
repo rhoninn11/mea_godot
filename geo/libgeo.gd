@@ -51,6 +51,37 @@ class Itop:
 			ops_memory[i] = packed_2d[i];
 		return ops_memory;
 
+	static func xforms_from_2d(data_2d: PackedVector4Array) -> Array[Transform3D]:
+		var transforms: Array[Transform3D]
+		transforms.resize(len(data_2d))
+		for i in range(len(transforms)):
+			var dp: Vector4 = data_2d[i]
+			var pos: Vector3 = Vector3(dp[0], 0, dp[1])
+			var z: Vector3 = -Vector3(dp[2], 0, dp[3])
+
+			var y = Vector3(0, 1, 0)
+			var x = y.cross(z)
+			var t = Transform3D(x,y,z, pos)
+			transforms.set(i, t)
+		return transforms
+	
+	static func xforms_from_3d(pos_3d_arr: PackedVector3Array, normal_3d_arr: PackedVector3Array, tangent_3d_arr: PackedVector3Array) -> Array[Transform3D]:
+		assert(len(normal_3d_arr) == len(tangent_3d_arr))
+		assert(len(pos_3d_arr) == len(tangent_3d_arr))
+		assert(len(pos_3d_arr) >= 2)
+		
+		var transforms: Array[Transform3D]
+		transforms.resize(len(pos_3d_arr))
+		for i in range(len(transforms)):
+			var pos_v = pos_3d_arr[i] 
+			var z: = tangent_3d_arr[i]
+			var y: = normal_3d_arr[i]
+
+			var x = y.cross(z)
+			var t = Transform3D(x,y,z, pos_v)
+			transforms.set(i, t)
+		return transforms
+
 class Math:
 	static func scale_m(scale: float) -> Transform3D:
 		return Transform3D.IDENTITY.scaled(Vector3.ONE*scale)
@@ -148,17 +179,48 @@ class Math:
 		for i in range(arr2D.size()):
 			memory[i] = arr2D[i] * scale
 		return memory
+	
+	static func ops3d_move(arr2D: Array[Transform3D], delta: Vector3) -> Array[Transform3D]:
+		var memory: = arr2D
+		for i in range(arr2D.size()):
+			memory[i].origin += delta;
+		return memory 
+
+	# static func ops3d_rotate(arr2D: Array[Transform3D], turn: float) -> Array[Transform3D]:
+	# 	var memory: = arr2D
+	# 	var rad_angle = TAU * turn
+	# 	for i in range(arr2D.size()):
+	# 		memory[i] = arr2D[i].rotated(rad_angle)
+	# 	return memory 
+		
+	# static func ops3d_scale(arr2D: Array[Transform3D], scale: Vector2) -> Array[Transform3D]:
+	# 	var memory: = arr2D
+	# 	for i in range(arr2D.size()):
+	# 		memory[i] = arr2D[i] * scale
+	# 	return memory
 
 class Shapes:
 	class Profiles:
-		static func square() -> PackedVector2Array:
+		static func square(size: float = 1.0) -> PackedVector2Array:
 			var data: PackedVector2Array 
 			data.resize(4)
-			data[0] = Vector2(0.5, 0.5)
-			data[1] = Vector2(-0.5, 0.5)
-			data[2] = Vector2(-0.5, -0.5)
-			data[3] = Vector2(0.5, -0.5)
+
+			var off = size/2.0
+			data[0] = Vector2(off, off)
+			data[1] = Vector2(-off, off)
+			data[2] = Vector2(-off, -off)
+			data[3] = Vector2(off, -off)
 			
+			return data
+		
+		static func right_triangle(size: Vector2 = Vector2.ONE) -> PackedVector2Array:
+			var data: PackedVector2Array 
+			data.resize(3)
+
+			data[0] = Vector2(-0.5, -0.5)
+			data[1] = Vector2(0.5, -0.5)
+			data[2] = Vector2(-0.5, 0.5)
+			Math.ops2d_scale(data, size)
 			return data
 
 		static func half_i(res: int, spacing: float) -> PackedVector2Array:
@@ -185,6 +247,7 @@ class Shapes:
 			cropy.reverse()
 			left_copy.append_array(cropy)
 			return left_copy;
+
 		
 
 	static func empty_1d(num: int) -> Array[float]:
@@ -283,20 +346,6 @@ class Shapes:
 		
 		return pos_tangent_data
 	
-	static func transfer_3d_from_data_2d(data_2d: PackedVector4Array) -> Array[Transform3D]:
-
-		var transforms: Array[Transform3D]
-		transforms.resize(len(data_2d))
-		for i in range(len(transforms)):
-			var dp: Vector4 = data_2d[i]
-			var pos: Vector3 = Vector3(dp[0], 0, dp[1])
-			var z: Vector3 = -Vector3(dp[2], 0, dp[3])
-
-			var y = Vector3(0, 1, 0)
-			var x = y.cross(z)
-			var t = Transform3D(x,y,z, pos)
-			transforms.set(i, t)
-		return transforms
 
 	static func circle_4d(num: int, fill_c: float, closed: bool, flip: bool = false) -> Array[Transform3D]:
 		assert(num >= 2)
@@ -316,7 +365,7 @@ class Shapes:
 		# pos_off = Vector2.ZERO
 		Libgeo.Math.ops2d_move(pos_arr, pos_off)
 		var pos_norm_arr := Memory.shuffle(pos_arr, tangent_arr)
-		return transfer_3d_from_data_2d(pos_norm_arr)
+		return Itop.xforms_from_2d(pos_norm_arr)
 	
 	static func line_y_4d(steps: int, length: float) -> Array[Transform3D]:
 		var line = line_1d(steps, length);
@@ -382,3 +431,17 @@ class Memory:
 		for i in range(len(pos)):
 			pos_norm_arr[i] = Vector4(pos[i].x, pos[i].y, tangents[i].x, tangents[i].y)
 		return pos_norm_arr
+
+	static func data_2d(num: int, val: Vector2 = Vector2.ZERO) -> PackedVector2Array:
+		var empty: PackedVector2Array;
+		empty.resize(num)
+		for i in range(len(empty)):
+			empty[i] = val
+		return empty;
+		
+	static func data_3d(num: int, val: Vector3 = Vector3.ZERO) -> PackedVector3Array:
+		var empty: PackedVector3Array;
+		empty.resize(num)
+		for i in range(len(empty)):
+			empty[i] = val
+		return empty;

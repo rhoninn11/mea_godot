@@ -17,33 +17,46 @@ func regenerate():
 		remove_child(child)
 		child.free()
 		
+	var bar_canv := spawn_canvas()
+
 	var bar_len: = 45.0
-	var sub1: = geometry(bar_len, 1.0/16, 0.1)
-	var sub2: = geometry(bar_len, -1.0/8, -0.1)
-	var canv: = spawn_canvas()
+	geometry(bar_canv, bar_len, 1.0/16, 0.1)
+	geometry(bar_canv, bar_len, -1.0/8, -0.1)
 
-	sub1.reparent(canv, false)
-	sub2.reparent(canv, false)
-	var _box: = spawn_box(canv)
-	_box.operation = CSGShape3D.OPERATION_INTERSECTION
-	_box.size = Vector3(bar_len/2, 10, bar_len/2)
+	var thick := 3
+	var profile := Libgeo.Shapes.Profiles.right_triangle(Vector2(30,20))
 
-	var thick := 7
+	var merge_canv := spawn_canvas()
+	bar_canv.reparent(merge_canv)
+	spawn_form(merge_canv, profile, thick)
+	# spawn_cap(canv, profile)
 
-	var pos_arr := Libgeo.Memory.data_2d(2, Vector2.ZERO)
-	pos_arr[1] = Vector2.UP*0.5*thick;
-	pos_arr[0] = -Vector2.UP*0.5*thick;	
-	var tang_arr := Libgeo.Memory.data_2d(2, Vector2.UP)
-	var xform_spawn_data := Libgeo.Memory.shuffle(pos_arr, tang_arr)
 
-	var ts := Libgeo.Itop.xforms_from_2d(xform_spawn_data)
-	spawn_path(self, ts)
-	var profile := Libgeo.Shapes.Profiles.right_triangle(Vector2(30,15))
-	var along := spawn_along(canv, ts, profile)
+@export var direction: Libgeo.Shapes.Axis = Libgeo.Shapes.Axis.AX_X
+func spawn_form(to: Node3D, profile: PackedVector2Array, thickness: float) -> void:
+	var ts := Libgeo.Shapes.line_xform(direction, thickness)
+	var along := spawn_along(to, ts, profile)
 	along.operation = CSGShape3D.OPERATION_INTERSECTION
+	# debug 
+	spawn_path(to, ts)
+
+func spawn_rim(to: Node3D, profile: PackedVector2Array) -> void:
+	var rim_shape := Libgeo.Shapes.Profiles.square(3)
+	# TODO: not finished
+	
+func spawn_cap(to: Node3D, shape: PackedVector2Array) -> void:
+	var cap_0 = CSGPolygon3D.new()
+	to.add_child(cap_0)
+	cap_0.owner = get_tree().edited_scene_root
+
+	cap_0.name = "Rotation"
+	cap_0.mode = CSGPolygon3D.MODE_SPIN;
+	cap_0.spin_degrees = 360
+	cap_0.polygon = shape 
+	cap_0.spin_sides = 16;	
 
 @export var bar_count: int = 5;
-func geometry(line_len: float, rot_rate: float, shift: float) -> CSGCombiner3D:
+func geometry(to: Node3D, line_len: float, rot_rate: float, shift: float) -> void:
 	assert(bar_count >= 1)	
 	print("generating_geometry")
 
@@ -64,7 +77,6 @@ func geometry(line_len: float, rot_rate: float, shift: float) -> CSGCombiner3D:
 	Libgeo.Math.ops2d_rotate(pos_2d, rate)
 	Libgeo.Math.ops2d_rotate(tangent_2d, rate)
 	
-	var canv := spawn_canvas()
 	var profile := Libgeo.Shapes.Profiles.square();
 	Libgeo.Math.ops2d_scale(profile, Vector2(1, 0.5))
 
@@ -78,10 +90,9 @@ func geometry(line_len: float, rot_rate: float, shift: float) -> CSGCombiner3D:
 		posnorm_data = Libgeo.Memory.shuffle(pos_2d, tangent_2d)
 		xforms = Libgeo.Itop.xforms_from_2d(posnorm_data)
 		Libgeo.Math.ops3d_move(xforms, shift_vec) 
-		spawn_along(canv, xforms, profile)
+		spawn_along(to, xforms, profile)
 		Libgeo.Math.ops2d_move(pos_2d, dir_vec*spacing)
 	
-	return canv
 	
 func spawn_canvas() -> CSGCombiner3D:
 	var combiner = CSGCombiner3D.new()

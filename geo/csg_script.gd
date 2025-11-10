@@ -2,8 +2,6 @@
 extends CSGCombiner3D
 
 @export var profile: PackedVector2Array
-@export var turn_val: float = 0
-@export var fill: float = 0.5
 
 @export var p_scale_curve: Curve
 @export var mesh_resolution: int = 16
@@ -20,6 +18,7 @@ func regenerate():
 
 
 @export var p_diameter: float = 7;
+@export var p_fill: float = 0.75;
 @export var p_y_spacing: float = 1;
 @export var p_y_flip: bool = false;
 @export var p_along_flip: bool = false;	
@@ -38,7 +37,7 @@ func csg_geometry():
 	
 	var _profile: = Libgeo.Shapes.Profiles.profile_form_half(_half_profile)
 	
-	var ts: = Libgeo.Shapes.circle_4d(64, 0.75, true, p_circle_flip)
+	var ts: = Libgeo.Shapes.circle_4d(64, p_fill, true, p_circle_flip)
 
 	Libgeo.Math.scale_along_xforms_o(ts, p_diameter)
 	

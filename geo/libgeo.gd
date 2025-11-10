@@ -213,14 +213,29 @@ class Shapes:
 			
 			return data
 		
-		static func right_triangle(size: Vector2 = Vector2.ONE) -> PackedVector2Array:
+		static func right_triangle(
+			size: Vector2 = Vector2.ONE,
+			just_x_positive: bool = false,
+			just_y_positive: bool = false,
+			) -> PackedVector2Array:
 			var data: PackedVector2Array 
 			data.resize(3)
 
 			data[0] = Vector2(-0.5, -0.5)
 			data[1] = Vector2(0.5, -0.5)
 			data[2] = Vector2(-0.5, 0.5)
+
+			if just_x_positive:
+				Math.ops2d_move(data, Vector2(0.5,0))
+			if just_y_positive:
+				Math.ops2d_move(data, Vector2(0,0.5))
 			Math.ops2d_scale(data, size)
+			return data
+		
+		# TODO: tutaj będzie więcej obliczeń trygonometrycznych, chyba żeeee przyjąłbym podobną filozofię co w przypadku 
+		# 	no ale do tego będę i tak potrzebował trochę trygonometri tutaj zaaplikować
+		static func right_triangle_rounded(size: Vector2 = Vector2.ONE) -> PackedVector2Array:
+			var data := Memory.data_2d(3)
 			return data
 
 		static func half_i(res: int, spacing: float) -> PackedVector2Array:
@@ -281,6 +296,32 @@ class Shapes:
 		for i in range(steps):
 			res[i] = float(i)/(steps-1)*length;
 		return res;
+	
+	enum Axis {AX_X, AX_Y, AX_Z}
+	static func line_xform(axis: Axis, length: float = 1, flip: bool = false) -> Array[Transform3D]:
+		var mem := empty_xform(2)	
+		mem[0].basis.x = Vector3.RIGHT
+		mem[0].basis.y = Vector3.UP
+		mem[0].basis.z = Vector3.BACK
+
+		var shuffle: int = 0
+		if axis == Axis.AX_Y:
+			shuffle = 1
+		if axis == Axis.AX_X:
+			shuffle = 2
+		for i in range(shuffle):
+			var scratch = mem[0].basis.z
+			mem[0].basis.z = mem[0].basis.y
+			mem[0].basis.y = mem[0].basis.x
+			mem[0].basis.x = scratch
+
+		var grounding = mem[0].basis
+		mem[1].basis = grounding;
+
+		mem[0].origin = grounding.z * length * 0.5
+		mem[1].origin = -grounding.z * length * 0.5
+
+		return mem
 	
 	static func phase_1d(num: int, fill_c: float) -> PackedFloat32Array:
 		var arc := line_1d(num, fill_c)
@@ -361,7 +402,7 @@ class Shapes:
 		if flip:	
 			Libgeo.Math.ops2d_scale(tangent_arr, flip_scale)
 	
-		var pos_off: = pos_arr[0]
+		var pos_off: = -pos_arr[0]
 		# pos_off = Vector2.ZERO
 		Libgeo.Math.ops2d_move(pos_arr, pos_off)
 		var pos_norm_arr := Memory.shuffle(pos_arr, tangent_arr)

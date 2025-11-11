@@ -11,6 +11,7 @@ func _process(_delta: float) -> void:
 
 
 @export_tool_button("regenerate") var regenerate_btn = regenerate
+@export var p_switch: int = 0
 func regenerate():
 	for child in get_children():
 		print("removing ", child.name)
@@ -24,7 +25,14 @@ func regenerate():
 	geometry(bar_canv, bar_len, -1.0/8, -0.1)
 
 	var thick := 3
-	var profile := Libgeo.Shapes.Profiles.right_triangle(Vector2(30,20))
+	var profile := Libgeo.Shapes.Profiles.right_triangle(Vector2(30,15))
+	if p_switch == 1:
+		profile = Libgeo.Shapes.Profiles.right_triangle(Vector2(30,15), true, true)
+	if p_switch == 2:
+		profile = Libgeo.Shapes.Profiles.right_triangle_rounded(Vector2(25.95,15), 4.0)
+	if p_switch == 3:
+		profile = Libgeo.Shapes.Profiles.half_i(16, 1.0)
+		Libgeo.Math.ops2d_scale(profile, Vector2.ONE*7)
 
 	var merge_canv := spawn_canvas()
 	bar_canv.reparent(merge_canv)

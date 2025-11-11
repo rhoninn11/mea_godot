@@ -201,6 +201,7 @@ class Math:
 
 class Shapes:
 	class Profiles:
+		# Ciekawe czy dotrzemy kidyś do mombius stripa
 		static func square(size: float = 1.0) -> PackedVector2Array:
 			var data: PackedVector2Array 
 			data.resize(4)
@@ -218,12 +219,13 @@ class Shapes:
 			just_x_positive: bool = false,
 			just_y_positive: bool = false,
 			) -> PackedVector2Array:
+
 			var data: PackedVector2Array 
 			data.resize(3)
 
-			data[0] = Vector2(-0.5, -0.5)
+			data[2] = Vector2(-0.5, -0.5)
 			data[1] = Vector2(0.5, -0.5)
-			data[2] = Vector2(-0.5, 0.5)
+			data[0] = Vector2(-0.5, 0.5)
 
 			if just_x_positive:
 				Math.ops2d_move(data, Vector2(0.5,0))
@@ -234,9 +236,56 @@ class Shapes:
 		
 		# TODO: tutaj będzie więcej obliczeń trygonometrycznych, chyba żeeee przyjąłbym podobną filozofię co w przypadku 
 		# 	no ale do tego będę i tak potrzebował trochę trygonometri tutaj zaaplikować
-		static func right_triangle_rounded(size: Vector2 = Vector2.ONE) -> PackedVector2Array:
-			var data := Memory.data_2d(3)
-			return data
+		#   mam formułę! chyba...
+		static func right_triangle_rounded(size: Vector2 = Vector2.ONE, corner_r: float = 0.1) -> PackedVector2Array:
+			var pnts := Shapes.Profiles.right_triangle(size, true, true)
+			var angle_a = 0.083334
+			var angle_b = 0.166666
+			var angle_c = 0.25
+
+			var angles: = [angle_a, angle_b, angle_c]
+			var fills: = angles.duplicate()
+			for i in range(len(angles)):
+				fills[i] = (0.25 - (angles[i]/2)) * 2
+			
+			var segs: Array[PackedVector2Array]
+			segs.resize(len(angles))
+			for i in range(len(angles)):
+				segs[i] = Shapes.circle_2D_pos(16, fills[i], true)
+			
+			Math.ops2d_rotate(segs[1], fills[0])
+			Math.ops2d_rotate(segs[2], fills[1] + fills[0])
+		
+			for seg in segs:
+				var correction_flip := Vector2(-1, 1)
+				Math.ops2d_scale(seg, correction_flip*corner_r)
+
+			var offs := Memory.copy(pnts)
+			var n  = len(pnts)
+			for i in range(1,1 + n):
+				var curr = i%n
+				var prev = i - 1
+				var next = (i + 1)%n
+
+				var from_prev :=  (pnts[curr] - pnts[prev]).normalized()
+				var from_next :=  (pnts[curr] - pnts[next]).normalized()
+				var central := -(from_prev + from_next).normalized()
+				# TODO: w tym kierunku trzeba o odpowiednią długość przesunąć wektor
+				central = Vector2.ZERO
+
+				Math.ops2d_move(segs[curr], offs[curr] + central)
+
+
+			Math.ops2d_move(segs[0], offs[0])
+			Math.ops2d_move(segs[1], offs[1])
+			Math.ops2d_move(segs[2], offs[2])
+
+			var collector: PackedVector2Array
+			collector.resize(0)
+			for seg in segs:
+				collector.append_array(seg)
+
+			return collector
 
 		static func half_i(res: int, spacing: float) -> PackedVector2Array:
 			assert(res > 4 && spacing >= 0)
@@ -359,14 +408,14 @@ class Shapes:
 			normal_2d_arr[i] = Vector2(-sin(phi), cos(phi))
 		return normal_2d_arr;
 
-	static func circle_2D_pos(points: int, fill_c: float, closed: bool) -> PackedVector2Array:
+	static func circle_2D_pos(points_num: int, fill_c: float, closed: bool) -> PackedVector2Array:
 		var sports_2d: PackedVector2Array
 		if closed:
-			points += 1
+			points_num += 1
 			
-		sports_2d.resize(points)
-		for i in range(points):
-			var phase = float(i)/(points-1) * TAU * fill_c
+		sports_2d.resize(points_num)
+		for i in range(points_num):
+			var phase = float(i)/(points_num-1) * TAU * fill_c
 			var circle_point = Vector2(cos(phase), sin(phase))
 			sports_2d[i] = circle_point
 		return sports_2d

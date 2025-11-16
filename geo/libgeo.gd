@@ -199,6 +199,60 @@ class Math:
 	# 		memory[i] = arr2D[i] * scale
 	# 	return memory
 
+	static func not_identified(prev: Vector2, curr: Vector2, next: Vector2, len: float) -> PackedVector2Array:
+		var from_prev :=  (curr - prev).normalized()
+		var from_next :=  (curr - next).normalized()
+		# var central := -(from_prev + from_next).normalized()
+
+		var data := PackedVector2Array([
+			from_prev * len,
+			Vector2.ZERO,
+			from_next * len
+		])
+		return data
+	
+	static func not_identified2(prev: Vector2, curr: Vector2, next: Vector2, len: float) -> PackedVector2Array:
+		var from_prev :=  (curr - prev).normalized()
+		var from_next :=  (curr - next).normalized()
+		var central := (from_prev + from_next).normalized()
+
+		var data := PackedVector2Array([
+			Vector2.ZERO,
+			-central * len
+		])
+		return data
+	
+	static func recalc_fill(n: int, fill: float, closed: bool) -> float:
+		assert(n >= 2)
+		if not closed:
+			fill = fill - (fill/n)
+		return fill
+	
+	static func calc_angles(pnts: PackedVector2Array) -> PackedVector2Array:
+		var n := len(pnts)
+		assert(n >= 2)
+		var data: PackedVector2Array
+		data.resize(n)
+
+		var info: String = ""
+		for i in range(n):
+			var prev_idx = i
+			var curr_idx = (i+1)%n 
+			var next_idx = (i+2)%n 
+			var from_prev = (pnts[curr_idx]-pnts[prev_idx])
+			var from_next = (pnts[curr_idx]-pnts[next_idx])
+			
+			var angle := from_prev.angle_to(from_next)
+			i = curr_idx
+			data[i].x = angle
+			data[i].y = (PI/2 - angle/2) * 2
+			info += "idx: %d, a: %.02f, hmm: %.02f | "%[i, data[i].x, data[i].y] 
+
+
+		print(info)
+		
+		return data
+
 class Shapes:
 	class Profiles:
 		# Ciekawe czy dotrzemy kidyś do mombius stripa
@@ -207,10 +261,10 @@ class Shapes:
 			data.resize(4)
 
 			var off = size/2.0
-			data[0] = Vector2(off, off)
-			data[1] = Vector2(-off, off)
-			data[2] = Vector2(-off, -off)
-			data[3] = Vector2(off, -off)
+			data[0] = Vector2(-off, off)
+			data[1] = Vector2(off, off)
+			data[2] = Vector2(off, -off)
+			data[3] = Vector2(-off, -off)
 			
 			return data
 		
@@ -223,9 +277,9 @@ class Shapes:
 			var data: PackedVector2Array 
 			data.resize(3)
 
-			data[2] = Vector2(-0.5, -0.5)
-			data[1] = Vector2(0.5, -0.5)
 			data[0] = Vector2(-0.5, 0.5)
+			data[1] = Vector2(0.5, -0.5)
+			data[2] = Vector2(-0.5, -0.5)
 
 			if just_x_positive:
 				Math.ops2d_move(data, Vector2(0.5,0))
@@ -234,58 +288,71 @@ class Shapes:
 			Math.ops2d_scale(data, size)
 			return data
 		
-		# TODO: tutaj będzie więcej obliczeń trygonometrycznych, chyba żeeee przyjąłbym podobną filozofię co w przypadku 
-		# 	no ale do tego będę i tak potrzebował trochę trygonometri tutaj zaaplikować
-		#   mam formułę! chyba...
-		static func right_triangle_rounded(size: Vector2 = Vector2.ONE, corner_r: float = 0.1) -> PackedVector2Array:
-			var pnts := Shapes.Profiles.right_triangle(size, true, true)
-			var angle_a = 0.083334
-			var angle_b = 0.166666
-			var angle_c = 0.25
+		static func convex_rounded(pnts: PackedVector2Array, corner_r: float = 0.1, res: int = 16) -> PackedVector2Array:
+			var n = len(pnts)
+			assert(n >= 3)
+			
+			var angle_data := Math.calc_angles(pnts)
+			
+			var position_arr: Array[PackedVector2Array]
+			var tang_arr: Array[PackedVector2Array]
+			position_arr.resize(n)
+			tang_arr.resize(n)
+			for i in range(n):
+				position_arr[i] = Shapes.circle_2D_pos(res, angle_data[i].y/TAU, true)
+				tang_arr[i] = Shapes.circle_2d_tang(res, angle_data[i].y/TAU, true)
+			
+			# hardcoded for triangle, needs generalization for other convexes
+			var cumulated := 0.0
+			for i in range(n):
+				Math.ops2d_rotate(position_arr[i], cumulated/TAU)
+				cumulated += angle_data[i].y
+			
+			# Math.ops2d_rotate(position_arr[1], angle_data[0].y/TAU)
+			# Math.ops2d_rotate(position_arr[2], (angle_data[1].y + angle_data[0].y)/TAU)
+		
+			for i in range(n):
+				var correction_flip := Vector2(-1, 1)
+				Math.ops2d_scale(position_arr[i], correction_flip*corner_r)
+				Math.ops2d_scale(tang_arr[i], correction_flip)
 
-			var angles: = [angle_a, angle_b, angle_c]
-			var fills: = angles.duplicate()
-			for i in range(len(angles)):
-				fills[i] = (0.25 - (angles[i]/2)) * 2
+			var offs := Memory.copy(pnts)
+			for i in range(n):
+				var prev = pnts[i]
+				var curr_idx = (i + 1)%n
+				var curr = pnts[curr_idx]
+				var next = pnts[(i + 2)%n]
+				Math.not_identified(prev, curr, next, 1)
+
+				var from_prev :=  (curr - prev).normalized()
+				var from_next :=  (curr - next).normalized()
+				var central := -(from_prev + from_next).normalized()
+				var inset_len := corner_r/sin(angle_data[curr_idx].x/2)
+				Math.ops2d_move(position_arr[curr_idx], central*inset_len)
+			
+			for i in range(n):
+				Math.ops2d_move(position_arr[i], offs[i])
+			return Memory.join(position_arr)
+
+		static func convex_rounded_tang(pnts: PackedVector2Array) -> PackedVector2Array:
+			var n = len(pnts)
+			assert(n >= 3)
+
+			var angle_data := Math.calc_angles(pnts)
 			
 			var segs: Array[PackedVector2Array]
-			segs.resize(len(angles))
-			for i in range(len(angles)):
-				segs[i] = Shapes.circle_2D_pos(16, fills[i], true)
+			segs.resize(n)
+			for i in range(n):
+				segs[i] = Shapes.circle_2d_tang(16, angle_data[i].y/TAU, true)
 			
-			Math.ops2d_rotate(segs[1], fills[0])
-			Math.ops2d_rotate(segs[2], fills[1] + fills[0])
+			Math.ops2d_rotate(segs[1], angle_data[0].y/TAU)
+			Math.ops2d_rotate(segs[2], (angle_data[1].y + angle_data[0].y)/TAU)
 		
 			for seg in segs:
 				var correction_flip := Vector2(-1, 1)
-				Math.ops2d_scale(seg, correction_flip*corner_r)
+				Math.ops2d_scale(seg, correction_flip)
 
-			var offs := Memory.copy(pnts)
-			var n  = len(pnts)
-			for i in range(1,1 + n):
-				var curr = i%n
-				var prev = i - 1
-				var next = (i + 1)%n
-
-				var from_prev :=  (pnts[curr] - pnts[prev]).normalized()
-				var from_next :=  (pnts[curr] - pnts[next]).normalized()
-				var central := -(from_prev + from_next).normalized()
-				# TODO: w tym kierunku trzeba o odpowiednią długość przesunąć wektor
-				central = Vector2.ZERO
-
-				Math.ops2d_move(segs[curr], offs[curr] + central)
-
-
-			Math.ops2d_move(segs[0], offs[0])
-			Math.ops2d_move(segs[1], offs[1])
-			Math.ops2d_move(segs[2], offs[2])
-
-			var collector: PackedVector2Array
-			collector.resize(0)
-			for seg in segs:
-				collector.append_array(seg)
-
-			return collector
+			return Memory.join(segs)
 
 		static func half_i(res: int, spacing: float) -> PackedVector2Array:
 			assert(res > 4 && spacing >= 0)
@@ -349,9 +416,9 @@ class Shapes:
 	enum Axis {AX_X, AX_Y, AX_Z}
 	static func line_xform(axis: Axis, length: float = 1, flip: bool = false) -> Array[Transform3D]:
 		var mem := empty_xform(2)	
-		mem[0].basis.x = Vector3.RIGHT
+		mem[0].basis.x = Vector3.BACK
 		mem[0].basis.y = Vector3.UP
-		mem[0].basis.z = Vector3.BACK
+		mem[0].basis.z = Vector3.RIGHT
 
 		var shuffle: int = 0
 		if axis == Axis.AX_Y:
@@ -367,8 +434,8 @@ class Shapes:
 		var grounding = mem[0].basis
 		mem[1].basis = grounding;
 
-		mem[0].origin = grounding.z * length * 0.5
-		mem[1].origin = -grounding.z * length * 0.5
+		mem[1].origin = grounding.z * length * 0.5
+		mem[0].origin = -grounding.z * length * 0.5
 
 		return mem
 	
@@ -409,33 +476,14 @@ class Shapes:
 		return normal_2d_arr;
 
 	static func circle_2D_pos(points_num: int, fill_c: float, closed: bool) -> PackedVector2Array:
-		var sports_2d: PackedVector2Array
-		if closed:
-			points_num += 1
-			
-		sports_2d.resize(points_num)
-		for i in range(points_num):
-			var phase = float(i)/(points_num-1) * TAU * fill_c
-			var circle_point = Vector2(cos(phase), sin(phase))
-			sports_2d[i] = circle_point
-		return sports_2d
-
-	# retun data of position and normal vector, both packed as Vector2 inside single Vector4
-	static func circle_2D_w_normals(steps: int, fill_c: float, closed: bool) -> PackedVector4Array:
-		var gen_steps = steps
-		if closed:
-			gen_steps += 1
-
-		var pos_tangent_data: PackedVector4Array
-		pos_tangent_data.resize(gen_steps)
-		for i in range(steps):
-			var phase = float(i)/(steps-1) * TAU * fill_c
-			var pos = Vector2(cos(phase), sin(phase))
-			var normal = Vector2(-sin(phase), cos(phase))
-			pos_tangent_data[i] = Vector4(pos[0], pos[1], normal[0], normal[1])
-		
-		return pos_tangent_data
+		fill_c = Math.recalc_fill(points_num, fill_c, closed)
+		var phase_arr = phase_1d(points_num, fill_c)
+		return phi_circle_2d_pos(phase_arr)
 	
+	static func circle_2d_tang(points_num: int, fill_c: float, closed: bool) -> PackedVector2Array:
+		fill_c = Math.recalc_fill(points_num, fill_c, closed)
+		var phase_arr = phase_1d(points_num, fill_c)
+		return phi_circle_2d_tangent(phase_arr)
 
 	static func circle_4d(num: int, fill_c: float, closed: bool, flip: bool = false) -> Array[Transform3D]:
 		assert(num >= 2)
@@ -535,3 +583,11 @@ class Memory:
 		for i in range(len(empty)):
 			empty[i] = val
 		return empty;
+	
+	static func join(memories: Array[PackedVector2Array]) -> PackedVector2Array:
+		var collector: PackedVector2Array
+		collector.resize(0)
+		for memory in memories:
+			collector.append_array(memory)
+		
+		return collector

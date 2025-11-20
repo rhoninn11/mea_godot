@@ -23,17 +23,25 @@ func regenerate():
 @export var p_y_flip: bool = false;
 @export var p_along_flip: bool = false;	
 @export var p_circle_flip: bool = false;	
+@export var p_alt_profile: bool = false;
 
 var m_xforms: Array[Transform3D]
 
 func csg_geometry():
-	assert(p_scale_curve)
-	
 	var resolution = mesh_resolution;
 	var _half_profile = Libgeo.Shapes.Profiles.half_i(resolution, p_y_spacing)
+	if p_alt_profile:
+		_half_profile = Libgeo.Shapes.circle_2D_pos(16, 0.5, true)
+		Libgeo.Math.ops2d_rotate(_half_profile, 0.75)
+
 	if p_y_flip:
 		var scale_flip = Vector2(1, -1);
 		_half_profile = Libgeo.Math.ops2d_scale(_half_profile, scale_flip)
+	
+	spawn_blob(_half_profile)
+
+func spawn_blob(_half_profile: PackedVector2Array):
+	assert(p_scale_curve)
 	
 	var _profile: = Libgeo.Shapes.Profiles.profile_form_half(_half_profile)
 	
@@ -55,17 +63,17 @@ func csg_geometry():
 	tranform_polygon.transform_data = Libgeo.Itop.pkd_xform(ts)
 
 	var first_t: = ts[0];
-	spawn_cap(_half_profile, first_t, "cap_0")
+	spawn_cap(self, _half_profile, first_t)
 
 	var last_t: = ts[len(ts) - 1];
-	spawn_cap(_half_profile, last_t, "cap_1")
+	spawn_cap(self, _half_profile, last_t)
 
-func spawn_cap(shape: PackedVector2Array, xform: Transform3D, _name: String) -> void:
+func spawn_cap(to: Node3D, shape: PackedVector2Array, xform: Transform3D) -> void:
 	var cap_0 = CSGPolygon3D.new()
-	self.add_child(cap_0)
+	to.add_child(cap_0)
 	cap_0.owner = get_tree().edited_scene_root
 
-	cap_0.name = _name
+	cap_0.name = "cap_"
 	cap_0.mode = CSGPolygon3D.MODE_SPIN;
 	cap_0.spin_degrees = 360
 	cap_0.polygon = shape 

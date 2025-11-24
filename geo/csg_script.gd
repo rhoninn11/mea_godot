@@ -1,9 +1,9 @@
-@tool
+
 extends CSGCombiner3D
 
 @export var profile: PackedVector2Array
 
-@export var p_scale_curve: Curve
+
 @export var mesh_resolution: int = 16
 
 @export_tool_button("regenerate") var regenerate_btn = regenerate

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1psxjw0f4t3u"]
+
+[ext_resource type="Script" uid="uid://dhujun1q6r83d" path="res://geo/csg_fitter.gd" id="1_a6llf"]
+
+[node name="CsgFitter" type="Node3D"]
+script = ExtResource("1_a6llf")

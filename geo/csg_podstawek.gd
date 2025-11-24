@@ -4,7 +4,7 @@ extends Node3D
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-    
+	
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return

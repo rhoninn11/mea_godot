@@ -43,11 +43,11 @@ func regenerate():
 	var tri_size = Vector2(180,90)
 	var corner_r: float = 7
 	var triangle := Libgeo.Shapes.Profiles.right_triangle(tri_size)
-	var profile = Libgeo.Shapes.Profiles.convex_rounded(triangle, corner_r)
+	var triangle_profile = Libgeo.Shapes.Profiles.convex_rounded(triangle, corner_r)
 
 	var merge_canv := spawn_canvas(self)
 	bar_canv.reparent(merge_canv)
-	spawn_form(merge_canv, profile, thick)
+	spawn_form(merge_canv, triangle_profile, thick)
 
 	var final_canv := spawn_canvas(self)
 	merge_canv.reparent(final_canv)
@@ -55,7 +55,55 @@ func regenerate():
 	Libgeo.Math.ops2d_scale(rim_rofile, Vector2(1, 1))
 	rim_rofile = Libgeo.Shapes.Profiles.convex_rounded(rim_rofile, 0.5, 5)
 	spawn_rim(final_canv, tri_size, corner_r, rim_rofile)
+	
+# 	stick holes
+	var holes_canvas := spawn_canvas(self)
+	var hole_base := Vector3(9.8,100, 1.8)
 
+	var base_2d := triangle[1]
+	base_2d.x += -35
+	var base_loc := Vector3(base_2d.x, 0, base_2d.y)
+	var space := 3.5
+	var hole_num := 11
+	var box_arr: Array[CSGBox3D]
+	for i in range(hole_num):
+		var box := spawn_boc(holes_canvas, hole_base)
+		box.global_translate(base_loc)
+		base_loc.x -= hole_base.x + space
+		box_arr.append(box)
+	
+	# for box in box_arr:
+		# box.rotate_y(90)
+	
+	holes_canvas.operation = CSGShape3D.OPERATION_SUBTRACTION
+	holes_canvas.reparent(final_canv)
+
+	var half_canvas := spawn_canvas(self)
+	var box := spawn_boc(half_canvas, Vector3(1000, 1000, 1000))
+	box.translate(Vector3(0, -500.5, 0))
+	half_canvas.operation = CSGShape3D.OPERATION_SUBTRACTION
+	# box.operation = CSGShape3D.OPERATION_SUBTRACTION
+	half_canvas.reparent(final_canv)
+
+func regenerate2():
+
+	var fitter_canvas := spawn_canvas(self)
+	var holes_canvas := spawn_canvas(self)
+	var vesle_size := Vector3(120, 10, 8)
+	var hole_base := Vector3(9.8,100, 1.8)
+	spawn_boc(fitter_canvas, vesle_size)
+	
+	var base_loc := Vector3(50, 0, 0)
+	var space := 4
+	var delta := 0.05
+	for i in range(8):
+		var hole_size := hole_base + Vector3(delta*i, 0, 0)
+		var box := spawn_boc(holes_canvas, hole_size)
+		box.translate(base_loc)
+		base_loc.x -= hole_size.x + space
+	
+	holes_canvas.operation = CSGShape3D.OPERATION_SUBTRACTION
+	holes_canvas.reparent(fitter_canvas)
 
 @export var direction: Libgeo.Shapes.Axis = Libgeo.Shapes.Axis.AX_X
 func spawn_form(to: Node3D, profile: PackedVector2Array, thickness: float) -> void:
@@ -86,6 +134,14 @@ func spawn_cap(to: Node3D, shape: PackedVector2Array) -> void:
 	cap_0.spin_degrees = 360
 	cap_0.polygon = shape 
 	cap_0.spin_sides = 16;	
+
+func spawn_boc(to: Node3D, size: Vector3) -> CSGBox3D:
+	var box = CSGBox3D.new()
+	to.add_child(box)
+	box.owner = get_tree().edited_scene_root
+	box.name = "csg_box"
+	box.size = size 
+	return box
 
 class BarData extends Resource:
 	@export var bar_count: int

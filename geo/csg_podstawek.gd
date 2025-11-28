@@ -27,10 +27,10 @@ func regenerate():
 	bar_data.spacing = bar_size
 
 	var bar_profile := Libgeo.Shapes.Profiles.square();
-	Libgeo.Math.ops2d_scale(bar_profile, Vector2(1, 0.5)*4)
-	bar_profile = Libgeo.Shapes.Profiles.convex_rounded(bar_profile, 0.5, 6)
+	Libgeo.Math.ops2d_scale(bar_profile, Vector2(1, 0.7)*4)
+	bar_profile = Libgeo.Shapes.Profiles.convex_rounded(bar_profile, 0.7, 8)
 
-	var slide: float = 0.0
+	var slide: float = 1
 
 	bar_data.bar_profile = Libgeo.Memory.copy(bar_profile)
 	Libgeo.Math.ops2d_move(bar_data.bar_profile, Vector2(0,slide*0.5))
@@ -39,7 +39,7 @@ func regenerate():
 	Libgeo.Math.ops2d_move(bar_data.bar_profile, Vector2(0,-slide*0.5))
 	spawn_bars(bar_canv, bar_data, -1.0/8)
 
-	var thick := 3
+	var thick := 10 
 	var tri_size = Vector2(180,90)
 	var corner_r: float = 7
 	var triangle := Libgeo.Shapes.Profiles.right_triangle(tri_size)
@@ -53,7 +53,7 @@ func regenerate():
 	merge_canv.reparent(final_canv)
 	var rim_rofile := Libgeo.Shapes.Profiles.square(10)
 	Libgeo.Math.ops2d_scale(rim_rofile, Vector2(1, 1))
-	rim_rofile = Libgeo.Shapes.Profiles.convex_rounded(rim_rofile, 0.5, 5)
+	rim_rofile = Libgeo.Shapes.Profiles.convex_rounded(rim_rofile, 1.5, 12)
 	spawn_rim(final_canv, tri_size, corner_r, rim_rofile)
 	
 # 	stick holes

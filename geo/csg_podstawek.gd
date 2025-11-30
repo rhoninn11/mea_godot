@@ -13,12 +13,24 @@ func _process(_delta: float) -> void:
 @export_tool_button("regenerate") var regenerate_btn = regenerate
 @export var bar_len: float = 60
 @export var bar_size: float = 3
+@export var p_mesh_alt: bool = false
 func regenerate():
 	for child in get_children():
 		print("removing ", child.name)
 		remove_child(child)
 		child.free()
 
+	
+	if p_mesh_alt: build_holder_mesh()
+	else: build_main_mesh() 
+
+func my_rim_profile() -> PackedVector2Array:
+	var rim_rofile := Libgeo.Shapes.Profiles.square(10)
+	Libgeo.Math.ops2d_scale(rim_rofile, Vector2(1, 1))
+	rim_rofile = Libgeo.Shapes.Profiles.convex_rounded(rim_rofile, 1.5, 12)
+	return rim_rofile;
+
+func build_main_mesh() -> void:
 	var bar_canv := spawn_canvas(self)
 
 	var bar_data: BarData = BarData.new()
@@ -51,9 +63,8 @@ func regenerate():
 
 	var final_canv := spawn_canvas(self)
 	merge_canv.reparent(final_canv)
-	var rim_rofile := Libgeo.Shapes.Profiles.square(10)
-	Libgeo.Math.ops2d_scale(rim_rofile, Vector2(1, 1))
-	rim_rofile = Libgeo.Shapes.Profiles.convex_rounded(rim_rofile, 1.5, 12)
+
+	var rim_rofile = my_rim_profile()
 	spawn_rim(final_canv, tri_size, corner_r, rim_rofile)
 	
 # 	stick holes
@@ -67,7 +78,7 @@ func regenerate():
 	var hole_num := 11
 	var box_arr: Array[CSGBox3D]
 	for i in range(hole_num):
-		var box := spawn_boc(holes_canvas, hole_base)
+		var box := spawn_box(holes_canvas, hole_base)
 		box.global_translate(base_loc)
 		base_loc.x -= hole_base.x + space
 		box_arr.append(box)
@@ -79,31 +90,106 @@ func regenerate():
 	holes_canvas.reparent(final_canv)
 
 	var half_canvas := spawn_canvas(self)
-	var box := spawn_boc(half_canvas, Vector3(1000, 1000, 1000))
+	var box := spawn_box(half_canvas, Vector3(1000, 1000, 1000))
 	box.translate(Vector3(0, -500.5, 0))
 	half_canvas.operation = CSGShape3D.OPERATION_SUBTRACTION
 	# box.operation = CSGShape3D.OPERATION_SUBTRACTION
 	half_canvas.reparent(final_canv)
 
-func regenerate2():
+func spawn_holes(to: Node3D, start_pos: Vector2, num: int) -> void:
+	var box_size := Vector3(9.8,100, 1.8)
 
-	var fitter_canvas := spawn_canvas(self)
-	var holes_canvas := spawn_canvas(self)
-	var vesle_size := Vector3(120, 10, 8)
-	var hole_base := Vector3(9.8,100, 1.8)
-	spawn_boc(fitter_canvas, vesle_size)
+	var base_2d := start_pos
+	base_2d.x += -35
+	var base_loc := Vector3(base_2d.x, 0, base_2d.y)
+	var space_mm := 3.5
+	var box_arr: Array[CSGBox3D]
+	box_arr.resize(num)
+	for i in range(num):
+		var box := spawn_box(to, box_size)
+		box.global_translate(base_loc)
+		box_arr[i] = box
+
+		base_loc.x -= box_size.x + space_mm
 	
-	var base_loc := Vector3(50, 0, 0)
-	var space := 4
-	var delta := 0.05
-	for i in range(8):
-		var hole_size := hole_base + Vector3(delta*i, 0, 0)
-		var box := spawn_boc(holes_canvas, hole_size)
-		box.translate(base_loc)
-		base_loc.x -= hole_size.x + space
+
+func build_holder_mesh():
 	
-	holes_canvas.operation = CSGShape3D.OPERATION_SUBTRACTION
-	holes_canvas.reparent(fitter_canvas)
+	var main_canvas := spawn_canvas(self)
+	var phase := Libgeo.Shapes.phase_1d(32, 0.5, 0.25)
+
+	var pos_arr := Libgeo.Shapes.phi_circle_2d_pos(phase)
+	var tang_arr := Libgeo.Shapes.phi_circle_2d_tangent(phase)
+	
+	var extrusion = Vector2(-2, 0)
+	var tangent = Vector2(1, 0)
+
+	var pos_0: Vector2= pos_arr[0] + extrusion 
+	var pos_last: Vector2 = pos_arr[-1] + extrusion
+	var pos_arr_extended := Libgeo.Memory.join([
+		[pos_0], pos_arr, [pos_last]
+		])
+	Libgeo.Math.ops2d_scale(pos_arr_extended, Vector2.ONE*20)
+
+	var tang_0: Vector2 = tangent
+	var tang_last: Vector2 = -tangent
+	var tang_arr_extended = Libgeo.Memory.join([
+		[tang_0], tang_arr, [tang_last]
+	])
+
+	var profile = my_rim_profile()
+	
+	var pos_tang_arr_extended := Libgeo.Memory.merge_4d(pos_arr_extended, tang_arr_extended)
+	var xforms := Libgeo.Itop.xforms_from_2d(pos_tang_arr_extended)
+
+	var first_hole_at := pos_arr_extended[0] - Vector2(-70, 0)
+	spawn_along(main_canvas, xforms, profile)
+
+	var neg_canv := spawn_canvas(self)
+	spawn_holes(neg_canv, first_hole_at, 3)
+
+	var start := pos_arr_extended[0]
+	start.x += 14
+	var end := pos_arr_extended[-2]
+	spawn_temper(neg_canv, start)
+	spawn_temper(neg_canv, end)
+	neg_canv.operation = CSGShape3D.OPERATION_SUBTRACTION
+
+	var box0 := spawn_box(neg_canv, Vector3(100,100,100))
+	box0.transform.origin.y -= 50
+
+	neg_canv.reparent(main_canvas)
+
+func spawn_temper(to: Node3D, at: Vector2) -> CSGCombiner3D:
+	const d := 10.0
+	const h := 50.0
+	var tmp_canv := spawn_canvas(to)
+	var wide := d*1.1
+	var margin := d*5
+	var box := spawn_box(tmp_canv, Vector3(margin, h, wide))
+
+	box.transform.origin.x -= margin/2.0
+
+	var cyl := spawn_cylinder(tmp_canv, d, h)
+	cyl.operation = CSGShape3D.OPERATION_SUBTRACTION
+	
+	
+	tmp_canv.transform.origin.x = at.x
+	tmp_canv.transform.origin.z = at.y
+
+	return tmp_canv
+
+func spawn_cylinder(to: Node3D, d: float, h: float, res: int = 64) -> CSGCylinder3D:
+	var cyl = CSGCylinder3D.new()
+	to.add_child(cyl)
+	cyl.owner = get_tree().edited_scene_root
+	cyl.name = "csg_box"
+	cyl.radius = d/2.0
+	cyl.height = h
+	cyl.sides = res
+
+	return cyl
+
 
 @export var direction: Libgeo.Shapes.Axis = Libgeo.Shapes.Axis.AX_X
 func spawn_form(to: Node3D, profile: PackedVector2Array, thickness: float) -> void:
@@ -118,7 +204,7 @@ func spawn_rim(to: Node3D, tri_size: Vector2, corner_r: float, rim_profile: Pack
 	var rim_pos = Libgeo.Shapes.Profiles.convex_rounded(triangle, corner_r)
 	var rim_tang = Libgeo.Shapes.Profiles.convex_rounded_tang(triangle)
 
-	var rim_data := Libgeo.Memory.shuffle(rim_pos, rim_tang)
+	var rim_data := Libgeo.Memory.merge_4d(rim_pos, rim_tang)
 	var rim_xforms := Libgeo.Itop.xforms_from_2d(rim_data)
 
 	rim_xforms.append(rim_xforms[0])
@@ -135,7 +221,7 @@ func spawn_cap(to: Node3D, shape: PackedVector2Array) -> void:
 	cap_0.polygon = shape 
 	cap_0.spin_sides = 16;	
 
-func spawn_boc(to: Node3D, size: Vector3) -> CSGBox3D:
+func spawn_box(to: Node3D, size: Vector3) -> CSGBox3D:
 	var box = CSGBox3D.new()
 	to.add_child(box)
 	box.owner = get_tree().edited_scene_root
@@ -179,7 +265,7 @@ func spawn_bars(to: Node3D, bar_data: BarData, rot_rate: float,) -> void:
 	Libgeo.Math.ops2d_move(pos_2d, -dir_vec*0.5*total_len)
 
 	for i in range(bar_count):
-		posnorm_data = Libgeo.Memory.shuffle(pos_2d, tangent_2d)
+		posnorm_data = Libgeo.Memory.merge_4d(pos_2d, tangent_2d)
 		xforms = Libgeo.Itop.xforms_from_2d(posnorm_data)
 		# Libgeo.Math.ops3d_move(xforms, shift_vec) 
 		spawn_along(to, xforms, bar_data.bar_profile)
@@ -193,12 +279,6 @@ func spawn_canvas(to: Node3D) -> CSGCombiner3D:
 	combiner.name = "csg_combiner"
 	return combiner
 
-func spawn_box(to: Node3D) -> CSGBox3D:
-	var box = CSGBox3D.new()
-	to.add_child(box)
-	box.owner = get_tree().edited_scene_root
-	box.name = "csg_control_box"
-	return box
 
 func spawn_along(to: Node3D, xfomrs: Array[Transform3D], profile: PackedVector2Array) -> CSGAlongTransform:
 	var tranform_polygon = CSGAlongTransform.new()

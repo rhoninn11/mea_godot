@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://dt6hp4kajbv72"]
+[gd_scene load_steps=13 format=4 uid="uid://dt6hp4kajbv72"]
 
 [ext_resource type="Shader" uid="uid://dft5tumoutr4r" path="res://mat/spectral_gradient.gdshader" id="1_44qcq"]
 [ext_resource type="Script" uid="uid://cfwocyddvfe05" path="res://geo/csg_script.gd" id="1_tf8oc"]
@@ -7,7 +7,6 @@
 [ext_resource type="Curve" uid="uid://ctjfcrwk1bgbg" path="res://geo/shape_b.tres" id="5_vgqc3"]
 [ext_resource type="PackedScene" uid="uid://bp3870isvd3kd" path="res://geo/csg_podstawek.tscn" id="7_3npvw"]
 [ext_resource type="PackedScene" uid="uid://ole3u587afsi" path="res://geo/mesh_export.tscn" id="7_8ijb4"]
-[ext_resource type="PackedScene" uid="uid://c1psxjw0f4t3u" path="res://geo/csg_fitter.tscn" id="8_3npvw"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_3npvw"]
 _surfaces = [{
@@ -30,14 +29,12 @@ shader = ExtResource("1_44qcq")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44qcq"]
 albedo_color = Color(0.397413, 0.105322, 0.10186, 1)
 
-[sub_resource type="Curve3D" id="Curve3D_3npvw"]
+[sub_resource type="Curve3D" id="Curve3D_8ijb4"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_3npvw"]
 
 [node name="ProceduralGeometry" type="Node3D"]
 script = ExtResource("1_vgqc3")
@@ -106,6 +103,7 @@ dural_geo = NodePath("../mesh_canvas")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14, 0)
 bar_len = 300.0
 bar_size = 10.0
+p_mesh_alt = null
 direction = 1
 bar_count = 19
 
@@ -273,112 +271,121 @@ transform_data = PackedFloat32Array(1, 0, 0, 0, 0, 0, 1, -5, 0, 1, 0, 0, 1, 0, 0
 polygon = PackedVector2Array(-90, 33.6738, -89.9357, 34.6203, -89.744, 35.5494, -89.4285, 36.444, -88.9949, 37.2878, -88.4511, 38.0652, -87.8073, 38.762, -87.0752, 39.3653, -86.2682, 39.864, -85.4011, 40.2491, -84.49, 40.5133, -83.5515, 40.652, -82.6029, 40.6625, -81.6616, 40.5446, -80.7448, 40.3005, -79.8695, 39.9348, 63.478, -31.739, 64.5401, -32.3944, 65.4689, -33.2281, 66.2349, -34.2134, 66.8138, -35.3191, 67.1871, -36.51, 67.343, -37.7483, 67.2765, -38.9945, 66.9898, -40.2092, 66.4919, -41.3536, 65.7987, -42.3915, 64.9322, -43.2897, 63.92, -44.0198, 62.7942, -44.5585, 61.5906, -44.8887, 60.3475, -45, -83, -45, -83.7317, -44.9617, -84.4554, -44.847, -85.1631, -44.6574, -85.8472, -44.3948, -86.5, -44.0622, -87.1145, -43.6631, -87.6839, -43.202, -88.202, -42.6839, -88.6631, -42.1145, -89.0622, -41.5, -89.3948, -40.8472, -89.6574, -40.1631, -89.847, -39.4554, -89.9617, -38.7317, -90, -38)
 
 [node name="debug_path" type="Path3D" parent="csg_podstawek/csg_combiner/csg_combiner2"]
-curve = SubResource("Curve3D_3npvw")
+curve = SubResource("Curve3D_8ijb4")
 
 [node name="tranformed_profile" type="CSGAlongTransform" parent="csg_podstawek/csg_combiner"]
 transform_data = PackedFloat32Array(-1, 0, 0, -90, 0, 1, 0, 0, 0, 0, -1, 33.6738, -0.990816, 0, -0.135214, -89.9357, 0, 1, 0, 0, 0.135214, 0, -0.990816, 34.6203, -0.963434, 0, -0.267945, -89.744, 0, 1, 0, 0, 0.267945, 0, -0.963434, 35.5494, -0.918357, 0, -0.395754, -89.4285, 0, 1, 0, 0, 0.395754, 0, -0.918357, 36.444, -0.856411, 0, -0.516294, -88.9949, 0, 1, 0, 0, 0.516294, 0, -0.856411, 37.2878, -0.778736, 0, -0.627352, -88.4511, 0, 1, 0, 0, 0.627352, 0, -0.778736, 38.0652, -0.686758, 0, -0.726887, -87.8073, 0, 1, 0, 0, 0.726887, 0, -0.686758, 38.762, -0.582165, 0, -0.813071, -87.0752, 0, 1, 0, 0, 0.813071, 0, -0.582165, 39.3653, -0.46688, 0, -0.884321, -86.2682, 0, 1, 0, 0, 0.884321, 0, -0.46688, 39.864, -0.34302, 0, -0.939328, -85.4011, 0, 1, 0, 0, 0.939328, 0, -0.34302, 40.2491, -0.212859, 0, -0.977083, -84.49, 0, 1, 0, 0, 0.977083, 0, -0.212859, 40.5133, -0.0787891, 0, -0.996891, -83.5515, 0, 1, 0, 0, 0.996891, 0, -0.0787891, 40.652, 0.0567283, 0, -0.99839, -82.6029, 0, 1, 0, 0, 0.99839, 0, 0.0567283, 40.6625, 0.191204, 0, -0.98155, -81.6616, 0, 1, 0, 0, 0.98155, 0, 0.191204, 40.5446, 0.322167, 0, -0.946683, -80.7448, 0, 1, 0, 0, 0.946683, 0, 0.322167, 40.3005, 0.447214, 0, -0.894427, -79.8695, 0, 1, 0, 0, 0.894427, 0, 0.447214, 39.9348, 0.447214, 0, -0.894427, 63.478, 0, 1, 0, 0, 0.894427, 0, 0.447214, -31.739, 0.59894, 0, -0.800794, 64.5401, 0, 1, 0, 0, 0.800794, 0, 0.59894, -32.3944, 0.731628, 0, -0.681704, 65.4689, 0, 1, 0, 0, 0.681704, 0, 0.731628, -33.2281, 0.841058, 0, -0.540945, 66.2349, 0, 1, 0, 0, 0.540945, 0, 0.841058, -34.2134, 0.923753, 0, -0.382989, 66.8138, 0, 1, 0, 0, 0.382989, 0, 0.923753, -35.3191, 0.977083, 0, -0.212859, 67.1871, 0, 1, 0, 0, 0.212859, 0, 0.977083, -36.51, 0.999353, 0, -0.035963, 67.343, 0, 1, 0, 0, 0.035963, 0, 0.999353, -37.7483, 0.989856, 0, 0.142077, 67.2765, 0, 1, 0, 0, -0.142077, 0, 0.989856, -38.9945, 0.948892, 0, 0.3156, 66.9898, 0, 1, 0, 0, -0.3156, 0, 0.948892, -40.2092, 0.877766, 0, 0.479091, 66.4919, 0, 1, 0, 0, -0.479091, 0, 0.877766, -41.3536, 0.778736, 0, 0.627352, 65.7987, 0, 1, 0, 0, -0.627352, 0, 0.778736, -42.3915, 0.654952, 0, 0.755671, 64.9322, 0, 1, 0, 0, -0.755671, 0, 0.654952, -43.2897, 0.510348, 0, 0.859968, 63.92, 0, 1, 0, 0, -0.859968, 0, 0.510348, -44.0198, 0.34952, 0, 0.936929, 62.7942, 0, 1, 0, 0, -0.936929, 0, 0.34952, -44.5585, 0.177583, 0, 0.984106, 61.5906, 0, 1, 0, 0, -0.984106, 0, 0.177583, -44.8887, -2.98023e-08, 0, 1, 60.3475, 0, 1, 0, 0, -1, 0, -2.98023e-08, -45, -1.19249e-08, 0, 1, -83, 0, 1, 0, 0, -1, 0, -1.19249e-08, -45, -0.104528, 0, 0.994522, -83.7317, 0, 1, 0, 0, -0.994522, 0, -0.104528, -44.9617, -0.207912, 0, 0.978148, -84.4554, 0, 1, 0, 0, -0.978148, 0, -0.207912, -44.847, -0.309017, 0, 0.951057, -85.1631, 0, 1, 0, 0, -0.951057, 0, -0.309017, -44.6574, -0.406737, 0, 0.913545, -85.8472, 0, 1, 0, 0, -0.913545, 0, -0.406737, -44.3948, -0.5, 0, 0.866025, -86.5, 0, 1, 0, 0, -0.866025, 0, -0.5, -44.0622, -0.587785, 0, 0.809017, -87.1145, 0, 1, 0, 0, -0.809017, 0, -0.587785, -43.6631, -0.669131, 0, 0.743145, -87.6839, 0, 1, 0, 0, -0.743145, 0, -0.669131, -43.202, -0.743145, 0, 0.669131, -88.202, 0, 1, 0, 0, -0.669131, 0, -0.743145, -42.6839, -0.809017, 0, 0.587785, -88.6631, 0, 1, 0, 0, -0.587785, 0, -0.809017, -42.1145, -0.866025, 0, 0.5, -89.0622, 0, 1, 0, 0, -0.5, 0, -0.866025, -41.5, -0.913545, 0, 0.406737, -89.3948, 0, 1, 0, 0, -0.406737, 0, -0.913545, -40.8472, -0.951056, 0, 0.309017, -89.6574, 0, 1, 0, 0, -0.309017, 0, -0.951056, -40.1631, -0.978148, 0, 0.207912, -89.847, 0, 1, 0, 0, -0.207912, 0, -0.978148, -39.4554, -0.994522, 0, 0.104529, -89.9617, 0, 1, 0, 0, -0.104529, 0, -0.994522, -38.7317, -1, 0, 6.3573e-08, -90, 0, 1, 0, 0, -6.3573e-08, 0, -1, -38, -1, 0, 0, -90, 0, 1, 0, 0, 0, 0, -1, 33.6738)
 polygon = PackedVector2Array(-5, 3.5, -4.98473, 3.71347, -4.93924, 3.9226, -4.86445, 4.12312, -4.76188, 4.31096, -4.63362, 4.48229, -4.48229, 4.63362, -4.31096, 4.76188, -4.12312, 4.86445, -3.9226, 4.93924, -3.71347, 4.98473, -3.5, 5, 3.5, 5, 3.71347, 4.98473, 3.9226, 4.93924, 4.12312, 4.86445, 4.31096, 4.76188, 4.48229, 4.63362, 4.63362, 4.48229, 4.76188, 4.31096, 4.86445, 4.12312, 4.93924, 3.9226, 4.98473, 3.71347, 5, 3.5, 5, -3.5, 4.98473, -3.71347, 4.93924, -3.9226, 4.86445, -4.12312, 4.76188, -4.31096, 4.63362, -4.48229, 4.48229, -4.63362, 4.31096, -4.76188, 4.12312, -4.86445, 3.9226, -4.93924, 3.71347, -4.98473, 3.5, -5, -3.5, -5, -3.71347, -4.98473, -3.9226, -4.93924, -4.12312, -4.86445, -4.31096, -4.76188, -4.48229, -4.63362, -4.63362, -4.48229, -4.76188, -4.31096, -4.86445, -4.12312, -4.93924, -3.9226, -4.98473, -3.71347, -5, -3.5)
 
-[node name="@CSGCombiner3D@35911" type="CSGCombiner3D" parent="csg_podstawek/csg_combiner"]
+[node name="@CSGCombiner3D@32121" type="CSGCombiner3D" parent="csg_podstawek/csg_combiner"]
 operation = 2
 
-[node name="csg_box" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box2" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box2" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.7, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box3" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box3" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box4" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box4" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.1, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box5" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box5" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box6" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box6" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box7" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box7" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.8, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box8" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box8" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.1, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box9" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box9" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.4, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box10" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box10" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64.7, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box11" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35911"]
+[node name="csg_box11" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32121"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78, 0, -45)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="@CSGCombiner3D@35914" type="CSGCombiner3D" parent="csg_podstawek/csg_combiner"]
+[node name="@CSGCombiner3D@32124" type="CSGCombiner3D" parent="csg_podstawek/csg_combiner"]
 operation = 2
 
-[node name="csg_box" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@35914"]
+[node name="csg_box" type="CSGBox3D" parent="csg_podstawek/csg_combiner/@CSGCombiner3D@32124"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -500.5, 0)
 size = Vector3(1000, 1000, 1000)
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="csg_podstawek"]
+[node name="csg_podstawek2" parent="." instance=ExtResource("7_3npvw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 89.6705)
+bar_len = 300.0
+bar_size = 10.0
+p_mesh_alt = true
+direction = 1
+bar_count = 19
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
-mesh = SubResource("CapsuleMesh_3npvw")
+[node name="csg_combiner" type="CSGCombiner3D" parent="csg_podstawek2"]
 
-[node name="csg_fitter" parent="." instance=ExtResource("8_3npvw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 32.0084, 0)
-visible = false
+[node name="tranformed_profile" type="CSGAlongTransform" parent="csg_podstawek2/csg_combiner"]
+transform_data = PackedFloat32Array(0, 0, -1, -40, 0, 1, 0, 0, 1, 0, 0, -20, 4.37114e-08, 0, -1, -8.74228e-07, 0, 1, 0, 0, 1, 0, 4.37114e-08, -20, -0.101168, 0, -0.994869, 2.02337, 0, 1, 0, 0, 0.994869, 0, -0.101168, -19.8974, -0.201299, 0, -0.97953, 4.02597, 0, 1, 0, 0, 0.97953, 0, -0.201299, -19.5906, -0.299363, 0, -0.954139, 5.98726, 0, 1, 0, 0, 0.954139, 0, -0.299363, -19.0828, -0.394356, 0, -0.918958, 7.88712, 0, 1, 0, 0, 0.918958, 0, -0.394356, -18.3792, -0.485302, 0, -0.874347, 9.70604, 0, 1, 0, 0, 0.874347, 0, -0.485302, -17.4869, -0.571268, 0, -0.820763, 11.4254, 0, 1, 0, 0, 0.820763, 0, -0.571268, -16.4153, -0.651372, 0, -0.758758, 13.0274, 0, 1, 0, 0, 0.758758, 0, -0.651372, -15.1752, -0.724793, 0, -0.688967, 14.4959, 0, 1, 0, 0, 0.688967, 0, -0.724793, -13.7793, -0.790776, 0, -0.612106, 15.8155, 0, 1, 0, 0, 0.612106, 0, -0.790776, -12.2421, -0.848644, 0, -0.528964, 16.9729, 0, 1, 0, 0, 0.528964, 0, -0.848644, -10.5793, -0.897805, 0, -0.440394, 17.9561, 0, 1, 0, 0, 0.440394, 0, -0.897805, -8.80788, -0.937752, 0, -0.347305, 18.755, 0, 1, 0, 0, 0.347305, 0, -0.937752, -6.94611, -0.968077, 0, -0.250653, 19.3615, 0, 1, 0, 0, 0.250653, 0, -0.968077, -5.01305, -0.988468, 0, -0.151428, 19.7694, 0, 1, 0, 0, 0.151428, 0, -0.988468, -3.02856, -0.998717, 0, -0.0506492, 19.9743, 0, 1, 0, 0, 0.0506492, 0, -0.998717, -1.01298, -0.998717, 0, 0.0506492, 19.9743, 0, 1, 0, 0, -0.0506492, 0, -0.998717, 1.01298, -0.988468, 0, 0.151428, 19.7694, 0, 1, 0, 0, -0.151428, 0, -0.988468, 3.02856, -0.968077, 0, 0.250653, 19.3615, 0, 1, 0, 0, -0.250653, 0, -0.968077, 5.01305, -0.937752, 0, 0.347305, 18.755, 0, 1, 0, 0, -0.347305, 0, -0.937752, 6.94611, -0.897805, 0, 0.440394, 17.9561, 0, 1, 0, 0, -0.440394, 0, -0.897805, 8.80788, -0.848644, 0, 0.528964, 16.9729, 0, 1, 0, 0, -0.528964, 0, -0.848644, 10.5793, -0.790776, 0, 0.612106, 15.8155, 0, 1, 0, 0, -0.612106, 0, -0.790776, 12.2421, -0.724793, 0, 0.688967, 14.4959, 0, 1, 0, 0, -0.688967, 0, -0.724793, 13.7793, -0.651372, 0, 0.758758, 13.0274, 0, 1, 0, 0, -0.758758, 0, -0.651372, 15.1752, -0.571268, 0, 0.820763, 11.4254, 0, 1, 0, 0, -0.820763, 0, -0.571268, 16.4153, -0.485302, 0, 0.874347, 9.70604, 0, 1, 0, 0, -0.874347, 0, -0.485302, 17.4869, -0.394356, 0, 0.918958, 7.88712, 0, 1, 0, 0, -0.918958, 0, -0.394356, 18.3792, -0.299363, 0, 0.954139, 5.98726, 0, 1, 0, 0, -0.954139, 0, -0.299363, 19.0828, -0.201299, 0, 0.97953, 4.02597, 0, 1, 0, 0, -0.97953, 0, -0.201299, 19.5906, -0.101168, 0, 0.994869, 2.02337, 0, 1, 0, 0, -0.994869, 0, -0.101168, 19.8974, 4.37114e-08, 0, 1, -8.74228e-07, 0, 1, 0, 0, -1, 0, 4.37114e-08, 20, 0, 0, 1, -40, 0, 1, 0, 0, -1, 0, 0, 20)
+polygon = PackedVector2Array(-5, 3.5, -4.98473, 3.71347, -4.93924, 3.9226, -4.86445, 4.12312, -4.76188, 4.31096, -4.63362, 4.48229, -4.48229, 4.63362, -4.31096, 4.76188, -4.12312, 4.86445, -3.9226, 4.93924, -3.71347, 4.98473, -3.5, 5, 3.5, 5, 3.71347, 4.98473, 3.9226, 4.93924, 4.12312, 4.86445, 4.31096, 4.76188, 4.48229, 4.63362, 4.63362, 4.48229, 4.76188, 4.31096, 4.86445, 4.12312, 4.93924, 3.9226, 4.98473, 3.71347, 5, 3.5, 5, -3.5, 4.98473, -3.71347, 4.93924, -3.9226, 4.86445, -4.12312, 4.76188, -4.31096, 4.63362, -4.48229, 4.48229, -4.63362, 4.31096, -4.76188, 4.12312, -4.86445, 3.9226, -4.93924, 3.71347, -4.98473, 3.5, -5, -3.5, -5, -3.71347, -4.98473, -3.9226, -4.93924, -4.12312, -4.86445, -4.31096, -4.76188, -4.48229, -4.63362, -4.63362, -4.48229, -4.76188, -4.31096, -4.86445, -4.12312, -4.93924, -3.9226, -4.98473, -3.71347, -5, -3.5)
 
-[node name="csg_combiner" type="CSGCombiner3D" parent="csg_fitter"]
-
-[node name="csg_box" type="CSGBox3D" parent="csg_fitter/csg_combiner"]
-size = Vector3(120, 10, 8)
-
-[node name="csg_combiner2" type="CSGCombiner3D" parent="csg_fitter/csg_combiner"]
+[node name="csg_combiner2" type="CSGCombiner3D" parent="csg_podstawek2/csg_combiner"]
 operation = 2
 
-[node name="csg_box" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0)
+[node name="csg_box" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -20)
 size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box2" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.2, 0, 0)
-size = Vector3(9.85, 100, 1.8)
+[node name="csg_box2" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.3, 0, -20)
+size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box3" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.35, 0, 0)
-size = Vector3(9.9, 100, 1.8)
+[node name="csg_box3" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.6, 0, -20)
+size = Vector3(9.8, 100, 1.8)
 
-[node name="csg_box4" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.45, 0, 0)
-size = Vector3(9.95, 100, 1.8)
+[node name="csg_combiner" type="CSGCombiner3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -20)
 
-[node name="csg_box5" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 0)
-size = Vector3(10, 100, 1.8)
+[node name="csg_box" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2/csg_combiner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0)
+size = Vector3(50, 50, 11)
 
-[node name="csg_box6" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 0, 0)
-size = Vector3(10.05, 100, 1.8)
+[node name="csg_box2" type="CSGCylinder3D" parent="csg_podstawek2/csg_combiner/csg_combiner2/csg_combiner"]
+operation = 2
+radius = 5.0
+height = 50.0
+sides = 64
 
-[node name="csg_box7" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.55, 0, 0)
-size = Vector3(10.1, 100, 1.8)
+[node name="csg_combiner2" type="CSGCombiner3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.74228e-07, 0, 20)
 
-[node name="csg_box8" type="CSGBox3D" parent="csg_fitter/csg_combiner/csg_combiner2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.65, 0, 0)
-size = Vector3(10.15, 100, 1.8)
+[node name="csg_box" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0)
+size = Vector3(50, 50, 11)
+
+[node name="csg_box2" type="CSGCylinder3D" parent="csg_podstawek2/csg_combiner/csg_combiner2/csg_combiner2"]
+operation = 2
+radius = 5.0
+height = 50.0
+sides = 64
+
+[node name="csg_box4" type="CSGBox3D" parent="csg_podstawek2/csg_combiner/csg_combiner2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+size = Vector3(100, 100, 100)

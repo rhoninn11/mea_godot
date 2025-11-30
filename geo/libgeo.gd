@@ -439,9 +439,10 @@ class Shapes:
 
 		return mem
 	
-	static func phase_1d(num: int, fill_c: float) -> PackedFloat32Array:
+	static func phase_1d(num: int, fill_c: float, off: float = 0) -> PackedFloat32Array:
 		var arc := line_1d(num, fill_c)
 		for i in range(len(arc)):
+			arc[i] -= off
 			arc[i] *= TAU
 		return arc
 	
@@ -502,7 +503,7 @@ class Shapes:
 		var pos_off: = -pos_arr[0]
 		# pos_off = Vector2.ZERO
 		Libgeo.Math.ops2d_move(pos_arr, pos_off)
-		var pos_norm_arr := Memory.shuffle(pos_arr, tangent_arr)
+		var pos_norm_arr := Memory.merge_4d(pos_arr, tangent_arr)
 		return Itop.xforms_from_2d(pos_norm_arr)
 	
 	static func line_y_4d(steps: int, length: float) -> Array[Transform3D]:
@@ -563,7 +564,7 @@ class Memory:
 			b[i] = a[i]
 		return b
 
-	static func shuffle(pos: PackedVector2Array, tangents: PackedVector2Array) -> PackedVector4Array:
+	static func merge_4d(pos: PackedVector2Array, tangents: PackedVector2Array) -> PackedVector4Array:
 		assert(len(pos) == len(tangents))
 		var pos_norm_arr := Shapes.empty_4d(len(pos))
 		for i in range(len(pos)):

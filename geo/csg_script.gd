@@ -1,4 +1,4 @@
-
+@tool
 extends CSGCombiner3D
 
 @export var profile: PackedVector2Array
@@ -24,6 +24,7 @@ func regenerate():
 @export var p_along_flip: bool = false;	
 @export var p_circle_flip: bool = false;	
 @export var p_alt_profile: bool = false;
+@export var p_scale_curve: Curve = null;
 
 var m_xforms: Array[Transform3D]
 

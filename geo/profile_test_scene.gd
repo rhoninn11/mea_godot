@@ -4,7 +4,23 @@ extends Node2D
 
 @export var x_size: float = 200
 @export var y_size: float = 200
+
+
+func build_in_functionality() -> void:
+	# Geometry2D.clip_polygons()
+	pass
+
+
 func spawn_debug_path(to: Node2D) -> void:
+
+	var group_helpers := true;
+	var group_essential := true;
+	var group_output := true
+
+	group_helpers = false;
+	group_essential = false;
+	# group_output = false;
+	
 	var r: float = 20
 	var tri_size := Vector2(x_size, y_size)
 
@@ -13,11 +29,8 @@ func spawn_debug_path(to: Node2D) -> void:
 	# opt 2
 	convex = Libgeo.Shapes.Profiles.square(1)
 	Libgeo.Math.ops2d_scale(convex, Vector2(x_size, y_size))
-	#
-	var profile := Libgeo.Shapes.Profiles.convex_rounded(convex, r) 
-	profile_as_path(to, profile, true, Color.GREEN)
 	var angle_data := Libgeo.Math.calc_angles(convex)
-	profile_as_path(to, convex, true, Color.VIOLET)
+	profile_as_path(to, convex, true, Color.VIOLET, group_essential)
 
 	var n = len(convex)
 	var full_circle = Libgeo.Shapes.phase_1d(16, 1.0)
@@ -29,21 +42,40 @@ func spawn_debug_path(to: Node2D) -> void:
 
 		var profile3 := Libgeo.Math.not_identified(prev, curr, next, 100)
 		Libgeo.Math.ops2d_move(profile3, curr)
-		profile_as_path(to, profile3, false, Color.BEIGE)
+		profile_as_path(to, profile3, false, Color.BEIGE, group_helpers)
 
 		var interm := r/sin(angle_data[curr_idx].x/2)
 		var profile4 := Libgeo.Math.not_identified2(prev, curr, next, interm)
 
 		Libgeo.Math.ops2d_move(profile4, curr)
-		profile_as_path(to, profile4, false, Color.RED)
+		profile_as_path(to, profile4, false, Color.RED, group_helpers)
 		
 		var circ  := Libgeo.Shapes.phi_circle_2d_pos(full_circle)
 		Libgeo.Math.ops2d_scale(circ, Vector2.ONE*r)
 		Libgeo.Math.ops2d_move(circ, profile4[1])
-		profile_as_path(to, circ, true, Color.YELLOW_GREEN)
+		profile_as_path(to, circ, true, Color.YELLOW_GREEN, group_helpers)
 	
+	var rounded := Libgeo.Shapes.Profiles.convex_rounded(convex, r) 
+	Libgeo.Math.ops2d_move(rounded, Vector2(100,100))
+	profile_as_path(to, rounded, true, Color.GREEN, group_essential);
+	
+	var clip_result := Geometry2D.clip_polygons(convex, rounded)
+	if len(clip_result) == 0:
+		return;
+		
+	var clipped = clip_result[0]
+	var clipped_len = len(clipped)
+	
+	print("length of clipped result is polygon with length: %d" % clipped_len);
+	if clipped_len > 2:
+		profile_as_path(to, clipped, true, Color.BROWN, group_output);
 
-func profile_as_path(to: Node2D, data: PackedVector2Array, closed: bool, color: Color) -> Line2D:
+var counter: int = 0;
+const every: int = 100;	
+
+func profile_as_path(to: Node2D, data: PackedVector2Array, closed: bool, color: Color, enabled: bool) -> Line2D:
+	if not enabled:
+		return null;
 	assert(len(data) >= 2)
 	var profile := Libgeo.Memory.copy(data)
 	if closed:

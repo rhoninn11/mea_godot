@@ -249,7 +249,7 @@ class Math:
 			info += "idx: %d, a: %.02f, hmm: %.02f | "%[i, data[i].x, data[i].y] 
 
 
-		print(info)
+		# print(info)
 		
 		return data
 

@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://coye4xcnm2in"]
+[gd_scene load_steps=11 format=3 uid="uid://coye4xcnm2in"]
 
 [ext_resource type="Shader" uid="uid://bb8bi3bd0q5my" path="res://tool_scripting/land.tres" id="1_fclvo"]
 [ext_resource type="PackedScene" uid="uid://bd7upt7hgbq6c" path="res://scenes/third_person.tscn" id="3_sjuej"]
-[ext_resource type="PackedScene" uid="uid://c0calr38syn4d" path="res://geo/csg_scene.tscn" id="4_yrpjq"]
 [ext_resource type="PackedScene" uid="uid://cepuw5or1tqbe" path="res://geo/domek/domek.tscn" id="6_2wvyq"]
 [ext_resource type="PackedScene" uid="uid://bgtfamvegrt75" path="res://exp/updating_instances.tscn" id="6_d6pb1"]
 
@@ -83,9 +82,6 @@ speed_mult = 5.5
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-
-[node name="csg_scene" parent="." instance=ExtResource("4_yrpjq")]
-transform = Transform3D(0.993612, -0.00018102, -0.112852, 0.000166095, 1, -0.00014187, 0.112852, 0.000122223, 0.993612, -16.5132, 0.73496, 23.6198)
 
 [node name="StaticBody3D2" parent="." instance=ExtResource("6_2wvyq")]
 transform = Transform3D(-0.886971, 0, 0.461826, 0, 1, 0, -0.461826, 0, -0.886971, -0.0379796, 0, -37.3798)

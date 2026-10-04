@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 	var target := turn_keys + turn_mouse;
 	self.inertia.simulate(target, delta)
 	
-	var mv_vec = Input.get_vector("turn_right", "turn_left", "noop", "noop")
+	var mv_vec = Input.get_vector("noop", "noop", "noop", "noop");
 	if mv_vec != Vector2.ZERO:
 		turn_keys += mv_vec.x * speed
 

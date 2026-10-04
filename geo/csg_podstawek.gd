@@ -11,16 +11,23 @@ func _process(_delta: float) -> void:
 
 
 @export_tool_button("regenerate") var regenerate_btn = regenerate
+@export_tool_button("clear") var clear_btn = clear
 @export var bar_len: float = 60
 @export var bar_size: float = 3
 @export var p_mesh_alt: bool = false
-func regenerate():
+
+func clear():
+	print("clear was called")
 	for child in get_children():
 		print("removing ", child.name)
 		remove_child(child)
 		child.free()
 
-	
+
+func regenerate():
+	print("regenerate was called")
+	clear()
+
 	if p_mesh_alt: build_holder_mesh()
 	else: build_main_mesh() 
 
@@ -238,7 +245,7 @@ class BarData extends Resource:
 @export var bar_count: int = 5;
 func spawn_bars(to: Node3D, bar_data: BarData, rot_rate: float,) -> void:
 	assert(bar_count >= 1)	
-	print("generating_geometry")
+	#print("generating_geometry")
 
 	var num: int = 12
 	var line := Libgeo.Shapes.line_1d(num, bar_data.bar_len)
@@ -252,7 +259,7 @@ func spawn_bars(to: Node3D, bar_data: BarData, rot_rate: float,) -> void:
 	var rate: float = rot_rate
 	var rate_rad: = rate*TAU
 	var dir_vec: = Vector2(-sin(rate_rad), cos(rate_rad))
-	print("dir vec: ", dir_vec, " rate ", rate)
+	#print("dir vec: ", dir_vec, " rate ", rate)
 	# var shift_vec: = Vector3(0, shift, 0)
 	Libgeo.Math.ops2d_rotate(pos_2d, rate)
 	Libgeo.Math.ops2d_rotate(tangent_2d, rate)

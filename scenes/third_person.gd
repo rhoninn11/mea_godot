@@ -85,7 +85,9 @@ func update_hand(delta: float) -> void:
 
 		plane_arr[i].simulate(delta, active_arr[i]);
 		var calc_pos = poses_arr[i] + plane_arr[i].fn_val();
-		hand_arr[i].transform.origin = Vector3(-calc_pos.x, calc_pos.y, -1.3);
+		var offset := Vector3(0, -1, -1.3);
+		var on_a_pane = Vector3(-calc_pos.x, calc_pos.y, 0.0);
+		hand_arr[i].transform.origin = on_a_pane + offset;
 
 		if active_arr[i]:
 			mesh_arr[i].material_overlay = highlight

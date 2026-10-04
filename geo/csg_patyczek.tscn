@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cblxb8v0qkehd"]
+
+[ext_resource type="Script" uid="uid://ckfdujn4rln6r" path="res://geo/csg_patyczek.gd" id="1_nbpwo"]
+
+[node name="CsgPatyczek" type="Node3D" unique_id=1017006335]
+script = ExtResource("1_nbpwo")
+
+[node name="csg_combiner" type="CSGCombiner3D" parent="." unique_id=920855220]
+
+[node name="middle" type="CSGBox3D" parent="csg_combiner" unique_id=434581197]
+size = Vector3(11.8, 0.3, 1.2)
+
+[node name="side_r" type="CSGCylinder3D" parent="csg_combiner" unique_id=1166250612]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0, 0)
+radius = 0.6
+height = 0.3
+
+[node name="side_l" type="CSGCylinder3D" parent="csg_combiner" unique_id=1079192892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0, 0)
+radius = 0.6
+height = 0.3

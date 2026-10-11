@@ -19,8 +19,8 @@ func csg_2_mesh(geo_mng: CSGCombiner3D, name: String) -> void:
 	var arrays = expo_mesh.surface_get_arrays(0)
 	print("+++ verts count ", len(arrays[Mesh.ARRAY_VERTEX]))
 	
-	var mesh_res_path = "res://tmp/geo_%s.tres" % [name]
-	var glb_res_path = "res://tmp/geo_%s.glb" % [name]
+	var mesh_res_path = "res://geo/tmp/geo_%s.tres" % [name]
+	var glb_res_path = "res://geo/tmp/geo_%s.glb" % [name]
 	ResourceSaver.save(expo_mesh, mesh_res_path)
 	print("+++ geometry saved at ", mesh_res_path)
 

@@ -16,53 +16,37 @@ _surfaces = [{
 [node name="CsgPatyczek" type="Node3D" unique_id=1017006335]
 script = ExtResource("1_nbpwo")
 
-[node name="main" type="CSGCombiner3D" parent="." unique_id=483052647]
+[node name="main" type="CSGCombiner3D" parent="." unique_id=354422804]
 
-[node name="middle" type="CSGBox3D" parent="main" unique_id=1413451569]
+[node name="middle" type="CSGBox3D" parent="main" unique_id=1488594445]
 size = Vector3(11.8, 0.3, 1.2)
 
-[node name="side_r" type="CSGCylinder3D" parent="main" unique_id=648179300]
+[node name="side_r" type="CSGCylinder3D" parent="main" unique_id=945675064]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0, 0)
 radius = 0.6
 height = 0.3
 sides = 32
 
-[node name="side_l" type="CSGCylinder3D" parent="main" unique_id=2113571141]
+[node name="side_l" type="CSGCylinder3D" parent="main" unique_id=1830151114]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0, 0)
 radius = 0.6
 height = 0.3
 sides = 32
 
-[node name="side" type="CSGCombiner3D" parent="." unique_id=1025754400]
+[node name="side" type="CSGCombiner3D" parent="." unique_id=1014287358]
 
-[node name="stamp_0" type="CSGMesh3D" parent="side" unique_id=2094433704]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
+[node name="stamp_0" type="CSGMesh3D" parent="side" unique_id=1075064552]
+transform = Transform3D(4.6328703e-05, -1, 0, 1, 4.6328703e-05, 0, 0, 0, 1, -6, 0, 0)
 mesh = SubResource("ArrayMesh_nbpwo")
 
-[node name="stamp_1" type="CSGMesh3D" parent="side" unique_id=1594244292]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
+[node name="stamp_1" type="CSGMesh3D" parent="side" unique_id=1300811063]
+transform = Transform3D(4.6328703e-05, -1, 0, 1, 4.6328703e-05, 0, 0, 0, 1, -2, 0, 0)
 mesh = SubResource("ArrayMesh_nbpwo")
 
-[node name="stamp_2" type="CSGMesh3D" parent="side" unique_id=203288775]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
+[node name="stamp_2" type="CSGMesh3D" parent="side" unique_id=1323958277]
+transform = Transform3D(4.6328703e-05, -1, 0, 1, 4.6328703e-05, 0, 0, 0, 1, 2, 0, 0)
 mesh = SubResource("ArrayMesh_nbpwo")
 
-[node name="stamp_3" type="CSGMesh3D" parent="side" unique_id=1054522747]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
-mesh = SubResource("ArrayMesh_nbpwo")
-
-[node name="stamp_4" type="CSGMesh3D" parent="side" unique_id=1680755950]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
-mesh = SubResource("ArrayMesh_nbpwo")
-
-[node name="stamp_5" type="CSGMesh3D" parent="side" unique_id=166820171]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
-mesh = SubResource("ArrayMesh_nbpwo")
-
-[node name="stamp_6" type="CSGMesh3D" parent="side" unique_id=1226050024]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
-mesh = SubResource("ArrayMesh_nbpwo")
-
-[node name="stamp_7" type="CSGMesh3D" parent="side" unique_id=1925534357]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 3)
+[node name="stamp_3" type="CSGMesh3D" parent="side" unique_id=514302183]
+transform = Transform3D(4.6328703e-05, -1, 0, 1, 4.6328703e-05, 0, 0, 0, 1, 6, 0, 0)
 mesh = SubResource("ArrayMesh_nbpwo")

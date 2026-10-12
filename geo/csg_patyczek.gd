@@ -34,9 +34,9 @@ func regenerate():
 	clear()
 	var canvas := spawn_canvas(self, "main")
 	spawn_stick(canvas)
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(0.1).timeout
 	var canvas1 := spawn_canvas(self, "side")
-	sequencec(canvas1, get_mesh(canvas))
+	hole_array(canvas1, get_mesh(canvas))
 	
 func get_mesh(combiner: CSGCombiner3D) -> ArrayMesh:
 	print("combiner: ", combiner)
@@ -85,13 +85,25 @@ func spawn_side(to: Node3D, s: StickSizeing, l: bool) -> CSGCylinder3D:
 	
 	return side 
 
-func sequencec(to: Node3D, mesh: ArrayMesh) -> void:
-	var hmm: Array[String] = ["0", "1", "2", "3", "4", "5", "6", "7"]
-	var inst
-	for i in range(8):
+func hole_array(to: Node3D, with: ArrayMesh) -> void:
+	var d := 12
+	var n := 4
+	var x := -d*0.5
+	var dx := d/(n-1) 
+	
+	var offs: Array[Vector3] = []
+	offs.resize(n)
+	for i in range(n):
+		var v := Vector3(x,0,0)
+		#print("v is ", v)
+		offs[i] = v
+		x += dx
+	
+	for i in range(len(offs)):
 		var stamp := CSGMesh3D.new()
 		to.add_child(stamp)
 		stamp.owner = get_tree().edited_scene_root
-		stamp.name = "stamp_" + hmm[i]
-		stamp.transform.origin = Vector3(1,2,i*3)
-		stamp.mesh = mesh
+		stamp.name = "stamp_" + str(i)
+		stamp.transform = stamp.transform.rotated(Vector3(0,0,1), 3.1415 * 0.5)
+		stamp.transform.origin += offs[i]
+		stamp.mesh = with

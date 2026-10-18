@@ -35,8 +35,17 @@ func regenerate():
 	var canvas := spawn_canvas(self, "main")
 	spawn_stick(canvas)
 	await get_tree().create_timer(0.1).timeout
-	var canvas1 := spawn_canvas(self, "side")
+	
+	var canvas1 := spawn_canvas(self, "holes")
 	hole_array(canvas1, get_mesh(canvas))
+	await get_tree().create_timer(0.1).timeout
+	
+	var canvas2 := spawn_canvas(self, "base")
+	spawn_base(canvas2, get_mesh(canvas1))
+	
+	canvas.visible = false
+	canvas1.visible = false
+	
 	
 func get_mesh(combiner: CSGCombiner3D) -> ArrayMesh:
 	print("combiner: ", combiner)
@@ -86,8 +95,8 @@ func spawn_side(to: Node3D, s: StickSizeing, l: bool) -> CSGCylinder3D:
 	return side 
 
 func hole_array(to: Node3D, with: ArrayMesh) -> void:
-	var d := 12
-	var n := 4
+	var d := 3.2
+	var n := 3
 	var x := -d*0.5
 	var dx := d/(n-1) 
 	
@@ -107,3 +116,32 @@ func hole_array(to: Node3D, with: ArrayMesh) -> void:
 		stamp.transform = stamp.transform.rotated(Vector3(0,0,1), 3.1415 * 0.5)
 		stamp.transform.origin += offs[i]
 		stamp.mesh = with
+
+func binder(node: Node3D, to: Node3D):
+	to.add_child(node)
+	node.owner = get_tree().edited_scene_root
+
+
+func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
+	var base := CSGBox3D.new()
+	binder(base, to)
+	base.size = Vector3(6.4, 0.4, 2.2)
+	
+	var to_poke := CSGMesh3D.new()
+	binder(to_poke, to)
+	to_poke.mesh = holes
+	to_poke.operation = CSGShape3D.OPERATION_SUBTRACTION
+	
+	var bolts := CSGCylinder3D.new()
+	binder(bolts, to)
+	bolts.rotate_z(PI/2)
+	bolts.transform.origin.y += 0.2
+	
+	bolts.radius = 0.2
+	bolts.sides = 32
+	bolts.height = 5.8
+	
+	bolts.operation = CSGShape3D.OPERATION_SUBTRACTION	
+	
+	
+	

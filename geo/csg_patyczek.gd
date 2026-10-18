@@ -8,7 +8,7 @@ class StickSizeing:
 	
 	func _init() -> void:
 		self.len = 13
-		self.w = 1.2
+		self.w = 1.0
 		self.h = 0.3
 
 # Called when the node enters the scene tree for the first time.
@@ -37,7 +37,7 @@ func regenerate():
 	await get_tree().create_timer(0.1).timeout
 	
 	var canvas1 := spawn_canvas(self, "holes")
-	hole_array(canvas1, get_mesh(canvas))
+	hole_array(canvas1, get_mesh(canvas), Vector3(0,0,0))
 	await get_tree().create_timer(0.1).timeout
 	
 	var canvas2 := spawn_canvas(self, "base")
@@ -94,7 +94,7 @@ func spawn_side(to: Node3D, s: StickSizeing, l: bool) -> CSGCylinder3D:
 	
 	return side 
 
-func hole_array(to: Node3D, with: ArrayMesh) -> void:
+func hole_array(to: Node3D, with: ArrayMesh, globoff: Vector3) -> void:
 	var d := 3.2
 	var n := 3
 	var x := -d*0.5
@@ -114,7 +114,7 @@ func hole_array(to: Node3D, with: ArrayMesh) -> void:
 		stamp.owner = get_tree().edited_scene_root
 		stamp.name = "stamp_" + str(i)
 		stamp.transform = stamp.transform.rotated(Vector3(0,0,1), 3.1415 * 0.5)
-		stamp.transform.origin += offs[i]
+		stamp.transform.origin += offs[i] + globoff
 		stamp.mesh = with
 
 func binder(node: Node3D, to: Node3D):
@@ -143,5 +143,26 @@ func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
 	
 	bolts.operation = CSGShape3D.OPERATION_SUBTRACTION	
 	
+	var offtop := Node3D.new()
+	binder(offtop, to)
+	offtop.name = "offtop"
+	offtop.visible = false
 	
+	var pin := CSGCombiner3D.new()
+	binder(pin, offtop)
+	
+	var head := CSGCylinder3D.new()
+	binder(head, pin)
+	
+	head.radius = 0.4
+	head.sides = 32
+	head.height = 0.3
+	head.name = "pin"
+	
+	await get_tree().create_timer(0.1).timeout
+	var heads := CSGCombiner3D.new()
+	binder(heads, to)
+	hole_array(heads, get_mesh(pin), Vector3(0,0,0))
+	heads.transform.origin += Vector3(0.4,0.2,0)
+	heads.operation = CSGShape3D.OPERATION_SUBTRACTION
 	

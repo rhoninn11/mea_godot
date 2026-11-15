@@ -8,8 +8,8 @@ class StickSizeing:
 	
 	func _init() -> void:
 		self.len = 13
-		self.w = 1.0
-		self.h = 0.3
+		self.w = 1.02
+		self.h = 0.18
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,6 +23,7 @@ func _process(delta: float) -> void:
 
 @export_tool_button("regenerate") var regenerate_btn = regenerate
 @export_tool_button("clear") var clear_btn = clear
+@export_tool_button("regenerate_alt") var regenerate_alt_btn = regenerate_alt
 
 func clear():
 	for child in get_children():
@@ -30,10 +31,32 @@ func clear():
 		remove_child(child)
 		child.free()
 
+func regenerate_alt():
+	clear()
+	var bgr := spawn_canvas(self, "bgr")
+	var stick_bigger := StickSizeing.new()
+	stick_bigger.h *= 2;
+	stick_bigger.len += stick_bigger.w*0.5; 
+	stick_bigger.w += stick_bigger.w*0.5;
+	spawn_stick(bgr, stick_bigger)
+	await get_tree().create_timer(0.1).timeout
+	
+	var stick_def := StickSizeing.new()
+	var canvas := spawn_canvas(bgr, "normal")
+	spawn_stick(canvas, stick_def)
+	canvas.operation = CSGShape3D.OPERATION_SUBTRACTION;
+	canvas.transform = canvas.transform.translated(Vector3(0, stick_def.h*0.5, 0))
+	await get_tree().create_timer(0.1).timeout
+	
+	
+	
+	
+
 func regenerate():
 	clear()
 	var canvas := spawn_canvas(self, "main")
-	spawn_stick(canvas)
+	var stick_def := StickSizeing.new()
+	spawn_stick(canvas, stick_def)
 	await get_tree().create_timer(0.1).timeout
 	
 	var canvas1 := spawn_canvas(self, "holes")
@@ -60,8 +83,7 @@ func spawn_canvas(to: Node3D, name: StringName) -> CSGCombiner3D:
 	combiner.name = name
 	return combiner
 	
-func spawn_stick(to: Node3D):
-	var sizing := StickSizeing.new()
+func spawn_stick(to: Node3D, sizing: StickSizeing):
 	spawn_middle(to, sizing)
 	spawn_side(to, sizing, false)
 	spawn_side(to, sizing, true)
@@ -125,7 +147,7 @@ func binder(node: Node3D, to: Node3D):
 func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
 	var base := CSGBox3D.new()
 	binder(base, to)
-	base.size = Vector3(6.4, 0.4, 2.2)
+	base.size = Vector3(6.4, 0.35, 2.2)
 	
 	var to_poke := CSGMesh3D.new()
 	binder(to_poke, to)
@@ -135,7 +157,7 @@ func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
 	var bolts := CSGCylinder3D.new()
 	binder(bolts, to)
 	bolts.rotate_z(PI/2)
-	bolts.transform.origin.y += 0.2
+	bolts.transform.origin.y += 0.15
 	
 	bolts.radius = 0.2
 	bolts.sides = 32
@@ -151,6 +173,7 @@ func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
 	var pin := CSGCombiner3D.new()
 	binder(pin, offtop)
 	
+	
 	var head := CSGCylinder3D.new()
 	binder(head, pin)
 	
@@ -163,6 +186,7 @@ func spawn_base(to: CSGCombiner3D, holes: ArrayMesh) -> void:
 	var heads := CSGCombiner3D.new()
 	binder(heads, to)
 	hole_array(heads, get_mesh(pin), Vector3(0,0,0))
-	heads.transform.origin += Vector3(0.4,0.2,0)
+	heads.transform.origin += Vector3(0.6,0.2,0)
 	heads.operation = CSGShape3D.OPERATION_SUBTRACTION
+	
 	
